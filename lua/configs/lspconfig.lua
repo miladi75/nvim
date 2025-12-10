@@ -8,7 +8,7 @@ local lspconfig = require("nvchad.configs.lspconfig") -- nvim 0.11
 -- list of all servers configured.
 lspconfig.servers = {
     "lua_ls",
-    -- "clangd",
+    "clangd",
     -- "gopls",
     -- "hls",
     -- "ols",
@@ -31,16 +31,63 @@ for _, lsp in ipairs(default_servers) do
     })
 end
 
--- -- lspconfig.clangd.setup({ -- pre nvim 0.11
--- vim.lsp.config("clangd", { -- nvim 0.11
---     on_attach = function(client, bufnr)
---         client.server_capabilities.documentFormattingProvider = false
---         client.server_capabilities.documentRangeFormattingProvider = false
---         on_attach(client, bufnr)
---     end,
---     on_init = on_init,
---     capabilities = capabilities,
--- })
+local uv = vim.uv or vim.loop
+
+-- Try to locate compile_commands.json in common out-of-tree build directories.
+local function find_compile_commands_dir(root)
+    if not root then
+        return nil
+    end
+
+    local preferred_dirs = {
+        root,
+        vim.fs.joinpath(root, "build"),
+        vim.fs.joinpath(root, "cmake-build-debug"),
+        vim.fs.joinpath(root, "cmake-build-release"),
+    }
+
+    for _, dir in ipairs(preferred_dirs) do
+        local candidate = vim.fs.joinpath(dir, "compile_commands.json")
+        if uv.fs_stat(candidate) then
+            if dir == root then
+                return nil
+            end
+            return dir
+        end
+    end
+end
+
+local clangd_base_cmd = {
+    "clangd",
+    "--background-index",
+    "--background-index-priority=low",
+    "--completion-style=detailed",
+    "--header-insertion=iwyu",
+    "--log=error",
+    "--clang-tidy",
+    "--fallback-style=none",
+}
+
+vim.lsp.config("clangd", {
+    cmd = clangd_base_cmd,
+    on_attach = function(client, bufnr)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+        on_attach(client, bufnr)
+    end,
+    on_new_config = function(new_config, root_dir)
+        local cmd = { unpack(clangd_base_cmd) }
+        local compile_commands_dir = find_compile_commands_dir(root_dir)
+
+        if compile_commands_dir then
+            table.insert(cmd, "--compile-commands-dir=" .. compile_commands_dir)
+        end
+
+        new_config.cmd = cmd
+    end,
+    on_init = on_init,
+    capabilities = capabilities,
+})
 
 -- -- lspconfig.gopls.setup({ -- pre nvim 0.11
 -- vim.lsp.config("gopls", { -- nvim 0.11
