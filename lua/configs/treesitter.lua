@@ -19,6 +19,7 @@ local options = {
         "printf",
         -- "python",
         "toml",
+        "vhdl",
         "vim",
         "vimdoc",
         "yaml",
