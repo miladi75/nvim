@@ -1,6 +1,13 @@
 return {
 
     {
+        "nvim-tree/nvim-tree.lua",
+        opts = function()
+            return require("configs.nvimtree")
+        end,
+    },
+
+    {
         "nvim-treesitter/nvim-treesitter",
         event = { "BufReadPre", "BufNewFile" },
         config = function()

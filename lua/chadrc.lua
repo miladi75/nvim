@@ -12,6 +12,13 @@ M.base46 = {
     -- 	["@comment"] = { italic = true },
     -- },
 }
+
+-- Widen the file explorer (NvimTree) so filenames fit.
+M.nvimtree = {
+    view = {
+        width = 100,
+    },
+}
 -- ADD THE M.mappings TABLE HERE
 M.mappings = {
     -- Keymaps for Normal mode (n)
