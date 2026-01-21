@@ -15,4 +15,13 @@ map("n", "<S-Tab>", "<cmd>bprev<CR>", { desc = "buffer prev" })
 -- nvim-tree toggle
 map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer" })
 
+-- git
+map("n", "<leader>gb", "<cmd>Gitsigns blame_line<cr>", { desc = "Git blame line" })
+map("n", "<leader>gB", "<cmd>Gitsigns toggle_current_line_blame<cr>", { desc = "Git toggle line blame" })
+map("n", "<leader>gh", "<cmd>Gitsigns preview_hunk<cr>", { desc = "Git preview hunk" })
+map("n", "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Git stage hunk" })
+map("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", { desc = "Git reset hunk" })
+map("n", "<leader>gv", "<cmd>DiffviewOpen<cr>", { desc = "Git diff view" })
+map("n", "<leader>gV", "<cmd>DiffviewFileHistory %<cr>", { desc = "Git file history" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")

@@ -59,4 +59,18 @@ return {
             require("configs.mason-conform")
         end,
     },
+
+    {
+        "lewis6991/gitsigns.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            require("configs.gitsigns")
+        end,
+    },
+
+    {
+        "sindrets/diffview.nvim",
+        cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
 }
