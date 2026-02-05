@@ -1,0 +1,12 @@
+set_parameter -name g_jp2k_enabled 0
+set_parameter -name g_12g_ports_0 0
+set_parameter -name g_12g_ports_1 1 
+
+set_parameter -name g_active_ports_0 0
+set_parameter -name g_active_ports_1 1
+set_parameter -name g_active_ports_2 2
+set_parameter -name g_active_ports_3 3
+set_parameter -name g_active_ports_4 4
+set_parameter -name g_active_ports_5 5
+set_parameter -name g_active_ports_6 6
+set_parameter -name g_active_ports_7 7

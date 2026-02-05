@@ -1,0 +1,27 @@
+Neovim Tutor: 06 MACROS & REGISTERS
+
+Goal
+  Record, replay, and use registers.
+
+------------------------------------------------------------
+Lesson 1: Macros
+  q{a-z}  start recording into register
+  q       stop recording
+  @{a-z}  play macro
+  @@      repeat last macro
+
+Practice:
+  - Record a macro in register a that changes a word.
+  - Use @a to replay it on several lines.
+
+------------------------------------------------------------
+Lesson 2: Registers
+  "0   last yank
+  ""   unnamed register
+  "+   system clipboard (if enabled)
+
+Practice:
+  - Yank a line, then paste from register 0 with "0p.
+
+End of lesson 06.
+Next: :Tutor nvchad-07-text-objects

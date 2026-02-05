@@ -55,6 +55,18 @@ std.files = ["/path/to/std/*.vhd"]
 | `<leader>gt` | Git status |
 | `<leader>pt` | Pick hidden terminal |
 
+## Git
+
+| Key | Action |
+|-----|--------|
+| `<leader>gb` | Git blame line (Gitsigns) |
+| `<leader>gB` | Git toggle current line blame (Gitsigns) |
+| `<leader>gh` | Git preview hunk (Gitsigns) |
+| `<leader>gs` | Git stage hunk (Gitsigns) |
+| `<leader>gr` | Git reset hunk (Gitsigns) |
+| `<leader>gv` | Git diff view (Diffview) |
+| `<leader>gV` | Git file history (Diffview for current file) |
+
 ## File Explorer (NvimTree)
 
 | Key | Action |
@@ -81,6 +93,20 @@ std.files = ["/path/to/std/*.vhd"]
 | `<A-h>` | Toggle horizontal terminal |
 | `<A-v>` | Toggle vertical terminal |
 | `<C-x>` | Escape terminal mode |
+
+## FPGA Tasks
+
+| Key | Action |
+|-----|--------|
+| `<leader>vc` | Task: VHDL Compile |
+| `<leader>vr` | Task: VHDL Run (batch) |
+| `<leader>vs` | Task: VHDL Simulate |
+| `<leader>vv` | Task: Generate vhdl_ls.toml |
+| `<leader>vot` | Task: Open associated testbench |
+| `<leader>vos` | Task: Open associated syntest |
+| `<leader>vsc` | Task: vsg-check |
+| `<leader>vsf` | Task: vsg-fix |
+| `<leader>vqo` | Task: Open fwlibs quartus project |
 
 ## Comments
 

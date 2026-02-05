@@ -1,0 +1,36 @@
+Neovim Tutor: 03 SEARCH
+
+Goal
+  Find and replace quickly.
+
+------------------------------------------------------------
+Lesson 1: Search
+  /pattern    search forward
+  ?pattern    search backward
+  n           next match
+  N           previous match
+
+Practice:
+  - Search for the word "Lesson" with /Lesson.
+  - Jump through matches with n and N.
+
+------------------------------------------------------------
+Lesson 2: Search settings
+  :set hlsearch    highlight matches
+  :set nohlsearch  disable highlight
+  :set incsearch   show match while typing
+
+Practice:
+  - Toggle :set hlsearch and :set nohlsearch.
+
+------------------------------------------------------------
+Lesson 3: Substitute
+  :%s/old/new/g         replace in whole file
+  :%s/old/new/gc        confirm each replace
+
+Practice:
+  - Try :%s/Lesson/Part/gc and answer y/n.
+  - Undo when done.
+
+End of lesson 03.
+Next: :Tutor nvchad-04-visual

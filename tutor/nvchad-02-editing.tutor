@@ -1,0 +1,45 @@
+Neovim Tutor: 02 EDITING
+
+Goal
+  Learn delete/change/yank/paste and repeat.
+
+------------------------------------------------------------
+Lesson 1: Delete and change
+  x     delete char under cursor
+  dw    delete word
+  dd    delete line
+  cw    change word (delete + insert)
+
+Practice:
+  - Use cw to change words in this paragraph.
+  - Use dw to delete a word, then undo.
+
+------------------------------------------------------------
+Lesson 2: Yank and paste
+  yy    yank line
+  p     paste after cursor
+  P     paste before cursor
+
+Practice:
+  - Yank a line with yy and paste it with p.
+
+------------------------------------------------------------
+Lesson 3: Repeat and count
+  .     repeat last change
+  3dd   delete 3 lines
+  5w    move 5 words forward
+
+Practice:
+  - Do a small change, then press . to repeat it.
+
+------------------------------------------------------------
+Lesson 4: Replace
+  r{char} replace one char
+  R       replace mode
+
+Practice:
+  - Use r to replace a character.
+  - Try R to replace text, then <Esc>.
+
+End of lesson 02.
+Next: :Tutor nvchad-03-search
