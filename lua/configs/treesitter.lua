@@ -17,6 +17,7 @@ local options = {
         "markdown",
         -- "odin",
         "printf",
+        "query",
         -- "python",
         "toml",
         "vhdl",
