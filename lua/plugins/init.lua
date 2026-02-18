@@ -80,4 +80,21 @@ return {
         cmd = { "DiffviewOpen", "DiffviewFileHistory" },
         dependencies = { "nvim-lua/plenary.nvim" },
     },
+
+    {
+        "toppair/peek.nvim",
+        event = { "VeryLazy" },
+        build = "deno task --quiet build:fast",
+        config = function()
+            require("peek").setup({
+                auto_load = true,
+                syntax_theme = "dark",
+                theme = "dark",
+                app = "browser",
+                filetype = { "markdown" },
+            })
+            vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+            vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+        end,
+    },
 }

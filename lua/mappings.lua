@@ -24,4 +24,14 @@ map("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", { desc = "Git reset hunk"
 map("n", "<leader>gv", "<cmd>DiffviewOpen<cr>", { desc = "Git diff view" })
 map("n", "<leader>gV", "<cmd>DiffviewFileHistory %<cr>", { desc = "Git file history" })
 
+-- open HTML file in browser
+map("n", "<leader>oh", function()
+  local file = vim.fn.expand("%:p")
+  if vim.bo.filetype == "html" then
+    vim.fn.jobstart({ "xdg-open", file }, { detach = true })
+  else
+    vim.notify("Not an HTML file", vim.log.levels.WARN)
+  end
+end, { desc = "Open HTML in browser" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
