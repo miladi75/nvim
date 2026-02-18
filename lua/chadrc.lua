@@ -8,9 +8,10 @@ M.base46 = {
     theme = "catppuccin",
 
     hl_override = {
-        ["@generic.vhdl"] = { fg = "#33FF00" },
+        ["@generic.vhdl"] = { fg = "#FFFFFF" },
         ["@constant.vhdl"] = { fg = "#FFFFFF" },
-        ["@variable.vhdl"] = { fg = "#27E7F5" },
+        ["@vprefix.vhdl"] = { fg = "#33FF00" },
+        ["@signal.vhdl"] = { fg = "#27E7F5" },
         ["@state.vhdl"] = { fg = "#FF8C00" },
     },
 }
