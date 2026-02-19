@@ -21,9 +21,9 @@ local function apply_vhdl_custom_highlights()
     vim.api.nvim_set_hl(0, "@function.vhdl", { fg = "#3B82F6", bold = true })
     vim.api.nvim_set_hl(0, "@generic.vhdl", { fg = "#FFFFFF" })
     vim.api.nvim_set_hl(0, "@constant.vhdl", { fg = "#FFFFFF" })
-    vim.api.nvim_set_hl(0, "@vprefix.vhdl", { fg = "#33FF00" })
+    vim.api.nvim_set_hl(0, "@vprefix.vhdl", { fg = "#FF8C00" })
     vim.api.nvim_set_hl(0, "@signal.vhdl", { fg = "#27E7F5" })
-    vim.api.nvim_set_hl(0, "@state.vhdl", { fg = "#FF8C00", bold = true })
+    vim.api.nvim_set_hl(0, "@state.vhdl", { fg = "#33FF00", bold = true })
 end
 
 apply_vhdl_custom_highlights()

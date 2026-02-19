@@ -10,9 +10,9 @@ M.base46 = {
     hl_override = {
         ["@generic.vhdl"] = { fg = "#FFFFFF" },
         ["@constant.vhdl"] = { fg = "#FFFFFF" },
-        ["@vprefix.vhdl"] = { fg = "#33FF00" },
+        ["@vprefix.vhdl"] = { fg = "#FF8C00" },
         ["@signal.vhdl"] = { fg = "#27E7F5" },
-        ["@state.vhdl"] = { fg = "#FF8C00" },
+        ["@state.vhdl"] = { fg = "#33FF00" },
     },
 }
 
