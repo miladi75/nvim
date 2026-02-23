@@ -17,15 +17,52 @@ local function git_root()
     return git_root_for_file(file) or vim.fn.getcwd()
 end
 
+-- Persistent terminal state: one shared terminal for all FPGA tasks
+local _term = { bufnr = nil, chan = nil, last_cwd = nil }
+
+local function term_is_valid()
+    return _term.bufnr
+        and vim.api.nvim_buf_is_valid(_term.bufnr)
+        and _term.chan
+        and vim.fn.jobwait({ _term.chan }, 0)[1] == -1 -- still running
+end
+
+local function term_focus()
+    -- If the terminal buffer is already visible in a window, focus it
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        if vim.api.nvim_win_get_buf(win) == _term.bufnr then
+            vim.api.nvim_set_current_win(win)
+            return
+        end
+    end
+    -- Otherwise open it in a bottom split
+    vim.cmd("botright split")
+    vim.api.nvim_win_set_buf(0, _term.bufnr)
+end
+
 local function term_run(cmd, cwd)
     cwd = cwd or git_root()
-    -- run in repo root
-    vim.cmd("botright split | terminal")
-    local chan = vim.b.terminal_job_id
-    if cwd and #cwd > 0 then
-        vim.fn.chansend(chan, "cd " .. vim.fn.shellescape(cwd) .. "\n")
+
+    if term_is_valid() then
+        term_focus()
+        -- cd if the working directory changed
+        if cwd and cwd ~= _term.last_cwd then
+            vim.fn.chansend(_term.chan, "cd " .. vim.fn.shellescape(cwd) .. "\n")
+            _term.last_cwd = cwd
+        end
+        vim.fn.chansend(_term.chan, cmd .. "\n")
+    else
+        -- Create a new terminal
+        vim.cmd("botright split | terminal")
+        _term.bufnr = vim.api.nvim_get_current_buf()
+        _term.chan = vim.b.terminal_job_id
+        _term.last_cwd = nil
+        if cwd and #cwd > 0 then
+            vim.fn.chansend(_term.chan, "cd " .. vim.fn.shellescape(cwd) .. "\n")
+            _term.last_cwd = cwd
+        end
+        vim.fn.chansend(_term.chan, cmd .. "\n")
     end
-    vim.fn.chansend(chan, cmd .. "\n")
 end
 
 local function echo(msg)
