@@ -98,6 +98,9 @@ std.files = ["/path/to/std/*.vhd"]
 
 | Key | Action |
 |-----|--------|
+| `<F5>` | **VHDL Compile** (treecom, ModelSim) |
+| `<F6>` | **VHDL Simulate GUI** (treesim, ModelSim) |
+| `<F7>` | **VHDL Run batch** (treesim --batch, no GUI) |
 | `<leader>vc` | Task: VHDL Compile |
 | `<leader>vr` | Task: VHDL Run (batch) |
 | `<leader>vs` | Task: VHDL Simulate |

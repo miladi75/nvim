@@ -230,6 +230,11 @@ function M.setup_keymaps()
     map("<leader>vsc", M.vsg_check, "Task: vsg-check")
     map("<leader>vsf", M.vsg_fix, "Task: vsg-fix")
     map("<leader>vqo", M.open_fwlibs_quartus_project, "Task: Open fwlibs quartus project")
+
+    -- Function key shortcuts (mirrors VSCode tasks.json keybindings)
+    map("<F5>", M.vhdl_compile, "VHDL Compile (treecom)")
+    map("<F6>", M.vhdl_simulate, "VHDL Simulate GUI (treesim)")
+    map("<F7>", M.vhdl_run_batch, "VHDL Run batch (treesim --batch)")
 end
 
 -- Auto-setup if you want:
