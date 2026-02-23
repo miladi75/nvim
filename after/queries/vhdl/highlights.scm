@@ -44,3 +44,34 @@
    (name
      (identifier) @signal.vhdl))
   (#set! priority 100))
+
+; ── Port declarations inside entity (interface_declaration) ──
+; Covers: pulse_148m_o : out std_logic := '0';
+((interface_declaration
+   (identifier_list
+     (identifier) @signal.vhdl))
+  (#set! priority 100))
+
+((interface_signal_declaration
+   (identifier_list
+     (identifier) @signal.vhdl))
+  (#set! priority 100))
+
+; ── Entity instantiation port map associations ──
+; Covers both sides of: clk_i => clk_i
+; Formal part (left of =>)
+((port_map_aspect
+   (association_list
+     (association_element
+       (name
+         (identifier) @signal.vhdl))))
+  (#set! priority 100))
+
+; ── Generic map associations ──
+; Covers both sides of: g_width => g_width
+((generic_map_aspect
+   (association_list
+     (association_element
+       (name
+         (identifier) @signal.vhdl))))
+  (#set! priority 100))
