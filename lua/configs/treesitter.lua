@@ -18,7 +18,7 @@ local options = {
         -- "odin",
         "printf",
         "query",
-        -- "python",
+        "python",
         "toml",
         "vhdl",
         "vim",

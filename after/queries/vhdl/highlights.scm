@@ -57,21 +57,24 @@
      (identifier) @signal.vhdl))
   (#set! priority 100))
 
-; ── Entity instantiation port map associations ──
-; Covers both sides of: clk_i => clk_i
-; Formal part (left of =>)
+; ── Entity instantiation port map – actual part (right of =>) ──
+; In: clk_i => clk_i,  the RIGHT clk_i is your architecture signal.
+; Tree: association_element > conditional_expression > simple_expression > name > identifier
 ((port_map_aspect
    (association_list
      (association_element
-       (name
-         (identifier) @signal.vhdl))))
+       (conditional_expression
+         (simple_expression
+           (name
+             (identifier) @signal.vhdl))))))
   (#set! priority 100))
 
-; ── Generic map associations ──
-; Covers both sides of: g_width => g_width
+; ── Generic map – actual part (right of =>) ──
 ((generic_map_aspect
    (association_list
      (association_element
-       (name
-         (identifier) @signal.vhdl))))
+       (conditional_expression
+         (simple_expression
+           (name
+             (identifier) @signal.vhdl))))))
   (#set! priority 100))
