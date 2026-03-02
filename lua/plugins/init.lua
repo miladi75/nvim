@@ -77,8 +77,11 @@ return {
 
     {
         "sindrets/diffview.nvim",
-        cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+        cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
         dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("configs.diffview")
+        end,
     },
 
     {
