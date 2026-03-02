@@ -1,13 +1,10 @@
 ; extends
 
-; ── Prefix patterns (highest priority) ──
-
-; Functions: f_*
+; Highlight user-defined VHDL subprogram names by prefix.
 ((identifier) @function.vhdl
   (#match? @function.vhdl "\\c^f_")
   (#set! priority 120))
 
-; Functions: pd_*
 ((identifier) @function.vhdl
   (#match? @function.vhdl "\\c^pd_")
   (#set! priority 120))
@@ -32,37 +29,29 @@
   (#match? @state.vhdl "\\c^s_")
   (#set! priority 120))
 
-; User-defined types: t_*
-((identifier) @type_prefix.vhdl
-  (#match? @type_prefix.vhdl "\\c^t_")
-  (#set! priority 120))
-
-; ── Port signals: identifiers ending with _i or _o (everywhere) ──
+; Port signals: identifiers ending with _i or _o (entity ports, colored everywhere)
 ((identifier) @port_signal.vhdl
   (#match? @port_signal.vhdl "\\c_[io]$")
   (#set! priority 110))
 
-; ── Local signals (non-_i/_o, various contexts) ──
-
-; Signal declarations
+; Signal identifiers (non-prefix rule): declarations and assignment LHS.
 ((signal_declaration
    (identifier_list
      (identifier) @local_signal.vhdl))
   (#set! priority 100))
 
-; Simple waveform assignment LHS
 ((simple_waveform_assignment
    (name
      (identifier) @local_signal.vhdl))
   (#set! priority 100))
 
-; Concurrent simple signal assignment LHS
 ((concurrent_simple_signal_assignment
    (name
      (identifier) @local_signal.vhdl))
   (#set! priority 100))
 
-; Port declarations inside entity (interface_declaration)
+; ── Port declarations inside entity (interface_declaration) ──
+; Covers: pulse_148m_o : out std_logic := '0';
 ((interface_declaration
    (identifier_list
      (identifier) @local_signal.vhdl))
@@ -73,7 +62,9 @@
      (identifier) @local_signal.vhdl))
   (#set! priority 100))
 
-; Entity instantiation port map – actual part (right of =>)
+; ── Entity instantiation port map – actual part (right of =>) ──
+; In: clk_i => clk_i,  the RIGHT clk_i is your architecture signal.
+; Tree: association_element > conditional_expression > simple_expression > name > identifier
 ((port_map_aspect
    (association_list
      (association_element
@@ -83,7 +74,7 @@
              (identifier) @local_signal.vhdl))))))
   (#set! priority 100))
 
-; Generic map – actual part (right of =>)
+; ── Generic map – actual part (right of =>) ──
 ((generic_map_aspect
    (association_list
      (association_element

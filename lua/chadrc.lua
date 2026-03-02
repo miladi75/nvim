@@ -5,16 +5,17 @@
 local M = {}
 
 M.base46 = {
-    theme = "catppuccin",
-
     hl_override = {
-        ["@generic.vhdl"] = { fg = "#FFFFFF" },
+        ["@state.vhdl"] = { fg = "#02710C", bold = true },
+        ["@vprefix.vhdl"] = { fg = "#F0E806" },
+        ["@function.vhdl"] = { fg = "#1E69E2", bold = true },
         ["@constant.vhdl"] = { fg = "#FFFFFF" },
-        ["@vprefix.vhdl"] = { fg = "#FF8C00" },
-        ["@port_signal.vhdl"] = { fg = "#FF8C00" },
-        ["@local_signal.vhdl"] = { fg = "#E5E510" },
-        ["@state.vhdl"] = { fg = "#33FF00" },
+        ["@generic.vhdl"] = { fg = "#FFFFFF" },
+        ["@type_prefix.vhdl"] = { fg = "#04F792" },
+        ["@port_signal.vhdl"] = { fg = "#00C2B5" },
+        ["@local_signal.vhdl"] = { fg = "#FF8400" },
     },
+    theme = "catppuccin",
 }
 
 -- Widen the file explorer (NvimTree) so filenames fit.
