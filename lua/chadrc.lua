@@ -11,7 +11,8 @@ M.base46 = {
         ["@generic.vhdl"] = { fg = "#FFFFFF" },
         ["@constant.vhdl"] = { fg = "#FFFFFF" },
         ["@vprefix.vhdl"] = { fg = "#FF8C00" },
-        ["@signal.vhdl"] = { fg = "#27E7F5" },
+        ["@port_signal.vhdl"] = { fg = "#FF8C00" },
+        ["@local_signal.vhdl"] = { fg = "#E5E510" },
         ["@state.vhdl"] = { fg = "#33FF00" },
     },
 }

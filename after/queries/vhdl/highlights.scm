@@ -29,32 +29,37 @@
   (#match? @state.vhdl "\\c^s_")
   (#set! priority 120))
 
+; Port signals: identifiers ending with _i or _o (entity ports, colored everywhere)
+((identifier) @port_signal.vhdl
+  (#match? @port_signal.vhdl "\\c_[io]$")
+  (#set! priority 110))
+
 ; Signal identifiers (non-prefix rule): declarations and assignment LHS.
 ((signal_declaration
    (identifier_list
-     (identifier) @signal.vhdl))
+     (identifier) @local_signal.vhdl))
   (#set! priority 100))
 
 ((simple_waveform_assignment
    (name
-     (identifier) @signal.vhdl))
+     (identifier) @local_signal.vhdl))
   (#set! priority 100))
 
 ((concurrent_simple_signal_assignment
    (name
-     (identifier) @signal.vhdl))
+     (identifier) @local_signal.vhdl))
   (#set! priority 100))
 
 ; ── Port declarations inside entity (interface_declaration) ──
 ; Covers: pulse_148m_o : out std_logic := '0';
 ((interface_declaration
    (identifier_list
-     (identifier) @signal.vhdl))
+     (identifier) @local_signal.vhdl))
   (#set! priority 100))
 
 ((interface_signal_declaration
    (identifier_list
-     (identifier) @signal.vhdl))
+     (identifier) @local_signal.vhdl))
   (#set! priority 100))
 
 ; ── Entity instantiation port map – actual part (right of =>) ──
@@ -66,7 +71,7 @@
        (conditional_expression
          (simple_expression
            (name
-             (identifier) @signal.vhdl))))))
+             (identifier) @local_signal.vhdl))))))
   (#set! priority 100))
 
 ; ── Generic map – actual part (right of =>) ──
@@ -76,5 +81,5 @@
        (conditional_expression
          (simple_expression
            (name
-             (identifier) @signal.vhdl))))))
+             (identifier) @local_signal.vhdl))))))
   (#set! priority 100))
