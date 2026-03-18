@@ -9,16 +9,17 @@ local lspconfig = require("nvchad.configs.lspconfig") -- nvim 0.11
 lspconfig.servers = {
     "lua_ls",
     "clangd",
+    "vhdl_ls",
     -- "gopls",
     -- "hls",
     -- "ols",
-    -- "pyright",
+    "pyright",
 }
 
 -- list of servers configured with default config.
 local default_servers = {
     -- "ols",
-    -- "pyright",
+    "pyright",
 }
 
 -- lsps with default config
@@ -88,6 +89,7 @@ vim.lsp.config("clangd", {
     on_init = on_init,
     capabilities = capabilities,
 })
+vim.lsp.enable("clangd")
 
 -- -- lspconfig.gopls.setup({ -- pre nvim 0.11
 -- vim.lsp.config("gopls", { -- nvim 0.11
@@ -152,3 +154,14 @@ vim.lsp.config("lua_ls", { -- nvim 0.11
         },
     },
 })
+
+-- VHDL Language Server (vhdl_ls from rust_hdl)
+vim.lsp.config("vhdl_ls", {
+    cmd = { "/home/milad/dev/open-source/rust_hdl/target/release/vhdl_ls" },
+    filetypes = { "vhdl" },
+    root_markers = { "vhdl_ls.toml", ".git" },
+    on_attach = on_attach,
+    on_init = on_init,
+    capabilities = capabilities,
+})
+vim.lsp.enable("vhdl_ls")

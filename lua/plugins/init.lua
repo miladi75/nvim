@@ -1,6 +1,13 @@
 return {
 
     {
+        "nvim-tree/nvim-tree.lua",
+        opts = function()
+            return require("configs.nvimtree")
+        end,
+    },
+
+    {
         "nvim-treesitter/nvim-treesitter",
         event = { "BufReadPre", "BufNewFile" },
         config = function()
@@ -57,6 +64,40 @@ return {
         dependencies = { "conform.nvim" },
         config = function()
             require("configs.mason-conform")
+        end,
+    },
+
+    {
+        "lewis6991/gitsigns.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            require("configs.gitsigns")
+        end,
+    },
+
+    {
+        "sindrets/diffview.nvim",
+        cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("configs.diffview")
+        end,
+    },
+
+    {
+        "toppair/peek.nvim",
+        event = { "VeryLazy" },
+        build = "deno task --quiet build:fast",
+        config = function()
+            require("peek").setup({
+                auto_load = true,
+                syntax_theme = "dark",
+                theme = "dark",
+                app = "browser",
+                filetype = { "markdown" },
+            })
+            vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+            vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
         end,
     },
 }
