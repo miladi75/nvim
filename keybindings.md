@@ -15,8 +15,8 @@ Legend:
 | `n` | `;` | Enter command mode |
 | `i` | `jk` | Exit insert mode |
 | `n` | `<Esc>` | Clear search highlights |
-| `n` | `<C-s>` | Save file |
 | `n` | `<C-c>` | Copy whole file to system clipboard |
+| `n` | `<leader>fs` | Save file |
 | `n` | `<leader>n` | Toggle line numbers |
 | `n` | `<leader>rn` | Toggle relative line numbers |
 | `n` | `<leader>ch` | Open NvChad cheatsheet |
@@ -99,7 +99,8 @@ Commands:
 | `n,t` | `<A-h>` | Toggle horizontal terminal |
 | `n,t` | `<A-v>` | Toggle vertical terminal |
 | `n,t` | `<A-i>` | Toggle floating terminal |
-| `t` | `<C-x>` | Exit terminal mode |
+| `t` | `<Esc><Esc>` | Exit terminal mode |
+| `n,t` | `<leader>tq` | Close terminal buffer |
 
 ## Formatting and Comments
 
@@ -150,6 +151,10 @@ These are not custom mappings, but they are useful defaults that remain availabl
 | `n` | `<C-o>` | Jump back |
 | `n` | `<C-i>` | Jump forward |
 | `n` | `<C-]>` | Jump to tag |
+
+Notes:
+- `<C-i>` is commonly indistinguishable from `<Tab>` in terminal Neovim.
+- `<C-s>` was removed in favor of `<leader>fs` because terminal flow control often makes `Ctrl+s` unreliable.
 
 ## Useful Commands
 

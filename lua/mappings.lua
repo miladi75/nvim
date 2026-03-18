@@ -8,6 +8,11 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
+pcall(vim.keymap.del, "n", "<C-s>")
+pcall(vim.keymap.del, "t", "<C-x>")
+
+map("n", "<leader>fs", "<cmd>w<CR>", { desc = "Save file" })
+
 -- buffer navigation (works regardless of tabufline)
 map("n", "<Tab>", "<cmd>bnext<CR>", { desc = "buffer next" })
 map("n", "<S-Tab>", "<cmd>bprev<CR>", { desc = "buffer prev" })
@@ -48,4 +53,12 @@ map("n", "<leader>oh", function()
   end
 end, { desc = "Open HTML in browser" })
 
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+map("t", "<leader>tq", "<C-\\><C-n><cmd>bd!<CR>", { desc = "Close terminal buffer" })
+map("n", "<leader>tq", function()
+  if vim.bo.buftype == "terminal" then
+    vim.cmd "bd!"
+  else
+    vim.notify("Current buffer is not a terminal", vim.log.levels.WARN)
+  end
+end, { desc = "Close terminal buffer" })
