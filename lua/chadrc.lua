@@ -7,12 +7,12 @@ local M = {}
 M.base46 = {
     hl_override = {
         ["@state.vhdl"] = { fg = "#02710C", bold = true },
-        ["@vprefix.vhdl"] = { fg = "#F0E806" },
+        ["@vprefix.vhdl"] = { fg = "#00C2B5" },
         ["@function.vhdl"] = { fg = "#1E69E2", bold = true },
         ["@constant.vhdl"] = { fg = "#FFFFFF" },
         ["@generic.vhdl"] = { fg = "#FFFFFF" },
         ["@type_prefix.vhdl"] = { fg = "#04F792" },
-        ["@port_signal.vhdl"] = { fg = "#00C2B5" },
+        ["@port_signal.vhdl"] = { fg = "#FF8400" },
         ["@local_signal.vhdl"] = { fg = "#FF8400" },
     },
     theme = "catppuccin",

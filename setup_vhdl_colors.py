@@ -33,7 +33,6 @@ import re
 import sys
 from pathlib import Path
 
-
 # ---------------------------------------------------------------------------
 # Color definitions  (Change your own custom colors here and run the script)
 # ---------------------------------------------------------------------------
@@ -41,12 +40,12 @@ from pathlib import Path
 # font_style can be: "bold", "italic", "bold italic", or ""
 COLORS = {
     "s_prefix":     ("#02710C", "bold"),  # state machines   s_idle, s_running
-    "v_prefix":     ("#F0E806", ""),       # variables        v_counter, v_temp
+    "v_prefix":     ("#00C2B5", ""),       # variables        v_counter, v_temp
     "f_prefix":     ("#1E69E2", "bold"),   # functions        f_decode, pd_enable
     "c_prefix":     ("#FFFFFF", ""),       # constants        c_max_width
     "g_prefix":     ("#FFFFFF", ""),       # generics         g_width
     "t_prefix":     ("#04F792", ""),       # user types       t_stream, t_fwcom_pipe
-    "port_signal":  ("#00C2B5", ""),       # port signals     clk_i, data_o (*_i/*_o everywhere)
+    "port_signal":  ("#FF8400", ""),       # port signals     clk_i, data_o (*_i/*_o everywhere)
     "local_signal": ("#FF8400", ""),       # local signals    signal sreset (non-_i/_o, everywhere)
 }
 

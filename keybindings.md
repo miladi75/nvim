@@ -1,170 +1,163 @@
 # Neovim Keybindings Reference
 
-## LSP Keybindings (for VHDL and all languages)
+This file is the single source of truth for keybindings in this config.
 
-| Key | Action |
-|-----|--------|
-| `gd` | **Go to definition** - jumps to where symbol is defined |
-| `gD` | **Go to declaration** - jumps to declaration |
-| `gr` | **Go to references** - find all usages (built-in nvim 0.11) |
-| `gi` | **Go to implementation** (built-in nvim 0.11) |
-| `K` | **Hover** - shows documentation/info (built-in nvim 0.11) |
-| `<leader>D` | Go to **type definition** |
-| `<leader>ra` | **Rename** symbol across project |
-| `<leader>wa` | Add workspace folder |
-| `<leader>wr` | Remove workspace folder |
-| `<leader>wl` | List workspace folders |
-| `<leader>ds` | Show diagnostics in location list |
-| `<leader>fm` | **Format** file |
-
-## Navigation (Jump List)
-
-| Key | Action |
-|-----|--------|
-| `<C-o>` | Jump **back** (after gd) |
-| `<C-i>` | Jump **forward** |
-| `<C-]>` | Jump to tag (alternative) |
-
-## VHDL Library Navigation
-
-For `gd` to work with IEEE/standard libraries, configure `vhdl_ls.toml` in your project root:
-
-```toml
-[libraries]
-work.files = ["src/**/*.vhd"]
-
-# Point to your VHDL standard library sources (if you have them)
-ieee.files = ["/path/to/ieee/*.vhd"]
-std.files = ["/path/to/std/*.vhd"]
-```
-
-## Telescope (Fuzzy Finding)
-
-| Key | Action |
-|-----|--------|
-| `<leader>ff` | Find files |
-| `<leader>fa` | Find all files (including hidden) |
-| `<leader>fw` | **Live grep** (search text in project) |
-| `<leader>fg` | Live grep (custom) |
-| `<leader>fb` | Find buffers |
-| `<leader>fo` | Find old/recent files |
-| `<leader>fz` | Fuzzy find in current buffer |
-| `<leader>fh` | Help tags |
-| `<leader>ma` | Find marks |
-| `<leader>cm` | Git commits |
-| `<leader>gt` | Git status |
-| `<leader>pt` | Pick hidden terminal |
-
-## Git
-
-| Key | Action |
-|-----|--------|
-| `<leader>gb` | Git blame line (Gitsigns) |
-| `<leader>gB` | Git toggle current line blame (Gitsigns) |
-| `<leader>gh` | Git preview hunk (Gitsigns) |
-| `<leader>gs` | Git stage hunk (Gitsigns) |
-| `<leader>gr` | Git reset hunk (Gitsigns) |
-| `<leader>gv` | Git diff view (Diffview) |
-| `<leader>gV` | Git file history (Diffview for current file) |
-
-## File Explorer (NvimTree)
-
-| Key | Action |
-|-----|--------|
-| `<C-n>` | Toggle NvimTree |
-| `<leader>e` | Focus NvimTree |
-
-## Buffers/Tabs
-
-| Key | Action |
-|-----|--------|
-| `<Tab>` | Next buffer |
-| `<S-Tab>` | Previous buffer |
-| `<leader>x` | Close buffer |
-| `<leader>b` | New buffer |
-
-## Terminal
-
-| Key | Action |
-|-----|--------|
-| `<leader>h` | New horizontal terminal |
-| `<leader>v` | New vertical terminal |
-| `<A-i>` | Toggle floating terminal |
-| `<A-h>` | Toggle horizontal terminal |
-| `<A-v>` | Toggle vertical terminal |
-| `<C-x>` | Escape terminal mode |
-
-## FPGA Tasks
-
-| Key | Action |
-|-----|--------|
-| `<F5>` | **VHDL Compile** (treecom, ModelSim) |
-| `<F6>` | **VHDL Simulate GUI** (treesim, ModelSim) |
-| `<F7>` | **VHDL Run batch** (treesim --batch, no GUI) |
-| `<leader>vc` | Task: VHDL Compile |
-| `<leader>vr` | Task: VHDL Run (batch) |
-| `<leader>vs` | Task: VHDL Simulate |
-| `<leader>vv` | Task: Generate vhdl_ls.toml |
-| `<leader>vot` | Task: Open associated testbench |
-| `<leader>vos` | Task: Open associated syntest |
-| `<leader>vsc` | Task: vsg-check |
-| `<leader>vsf` | Task: vsg-fix |
-| `<leader>vqo` | Task: Open fwlibs quartus project |
-
-## Comments
-
-| Key | Action |
-|-----|--------|
-| `<leader>/` | Toggle comment (normal mode) |
-| `<leader>/` | Toggle comment (visual mode) |
-
-## Window Navigation
-
-| Key | Action |
-|-----|--------|
-| `<C-h>` | Move to left split |
-| `<C-j>` | Move to split below |
-| `<C-k>` | Move to split above |
-| `<C-l>` | Move to right split |
-
-## Insert Mode Navigation
-
-| Key | Action |
-|-----|--------|
-| `<C-b>` | Move to beginning of line |
-| `<C-e>` | Move to end of line |
-| `<C-h>` | Move left |
-| `<C-l>` | Move right |
-| `<C-j>` | Move down |
-| `<C-k>` | Move up |
+Legend:
+- `<leader>` = `Space`
+- `<C-...>` = `Ctrl`
+- `<A-...>` = `Alt`
+- `<S-...>` = `Shift`
 
 ## General
 
-| Key | Action |
-|-----|--------|
-| `;` | Enter command mode (custom) |
-| `jk` | Escape (insert mode, custom) |
-| `<C-s>` | Save file |
-| `<C-c>` | Copy whole file |
-| `<Esc>` | Clear search highlights |
-| `<leader>n` | Toggle line numbers |
-| `<leader>rn` | Toggle relative line numbers |
+| Mode | Key | Action |
+|------|-----|--------|
+| `n` | `;` | Enter command mode |
+| `i` | `jk` | Exit insert mode |
+| `n` | `<Esc>` | Clear search highlights |
+| `n` | `<C-s>` | Save file |
+| `n` | `<C-c>` | Copy whole file to system clipboard |
+| `n` | `<leader>n` | Toggle line numbers |
+| `n` | `<leader>rn` | Toggle relative line numbers |
+| `n` | `<leader>ch` | Open NvChad cheatsheet |
+| `n` | `<leader>wK` | Show all WhichKey mappings |
+| `n` | `<leader>wk` | Query WhichKey mappings |
 
-## Help & Discovery
+## Buffers and Windows
 
-| Key | Action |
-|-----|--------|
-| `<leader>ch` | **NvChad cheatsheet** |
-| `<leader>th` | Theme picker |
-| `<leader>wK` | Show all WhichKey keymaps |
-| `<leader>wk` | WhichKey query lookup |
+| Mode | Key | Action |
+|------|-----|--------|
+| `n` | `<leader>b` | New buffer |
+| `n` | `<leader>x` | Close current buffer |
+| `n` | `<Tab>` | Next buffer |
+| `n` | `<S-Tab>` | Previous buffer |
+| `n` | `<C-h>` | Move to left window |
+| `n` | `<C-j>` | Move to window below |
+| `n` | `<C-k>` | Move to window above |
+| `n` | `<C-l>` | Move to right window |
+
+## Insert Mode Navigation
+
+| Mode | Key | Action |
+|------|-----|--------|
+| `i` | `<C-b>` | Move to beginning of line |
+| `i` | `<C-e>` | Move to end of line |
+| `i` | `<C-h>` | Move left |
+| `i` | `<C-j>` | Move down |
+| `i` | `<C-k>` | Move up |
+| `i` | `<C-l>` | Move right |
+
+## File Explorer and Search
+
+| Mode | Key | Action |
+|------|-----|--------|
+| `n` | `<leader>e` | Toggle NvimTree |
+| `n` | `<C-n>` | Toggle NvimTree |
+| `n` | `<leader>ff` | Telescope find files |
+| `n` | `<leader>fa` | Telescope find all files |
+| `n` | `<leader>fw` | Telescope live grep |
+| `n` | `<leader>fb` | Telescope buffers |
+| `n` | `<leader>fo` | Telescope old files |
+| `n` | `<leader>fz` | Telescope fuzzy find in current buffer |
+| `n` | `<leader>fh` | Telescope help tags |
+| `n` | `<leader>ma` | Telescope marks |
+| `n` | `<leader>cm` | Telescope git commits |
+| `n` | `<leader>gt` | Telescope git status |
+| `n` | `<leader>pt` | Telescope terminal picker |
+| `n` | `<leader>th` | Theme picker |
+
+## Markdown Preview
+
+| Mode | Key | Action |
+|------|-----|--------|
+| `n` | `<leader>mp` | Open Markdown preview in browser |
+| `n` | `<leader>po` | Open Markdown preview in browser |
+| `n` | `<leader>mc` | Close Markdown preview |
+
+Commands:
+- `:PeekOpen`
+- `:PeekClose`
+
+## Git
+
+| Mode | Key | Action |
+|------|-----|--------|
+| `n` | `<leader>gb` | Git blame line |
+| `n` | `<leader>gB` | Toggle current line blame |
+| `n` | `<leader>gh` | Preview hunk |
+| `n` | `<leader>gs` | Stage hunk |
+| `n` | `<leader>gr` | Reset hunk |
+| `n` | `<leader>gv` | Open Diffview |
+| `n` | `<leader>gV` | Diffview file history for current file |
+
+## Terminal
+
+| Mode | Key | Action |
+|------|-----|--------|
+| `n` | `<leader>h` | New horizontal terminal |
+| `n` | `<leader>v` | New vertical terminal |
+| `n,t` | `<A-h>` | Toggle horizontal terminal |
+| `n,t` | `<A-v>` | Toggle vertical terminal |
+| `n,t` | `<A-i>` | Toggle floating terminal |
+| `t` | `<C-x>` | Exit terminal mode |
+
+## Formatting and Comments
+
+| Mode | Key | Action |
+|------|-----|--------|
+| `n,x` | `<leader>fm` | Format file or selection |
+| `n` | `<leader>/` | Toggle comment |
+| `v` | `<leader>/` | Toggle comment |
+
+## LSP Mappings
+
+These are explicit mappings from the active config. Most of them only exist after an LSP attaches to the current buffer.
+
+| Mode | Key | Action |
+|------|-----|--------|
+| `n` | `gd` | Go to definition |
+| `n` | `gD` | Go to declaration |
+| `n` | `<leader>D` | Go to type definition |
+| `n` | `<leader>ra` | Rename symbol |
+| `n` | `<leader>wa` | Add workspace folder |
+| `n` | `<leader>wr` | Remove workspace folder |
+| `n` | `<leader>wl` | List workspace folders |
+| `n` | `<leader>ds` | Put diagnostics into location list |
+
+## FPGA Tasks
+
+| Mode | Key | Action |
+|------|-----|--------|
+| `n` | `<F5>` | VHDL compile |
+| `n` | `<F6>` | VHDL simulate (GUI) |
+| `n` | `<F7>` | VHDL run batch |
+| `n` | `<leader>vc` | Task: VHDL compile |
+| `n` | `<leader>vr` | Task: VHDL run (batch) |
+| `n` | `<leader>vs` | Task: VHDL simulate |
+| `n` | `<leader>vv` | Task: generate `vhdl_ls.toml` |
+| `n` | `<leader>vot` | Open associated testbench |
+| `n` | `<leader>vos` | Open associated syntest |
+| `n` | `<leader>vsc` | Run `vsg-check` |
+| `n` | `<leader>vsf` | Run `vsg-fix` |
+| `n` | `<leader>vqo` | Open fwlibs Quartus project |
+
+## Built-in Vim Motions
+
+These are not custom mappings, but they are useful defaults that remain available:
+
+| Mode | Key | Action |
+|------|-----|--------|
+| `n` | `<C-o>` | Jump back |
+| `n` | `<C-i>` | Jump forward |
+| `n` | `<C-]>` | Jump to tag |
 
 ## Useful Commands
 
 | Command | Action |
 |---------|--------|
+| `:PeekOpen` | Open Markdown preview |
+| `:PeekClose` | Close Markdown preview |
 | `:LspInfo` | Show attached LSP servers |
-| `:Mason` | Open Mason (LSP/tool installer) |
+| `:Mason` | Open Mason |
 | `:Lazy` | Open Lazy plugin manager |
-| `:TSInstall <lang>` | Install treesitter parser |
-| `:checkhealth` | Check Neovim health |
+| `:checkhealth` | Run Neovim health checks |
