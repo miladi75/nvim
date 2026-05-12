@@ -10,7 +10,7 @@ conventions using TreeSitter highlight queries:
 
     s_*        State machines   #02710C  dark green, bold
     v_*        Variables        #F0E806  yellow
-    f_*, pd_*  Functions        #1E69E2  blue, bold
+    f_*, pd_*  Functions        #CCDDF5  blue, bold
     c_*        Constants        #FFFFFF  white
     g_*        Generics         #FFFFFF  white
     t_*        User types       #04F792  green/aqua
@@ -39,25 +39,31 @@ from pathlib import Path
 # Edit these to change colors. Format: (hex_color, font_style)
 # font_style can be: "bold", "italic", "bold italic", or ""
 COLORS = {
-    "s_prefix":     ("#02710C", "bold"),  # state machines   s_idle, s_running
-    "v_prefix":     ("#00C2B5", ""),       # variables        v_counter, v_temp
-    "f_prefix":     ("#1E69E2", "bold"),   # functions        f_decode, pd_enable
-    "c_prefix":     ("#FFFFFF", ""),       # constants        c_max_width
-    "g_prefix":     ("#FFFFFF", ""),       # generics         g_width
-    "t_prefix":     ("#04F792", ""),       # user types       t_stream, t_fwcom_pipe
-    "port_signal":  ("#FF8400", ""),       # port signals     clk_i, data_o (*_i/*_o everywhere)
-    "local_signal": ("#FF8400", ""),       # local signals    signal sreset (non-_i/_o, everywhere)
+    "s_prefix": ("#02710C", "bold"),  # state machines   s_idle, s_running
+    "v_prefix": ("#00C2B5", ""),  # variables        v_counter, v_temp
+    "f_prefix": ("#1E69E2", "bold"),  # functions        f_decode, pd_enable
+    "c_prefix": ("#FFFFFF", ""),  # constants        c_max_width
+    "g_prefix": ("#FFFFFF", ""),  # generics         g_width
+    "t_prefix": ("#04F792", ""),  # user types       t_stream, t_fwcom_pipe
+    "port_signal": (
+        "#FF8400",
+        "",
+    ),  # port signals     clk_i, data_o (*_i/*_o everywhere)
+    "local_signal": (
+        "#FF8400",
+        "",
+    ),  # local signals    signal sreset (non-_i/_o, everywhere)
 }
 
 # Map from COLORS key -> TreeSitter capture name (used in highlights.scm)
 CAPTURE_NAMES = {
-    "s_prefix":     "@state.vhdl",
-    "v_prefix":     "@vprefix.vhdl",
-    "f_prefix":     "@function.vhdl",
-    "c_prefix":     "@constant.vhdl",
-    "g_prefix":     "@generic.vhdl",
-    "t_prefix":     "@type_prefix.vhdl",
-    "port_signal":  "@port_signal.vhdl",
+    "s_prefix": "@state.vhdl",
+    "v_prefix": "@vprefix.vhdl",
+    "f_prefix": "@function.vhdl",
+    "c_prefix": "@constant.vhdl",
+    "g_prefix": "@generic.vhdl",
+    "t_prefix": "@type_prefix.vhdl",
+    "port_signal": "@port_signal.vhdl",
     "local_signal": "@local_signal.vhdl",
 }
 
@@ -167,6 +173,7 @@ HIGHLIGHTS_SCM = """\
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def find_nvim_config_dir():
     """Find the Neovim config directory (~/.config/nvim/)."""
     config_dir = Path.home() / ".config" / "nvim"
@@ -198,6 +205,7 @@ def build_chadrc_hl_line(capture, color, style):
 # ---------------------------------------------------------------------------
 # Step 1: Write highlights.scm
 # ---------------------------------------------------------------------------
+
 
 def apply_highlights_scm(nvim_dir):
     """Write the TreeSitter highlight queries."""
@@ -244,7 +252,9 @@ def revert_highlights_scm(nvim_dir):
 # ---------------------------------------------------------------------------
 
 # Markers used to identify managed block
-OPTIONS_BEGIN = "-- VHDL_COLORS_BEGIN (managed by setup_vhdl_colors.py — do not edit)"
+OPTIONS_BEGIN = (
+    "-- VHDL_COLORS_BEGIN (managed by setup_vhdl_colors.py — do not edit)"
+)
 OPTIONS_END = "-- VHDL_COLORS_END"
 
 
@@ -288,7 +298,7 @@ def apply_options(nvim_dir):
         # Remove old hand-written VHDL highlights (from before this script)
         # Match the apply_vhdl_custom_highlights function + autocmd block
         content = re.sub(
-            r'\n*-- Force custom VHDL captures.*?'
+            r"\n*-- Force custom VHDL captures.*?"
             r'vim\.api\.nvim_create_autocmd\("ColorScheme".*?\}\)\n*',
             "\n",
             content,
@@ -321,7 +331,7 @@ def revert_options(nvim_dir):
     else:
         # Remove old hand-written block
         content = re.sub(
-            r'\n*-- Force custom VHDL captures.*?'
+            r"\n*-- Force custom VHDL captures.*?"
             r'vim\.api\.nvim_create_autocmd\("ColorScheme".*?\}\)\n*',
             "\n",
             content,
@@ -337,6 +347,7 @@ def revert_options(nvim_dir):
 # ---------------------------------------------------------------------------
 # Step 3: Patch chadrc.lua (NvChad hl_override)
 # ---------------------------------------------------------------------------
+
 
 def apply_chadrc(nvim_dir):
     """Patch chadrc.lua with VHDL hl_override entries."""
@@ -363,29 +374,34 @@ def apply_chadrc(nvim_dir):
 
         # Also remove old captures that may not be in CAPTURE_NAMES anymore
         old_captures = [
-            "@function.vhdl", "@generic.vhdl", "@constant.vhdl",
-            "@vprefix.vhdl", "@port_signal.vhdl", "@local_signal.vhdl",
-            "@state.vhdl", "@type_prefix.vhdl",
+            "@function.vhdl",
+            "@generic.vhdl",
+            "@constant.vhdl",
+            "@vprefix.vhdl",
+            "@port_signal.vhdl",
+            "@local_signal.vhdl",
+            "@state.vhdl",
+            "@type_prefix.vhdl",
         ]
         for cap in old_captures:
             pattern = rf'\s*\["{re.escape(cap)}"\]\s*=\s*\{{[^}}]*\}},?\n?'
             content = re.sub(pattern, "\n", content)
 
         # Clean up multiple blank lines inside hl_override
-        content = re.sub(r'(hl_override\s*=\s*\{)\n+', r'\1\n', content)
+        content = re.sub(r"(hl_override\s*=\s*\{)\n+", r"\1\n", content)
 
         # Insert new entries after hl_override = {
         content = re.sub(
-            r'(hl_override\s*=\s*\{)\n',
-            r'\1\n' + new_entries + "\n",
+            r"(hl_override\s*=\s*\{)\n",
+            r"\1\n" + new_entries + "\n",
             content,
         )
     else:
         # No hl_override — add one inside M.base46
         hl_block = f"    hl_override = {{\n{new_entries}\n    }},"
         content = re.sub(
-            r'(M\.base46\s*=\s*\{[^\n]*\n)',
-            r'\1' + hl_block + "\n",
+            r"(M\.base46\s*=\s*\{[^\n]*\n)",
+            r"\1" + hl_block + "\n",
             content,
         )
 
@@ -404,9 +420,14 @@ def revert_chadrc(nvim_dir):
 
     # Remove all VHDL capture lines
     all_captures = list(CAPTURE_NAMES.values()) + [
-        "@function.vhdl", "@generic.vhdl", "@constant.vhdl",
-        "@vprefix.vhdl", "@port_signal.vhdl", "@local_signal.vhdl",
-        "@state.vhdl", "@type_prefix.vhdl",
+        "@function.vhdl",
+        "@generic.vhdl",
+        "@constant.vhdl",
+        "@vprefix.vhdl",
+        "@port_signal.vhdl",
+        "@local_signal.vhdl",
+        "@state.vhdl",
+        "@type_prefix.vhdl",
     ]
     for cap in set(all_captures):
         pattern = rf'\s*\["{re.escape(cap)}"\]\s*=\s*\{{[^}}]*\}},?\n?'
@@ -414,13 +435,13 @@ def revert_chadrc(nvim_dir):
 
     # Clean up empty hl_override block
     content = re.sub(
-        r'\s*hl_override\s*=\s*\{\s*\},?\n?',
+        r"\s*hl_override\s*=\s*\{\s*\},?\n?",
         "\n",
         content,
     )
 
     # Clean up multiple blank lines
-    content = re.sub(r'\n{3,}', '\n\n', content)
+    content = re.sub(r"\n{3,}", "\n\n", content)
 
     chadrc_path.write_text(content, encoding="utf-8")
     print(f"  Reverted: {chadrc_path}")
@@ -430,6 +451,7 @@ def revert_chadrc(nvim_dir):
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main():
     revert = "--revert" in sys.argv

@@ -15,7 +15,7 @@ M.base46 = {
         ["@port_signal.vhdl"] = { fg = "#FF8400" },
         ["@local_signal.vhdl"] = { fg = "#FF8400" },
     },
-    theme = "catppuccin",
+    theme = "github_dark",
 }
 
 M.ui = {
