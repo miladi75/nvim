@@ -12,6 +12,7 @@ pcall(vim.keymap.del, "n", "<C-s>")
 pcall(vim.keymap.del, "t", "<C-x>")
 
 map("n", "<leader>fs", "<cmd>w<CR>", { desc = "Save file" })
+map("n", "<leader>qq", "<cmd>qa!<CR>", { desc = "Quit Neovim without saving" })
 
 -- buffer navigation (works regardless of tabufline)
 map("n", "<Tab>", "<cmd>bnext<CR>", { desc = "buffer next" })
@@ -54,6 +55,7 @@ map("n", "<leader>oh", function()
 end, { desc = "Open HTML in browser" })
 
 map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+map("t", "<leader>qq", "<C-\\><C-n><cmd>qa!<CR>", { desc = "Quit Neovim without saving" })
 map("t", "<leader>tq", "<C-\\><C-n><cmd>bd!<CR>", { desc = "Close terminal buffer" })
 map("n", "<leader>tq", function()
   if vim.bo.buftype == "terminal" then

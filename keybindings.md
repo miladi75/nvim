@@ -17,6 +17,7 @@ Legend:
 | `n` | `<Esc>` | Clear search highlights |
 | `n` | `<C-c>` | Copy whole file to system clipboard |
 | `n` | `<leader>fs` | Save file |
+| `n,t` | `<leader>qq` | Quit Neovim without saving |
 | `n` | `<leader>n` | Toggle line numbers |
 | `n` | `<leader>rn` | Toggle relative line numbers |
 | `n` | `<leader>ch` | Open NvChad cheatsheet |
