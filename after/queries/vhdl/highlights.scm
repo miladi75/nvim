@@ -42,6 +42,14 @@
   (#match? @port_signal.vhdl "\\c_[io]$")
   (#set! priority 110))
 
+; ── Broad catch-all: every identifier that isn't prefixed or a port ──
+; Priority 105 beats base @variable (100); prefix rules (120) and
+; port rule (110) still win where they match.
+((identifier) @local_signal.vhdl
+  (#not-match? @local_signal.vhdl "\\c^(s_|v_|f_|pd_|c_|g_|t_)")
+  (#not-match? @local_signal.vhdl "\\c_[io]$")
+  (#set! priority 105))
+
 ; ── Local signals (non-_i/_o, various contexts) ──
 
 ; Signal declarations

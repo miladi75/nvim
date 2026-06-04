@@ -39,12 +39,12 @@ from pathlib import Path
 # Edit these to change colors. Format: (hex_color, font_style)
 # font_style can be: "bold", "italic", "bold italic", or ""
 COLORS = {
-    "s_prefix": ("#02710C", "bold"),  # state machines   s_idle, s_running
-    "v_prefix": ("#00C2B5", ""),  # variables        v_counter, v_temp
-    "f_prefix": ("#1E69E2", "bold"),  # functions        f_decode, pd_enable
+    "s_prefix": ("#02FF41", ""),  # state machines   s_idle, s_running
+    "v_prefix": ("#FF9100", ""),  # variables        v_counter, v_temp
+    "f_prefix": ("#00D9FA", ""),  # functions        f_decode, pd_enable
     "c_prefix": ("#FFFFFF", ""),  # constants        c_max_width
     "g_prefix": ("#FFFFFF", ""),  # generics         g_width
-    "t_prefix": ("#04F792", ""),  # user types       t_stream, t_fwcom_pipe
+    "t_prefix": ("#02FF41", ""),  # user types       t_stream, t_fwcom_pipe
     "port_signal": (
         "#FF8400",
         "",
@@ -115,6 +115,14 @@ HIGHLIGHTS_SCM = """\
 ((identifier) @port_signal.vhdl
   (#match? @port_signal.vhdl "\\\\c_[io]$")
   (#set! priority 110))
+
+; ── Broad catch-all: every identifier that isn't prefixed or a port ──
+; Priority 105 beats base @variable (100); prefix rules (120) and
+; port rule (110) still win where they match.
+((identifier) @local_signal.vhdl
+  (#not-match? @local_signal.vhdl "\\\\c^(s_|v_|f_|pd_|c_|g_|t_)")
+  (#not-match? @local_signal.vhdl "\\\\c_[io]$")
+  (#set! priority 105))
 
 ; ── Local signals (non-_i/_o, various contexts) ──
 
