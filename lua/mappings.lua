@@ -13,6 +13,8 @@ pcall(vim.keymap.del, "t", "<C-x>")
 
 map("n", "<leader>fs", "<cmd>w<CR>", { desc = "Save file" })
 map("n", "<leader>qq", "<cmd>qa!<CR>", { desc = "Quit Neovim without saving" })
+map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "Copy whole file to system clipboard" })
+map("v", "<C-c>", '"+y', { desc = "Copy selection to system clipboard" })
 
 -- buffer navigation (works regardless of tabufline)
 map("n", "<Tab>", "<cmd>bnext<CR>", { desc = "buffer next" })

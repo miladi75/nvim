@@ -11,11 +11,10 @@ M.base46 = {
         ["@function.vhdl"] = { fg = "#00D9FA" },
         ["@constant.vhdl"] = { fg = "#FFFFFF" },
         ["@generic.vhdl"] = { fg = "#FFFFFF" },
-        ["@type_prefix.vhdl"] = { fg = "#02FF41" },
         ["@port_signal.vhdl"] = { fg = "#FF8400" },
         ["@local_signal.vhdl"] = { fg = "#FF8400" },
     },
-    theme = "github_dark",
+    theme = "carbonfox",
 }
 
 M.ui = {

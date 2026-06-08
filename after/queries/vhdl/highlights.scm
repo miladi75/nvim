@@ -32,9 +32,10 @@
   (#match? @state.vhdl "\\c^s_")
   (#set! priority 120))
 
-; User-defined types: t_*
-((identifier) @type_prefix.vhdl
-  (#match? @type_prefix.vhdl "\\c^t_")
+; User-defined types: t_*  → capture as @type.builtin so they render in the
+; exact same color as native types (std_logic, std_logic_vector, ...).
+((identifier) @type.builtin
+  (#match? @type.builtin "\\c^t_")
   (#set! priority 120))
 
 ; ── Port signals: identifiers ending with _i or _o (everywhere) ──

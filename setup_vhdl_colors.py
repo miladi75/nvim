@@ -13,7 +13,7 @@ conventions using TreeSitter highlight queries:
     f_*, pd_*  Functions        #CCDDF5  blue, bold
     c_*        Constants        #FFFFFF  white
     g_*        Generics         #FFFFFF  white
-    t_*        User types       #04F792  green/aqua
+    t_*        User types       same color as native std_logic (@type.builtin)
     *_i, *_o   Port signals     #00C2B5  teal    (entity port signals, everywhere)
     local sig  Local signals    #FF8400  orange  (architecture signals, non-_i/_o)
 
@@ -44,7 +44,9 @@ COLORS = {
     "f_prefix": ("#00D9FA", ""),  # functions        f_decode, pd_enable
     "c_prefix": ("#FFFFFF", ""),  # constants        c_max_width
     "g_prefix": ("#FFFFFF", ""),  # generics         g_width
-    "t_prefix": ("#02FF41", ""),  # user types       t_stream, t_fwcom_pipe
+    # NOTE: t_* user types are intentionally NOT listed here. They are
+    # captured directly as @type.builtin in highlights.scm so they inherit
+    # the theme's native type color (same as std_logic / std_logic_vector).
     "port_signal": (
         "#FF8400",
         "",
@@ -62,7 +64,6 @@ CAPTURE_NAMES = {
     "f_prefix": "@function.vhdl",
     "c_prefix": "@constant.vhdl",
     "g_prefix": "@generic.vhdl",
-    "t_prefix": "@type_prefix.vhdl",
     "port_signal": "@port_signal.vhdl",
     "local_signal": "@local_signal.vhdl",
 }
@@ -106,9 +107,10 @@ HIGHLIGHTS_SCM = """\
   (#match? @state.vhdl "\\\\c^s_")
   (#set! priority 120))
 
-; User-defined types: t_*
-((identifier) @type_prefix.vhdl
-  (#match? @type_prefix.vhdl "\\\\c^t_")
+; User-defined types: t_*  → capture as @type.builtin so they render in the
+; exact same color as native types (std_logic, std_logic_vector, ...).
+((identifier) @type.builtin
+  (#match? @type.builtin "\\\\c^t_")
   (#set! priority 120))
 
 ; ── Port signals: identifiers ending with _i or _o (everywhere) ──
