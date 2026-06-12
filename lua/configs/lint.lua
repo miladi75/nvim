@@ -6,6 +6,17 @@ lint.linters_by_ft = {
     python = { "flake8" },
 }
 
+lint.linters.flake8.args = {
+    "--extend-ignore=E501",
+    "--format=%(path)s:%(row)d:%(col)d:%(code)s:%(text)s",
+    "--no-show-source",
+    "--stdin-display-name",
+    function()
+        return vim.api.nvim_buf_get_name(0)
+    end,
+    "-",
+}
+
 lint.linters.luacheck.args = {
     "--globals",
     "love",

@@ -100,4 +100,14 @@ return {
             vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
         end,
     },
+
+    {
+        "mikesmithgh/kitty-scrollback.nvim",
+        lazy = true,
+        cmd = { "KittyScrollbackGenerateKittens", "KittyScrollbackCheckHealth" },
+        event = { "User KittyScrollbackLaunch" },
+        config = function()
+            require("kitty-scrollback").setup()
+        end,
+    },
 }

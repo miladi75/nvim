@@ -1,13 +1,13 @@
 <claude-mem-context>
 # Memory Context
 
-# [nvim] recent context, 2026-06-08 2:12pm GMT+2
+# [nvim] recent context, 2026-06-09 10:10am GMT+2
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 23 obs (8,113t read) | 271,053t work | 97% savings
+Stats: 28 obs (9,644t read) | 318,307t work | 97% savings
 
 ### May 15, 2026
 167 1:27p 🔵 Neovim + Kitty Keymap Landscape Mapped for Quit Shortcut
@@ -38,26 +38,12 @@ S50 Port VHDL syntax highlight colors from VSCode to Neovim by updating setup_vh
 361 " ✅ Removed t_prefix from COLORS Dict in setup_vhdl_colors.py
 364 4:26p 🟣 VHDL t_* Type Color Unification Deployed and Verified
 S129 Unify VHDL t_* custom type color with native types (std_logic, std_logic_vector) in Neovim setup script (Jun 4, 4:26 PM)
-**Investigated**: - Read `setup_vhdl_colors.py` in full: Python script managing VHDL syntax highlighting across 3 Neovim config files via COLORS dict, CAPTURE_NAMES dict, and HIGHLIGHTS_SCM string
-    - Read `lua/chadrc.lua`: NvChad config showing `@type_prefix.vhdl` was hardcoded to `#02FF41` (green) in `hl_override`
-    - Read `after/queries/vhdl/highlights.scm`: the live TreeSitter query file showing `t_*` captured as `@type_prefix.vhdl`
-    - Read upstream nvim-treesitter VHDL grammar at `/home/milad/.local/share/nvim/lazy/nvim-treesitter/queries/vhdl/highlights.scm`: discovered native types use `(library_type) @type.builtin` and type references use `(_ type: (_) @type)`
+### Jun 8, 2026
+387 2:12p ✅ Neovim Visual Mode Ctrl+C Clipboard Yank Keybinding
+389 " 🟣 Added Ctrl+C Clipboard Keybindings for Normal and Visual Mode
+390 " 🟣 Neovim Ctrl+C clipboard mappings added for normal and visual modes
+388 " 🔵 Neovim Config Structure and Existing Ctrl+C Clipboard Mapping
+391 2:14p ✅ Neovim Ctrl+C clipboard mappings added for normal and visual modes
 
-**Learned**: - `std_logic`, `std_logic_vector` etc. are colored by `@type.builtin` in the nvim-treesitter VHDL grammar
-    - The old `@type_prefix.vhdl` capture was a fully custom group with no link to any standard TreeSitter highlight — it only worked because `chadrc.lua` forced a hex color on it
-    - To unify with native type color, `t_*` must be captured as `@type.builtin` (not `@type`, which covers type-position references) so the theme's native type color is inherited
-    - NvChad theme in use is `github_dark`; `@type.builtin` color comes from this theme and changes automatically if theme switches
-    - `setup_vhdl_colors.py` is idempotent: running it multiple times replaces the managed block cleanly
-
-**Completed**: - Updated `setup_vhdl_colors.py` docstring: `t_*` color comment changed from `#04F792 green/aqua` to `same color as native std_logic (@type.builtin)`
-    - Removed `"t_prefix": ("#02FF41", "")` from `COLORS` dict; replaced with explanatory comment
-    - Removed `"t_prefix": "@type_prefix.vhdl"` from `CAPTURE_NAMES` dict
-    - Updated `HIGHLIGHTS_SCM` string: `t_*` rule changed from `@type_prefix.vhdl` to `@type.builtin` (priority 120 preserved)
-    - Ran `python3 setup_vhdl_colors.py` successfully — all 3 files patched
-    - Verified: `after/queries/vhdl/highlights.scm` uses `@type.builtin` for `t_*`; zero occurrences of `type_prefix` remain in `after/` or `lua/`; `chadrc.lua` hl_override has 7 entries with no `@type_prefix.vhdl`
-
-**Next Steps**: Work is complete. User needs to restart Neovim to see the change. Optionally: wire up the `[CAVEMAN]` statusline badge by adding a `statusLine` entry to `~/.claude/settings.json` (Claude offered this as an optional follow-up).
-
-
-Access 271k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 318k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>
