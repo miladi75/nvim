@@ -1,0 +1,108 @@
+# CHAPTER 8 · IDE MOVES ON YOUR SETUP
+
+Everything VSCode gave you exists in this config — faster, and it
+composes with chapters 1-7. This chapter is pure workflow: no text
+exercises, instead run things in a real code file. Open one of your
+Python or VHDL files in another window and work through it.
+
+## 8.1 FINDING THINGS: TELESCOPE
+
+- `<leader>ff`{normal} find files · `<leader>fa`{normal} include
+  hidden/ignored
+- `<leader>fw`{normal} live grep the whole project (your Ctrl+Shift+F)
+- `<leader>fb`{normal} open buffers · `<leader>fo`{normal} recent files
+- `<leader>fz`{normal} fuzzy find IN the current buffer
+- `<leader>fh`{normal} search all of vim's help — use this constantly
+  while doing this course
+
+Inside any Telescope picker: `<C-q>`{normal} dumps ALL matches into
+the quickfix list. grep "fifo_full" → `<C-q>`{normal} →
+`:cnext`{vim} through every hit in the project. That one key turns
+search results into a work queue.
+
+Try them now — run this line with `>>`{normal}:
+
+    :Telescope keymaps
+
+That picker fuzzy-searches EVERY mapping in your setup. Forgot a key
+from this course? It is in there.
+
+## 8.2 CODE INTELLIGENCE: LSP
+
+Your servers (pyright, clangd, lua_ls...) attach automatically.
+
+- `gd`{normal} go to definition · `gD`{normal} declaration ·
+  `<leader>D`{normal} type definition
+- `K`{normal} hover docs (press again to enter the float, `q`{normal}
+  to leave)
+- `grr`{normal} references · `gri`{normal} implementation ·
+  `gra`{normal} code action — built into nvim 0.11+
+- `<leader>ra`{normal} rename symbol project-wide (NvChad renamer)
+- `]d`{normal} / `[d`{normal} next/previous diagnostic ·
+  `<leader>ds`{normal} all diagnostics in a list
+- `<leader>fm`{normal} format file (conform, with LSP fallback)
+
+THE LOOP that replaces ctrl-clicking around VSCode: `gd`{normal} to
+dive in, `<C-o>`{normal} to surface, `K`{normal} instead of opening
+the file at all. Combine with chapter 6: definition three files deep,
+`<C-o>`{normal} `<C-o>`{normal} `<C-o>`{normal} home.
+
+Completion is nvim-cmp: `<Tab>`{normal}/`<S-Tab>`{normal} walk
+items, `<CR>`{normal} accepts.
+
+## 8.3 GIT WITHOUT LEAVING
+
+Your gitsigns + diffview keys:
+
+- `<leader>gh`{normal} preview hunk under cursor ·
+  `<leader>gs`{normal} stage it · `<leader>gr`{normal} reset it
+- `<leader>gb`{normal} blame line · `<leader>gB`{normal} toggle
+  inline blame
+- `<leader>gv`{normal} full diff view · `<leader>gV`{normal} history
+  of the current file
+- `<leader>cm`{normal} / `<leader>gt`{normal} Telescope commits /
+  status
+
+Hunk-level staging from inside the buffer beats the VSCode source
+control panel: review with `<leader>gh`{normal}, stage with
+`<leader>gs`{normal}, move on. No context switch.
+
+## 8.4 TERMINALS, TREE, BUFFERS — YOUR KEYS
+
+- `<A-i>`{normal} floating terminal · `<A-h>`{normal} /
+  `<A-v>`{normal} split terminals (toggle on/off)
+- `<Esc><Esc>`{normal} leave terminal mode · `<leader>tq`{normal}
+  close a terminal buffer
+- `<leader>e`{normal} file tree · `<Tab>`{normal} /
+  `<S-Tab>`{normal} buffers · `<leader>x`{normal} close buffer
+- `<leader>fs`{normal} save · `<leader>qq`{normal} quit everything ·
+  `<C-c>`{normal} copy file/selection to system clipboard
+- `jk`{normal} leaves insert mode — your fingers never visit Esc
+- `<leader>/`{normal} toggle comment (or pure vim: `gcc`{normal} for
+  a line, `gc`{normal} + motion — gcip comments a paragraph)
+- `<leader>ch`{normal} the NvChad cheatsheet of every mapping ·
+  `<leader>wK`{normal} which-key with everything
+
+## 8.5 GRADUATION PROJECT
+
+Do one real task end to end without the file tree and without the
+mouse:
+
+1. `<leader>fw`{normal} to find the code, `<C-q>`{normal} it into
+   quickfix.
+2. Fix the first site, `cgn`{normal}-style or with `.`{normal}, then
+   `:cnext`{vim} through the rest.
+3. `gd`{normal} / `<C-o>`{normal} to verify a caller, `K`{normal}
+   instead of opening docs.
+4. Review your work hunk by hunk with `<leader>gh`{normal}, stage
+   with `<leader>gs`{normal}.
+5. `<A-i>`{normal}, run the tests, `<Esc><Esc>`{normal},
+   `<leader>qq`{normal}. Done.
+
+When that loop feels boring, you have left VSCode for good.
+
+Key reading: [lsp](lsp), [telescope.nvim](telescope.nvim),
+[gitsigns-usage](gitsigns-usage), [terminal](terminal)
+
+[◀ Chapter 7](@tutor:power-07-visualblock) ·
+[▲ Back to overview](@tutor:power-00-overview)

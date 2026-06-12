@@ -1,0 +1,10 @@
+{
+  "expect": {
+    "34": "print(\"hello world\")",
+    "39": "result = compute + offset",
+    "44": "<title>Neovim Power User</title>",
+    "49": "config = {}",
+    "53": "KEEP CALM AND EDIT TEXT",
+    "65": "local widths = { 8, 16, 32 }"
+  }
+}

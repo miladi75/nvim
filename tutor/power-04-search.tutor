@@ -1,0 +1,99 @@
+# CHAPTER 4 · SEARCH, SUBSTITUTE, GLOBAL
+
+Bulk edits are where vim humiliates other editors. Three layers:
+refined search, `:s`{vim} with ranges and captures, and `:g`{vim} to
+run ANY command on every matching line.
+
+ATTENTION: exercises here say `:s`{vim} (current line) on purpose.
+A stray `:%s`{vim} will also rewrite the lesson text around the
+exercises — harmless (reopen with :Tutor), but you were warned.
+
+## 4.1 SEARCH, REFINED
+
+`/\vpattern`{normal} — "very magic": +, (, ), | work like in normal
+regexes, no backslash forest. Use `\v`{normal} by default.
+`*`{normal} / `#`{normal} search the exact word under the cursor.
+`/pattern/e`{normal} lands at the END of the match.
+`:set ignorecase smartcase`{vim} — lowercase searches match any case,
+capitals search exactly (already worth putting in your options.lua).
+
+## 4.2 THE KILLER COMBO: * THEN cgn THEN .
+
+`gn`{normal} is a text object meaning "the next search match".
+`cgn`{normal} = change the next match. And it repeats with
+`.`{normal}. So: `*`{normal} on a word, `cgn`{normal}, type the
+replacement, `<Esc>`{normal}, then press `.`{normal} on each further
+hit — or `n`{normal} to SKIP one. It is :%s with a human in the loop.
+
+EXERCISE 1: The three lines below share one placeholder identifier.
+Put the cursor on it, press `*`{normal}, then `cgn`{normal} and type
+the name baz_qux,
+`<Esc>`{normal}, then `.`{normal} `.`{normal} (it wraps around to the
+remaining hits):
+
+count = foo_bar + 1
+print(foo_bar)
+return foo_bar + offset
+
+## 4.3 SUBSTITUTE: RANGES, FLAGS, CAPTURES
+
+`:[range]s/pat/rep/flags`{vim}. Ranges: `%`{normal} whole file,
+`.,+4`{normal} this line plus four, `'<,'>`{normal} the visual
+selection, `'a,'b`{normal} between marks. Flags: g all matches in the
+line, c confirm each, i ignore case. `&`{normal} repeats the last
+substitute on the current line.
+
+EXERCISE 2: On the line below run `:s/\vthe/THE/g`{vim} — the g flag
+hits all three:
+
+the quick fox and the lazy dog and the cat
+
+Capture groups: \v makes ( ) capture directly; \1 \2 refer back.
+
+EXERCISE 3: Swap the name order on the line below with
+`:s/\v(\w+), (\w+)/\2 \1/`{vim}:
+
+Doe, Jane
+
+`\zs`{normal} and `\ze`{normal} trim the match: the pattern must
+appear, but only the part between them is replaced.
+
+EXERCISE 4: Bump only the major version below with
+`:s/version-\zs\d/9/`{vim} (matches the digit only if "version-"
+precedes it — the prefix itself is untouched):
+
+version-1.2.3
+
+## 4.4 GLOBAL: RUN A COMMAND ON EVERY MATCHING LINE
+
+`:g/pattern/cmd`{vim} runs cmd on every matching line, `:v`{vim} on
+every NON-matching line. Classics:
+
+    :g/DEBUG/d        delete every line containing DEBUG
+    :v/error/d        keep only lines containing error
+    :g/^def /t$       copy every function header to the end of file
+    :g/TODO/m0        move every TODO line to the top
+
+EXERCISE 5: Strip the debug markers from the two lines below with one
+command: `:g/ -- DEBUG$/s/ -- DEBUG$//`{vim} (the $ anchors to line
+end, so nothing else in this file matches):
+
+data_out <= shift_reg(7); -- DEBUG
+irq_flag <= '1'; -- DEBUG
+
+`:g`{vim} also combines with `normal`{vim} — run keystrokes on every
+matching line — but that story belongs to the macros chapter.
+
+## WORKOUT
+
+In one of your real VHDL or Python files (read-only experiments,
+just undo after): rename a signal with `*`{normal}+`cgn`{normal}+
+`.`{normal} skipping one false positive; delete every commented-out
+line in a block with `:g`{vim}; swap two arguments with a capture
+group.
+
+Key reading: [gn](gn), [:global](:global), [/\zs](/\zs),
+[s/\1](s/\1)
+
+[◀ Chapter 3](@tutor:power-03-registers) ·
+[Chapter 5 · Macros ▶](@tutor:power-05-macros)

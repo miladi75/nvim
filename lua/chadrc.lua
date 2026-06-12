@@ -127,6 +127,35 @@ M.ui = {
     },
 }
 
+-- Startup dashboard (the big-text screen, like LazyVim's greeter).
+-- NOTE: header needs at least 12 lines to fully mask the default one
+-- (chadrc is deep-merged element-wise into nvconfig defaults).
+M.nvdash = {
+    load_on_startup = true,
+
+    -- Each line is centered individually by nvdash. A window must be at
+    -- least 12 columns wider than the widest line or nvdash errors, so
+    -- MILAD/CHAD are stacked instead of one long word.
+    header = {
+        "                                          ",
+        "███╗   ███╗ ██╗ ██╗       █████╗  ██████╗ ",
+        "████╗ ████║ ██║ ██║      ██╔══██╗ ██╔══██╗",
+        "██╔████╔██║ ██║ ██║      ███████║ ██║  ██║",
+        "██║╚██╔╝██║ ██║ ██║      ██╔══██║ ██║  ██║",
+        "██║ ╚═╝ ██║ ██║ ███████╗ ██║  ██║ ██████╔╝",
+        "╚═╝     ╚═╝ ╚═╝ ╚══════╝ ╚═╝  ╚═╝ ╚═════╝ ",
+        " ██████╗ ██╗  ██╗  █████╗  ██████╗ ",
+        "██╔════╝ ██║  ██║ ██╔══██╗ ██╔══██╗",
+        "██║      ███████║ ███████║ ██║  ██║",
+        "██║      ██╔══██║ ██╔══██║ ██║  ██║",
+        "╚██████╗ ██║  ██║ ██║  ██║ ██████╔╝",
+        " ╚═════╝ ╚═╝  ╚═╝ ╚═╝  ╚═╝ ╚═════╝ ",
+        "                                          ",
+        "      hands on keyboard · mind on code    ",
+        "                                          ",
+    },
+}
+
 -- Widen the file explorer (NvimTree) so filenames fit.
 M.nvimtree = {
     view = {

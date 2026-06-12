@@ -56,6 +56,11 @@ map("n", "<leader>oh", function()
   end
 end, { desc = "Open HTML in browser" })
 
+-- Nvim Power Course (see tutor/README.md): :PowerTutor opens the overview
+vim.api.nvim_create_user_command("PowerTutor", function(opts)
+  vim.cmd("Tutor power-" .. (opts.args ~= "" and opts.args or "00-overview"))
+end, { nargs = "?", desc = "Open Nvim Power Course (tutor/)" })
+
 map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 map("t", "<leader>qq", "<C-\\><C-n><cmd>qa!<CR>", { desc = "Quit Neovim without saving" })
 map("t", "<leader>tq", "<C-\\><C-n><cmd>bd!<CR>", { desc = "Close terminal buffer" })

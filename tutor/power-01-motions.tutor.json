@@ -1,0 +1,10 @@
+{
+  "expect": {
+    "28": "The compiler found an error in the design.",
+    "34": "update(sensor_id)",
+    "40": "signal counter : integer range 0 to 255;",
+    "57": "backup_path=/tmp/old_config",
+    "68": "four five six",
+    "83": "if (mask and ) else fallback"
+  }
+}

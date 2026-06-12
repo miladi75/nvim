@@ -1,0 +1,12 @@
+{
+  "expect": {
+    "34": "count = baz_qux + 1",
+    "35": "print(baz_qux)",
+    "36": "return baz_qux + offset",
+    "49": "THE quick fox and THE lazy dog and THE cat",
+    "56": "Jane Doe",
+    "65": "version-9.2.3",
+    "81": "data_out <= shift_reg(7);",
+    "82": "irq_flag <= '1';"
+  }
+}

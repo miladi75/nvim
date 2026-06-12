@@ -1,0 +1,114 @@
+# CHAPTER 1 · PRECISION MOTIONS
+
+Fast vim is not fast typing. It is putting the cursor exactly where
+the edit happens in one or two keys. Every motion you learn here also
+becomes the target of an operator in chapter 2, so it pays off twice.
+
+## 1.1 IN-LINE SNIPING: f t F T ; ,
+
+`f{char}`{normal} jumps ON the next occurrence of {char} in the line.
+`t{char}`{normal} stops one column BEFORE it ("till").
+`F{char}`{normal} and `T{char}`{normal} do the same backwards.
+`;`{normal} repeats the last f/t/F/T forwards, `,`{normal} backwards.
+
+ATTENTION: your config maps `;`{normal} to `:`{normal} (open command
+line), which shadows repeat-forward. `,`{normal} still repeats
+backwards. If you start missing `;`{normal} badly — and you will once
+f/t is in your fingers — remove the `;` mapping in lua/mappings.lua.
+
+Warm up on this line — `fv`{normal}, `fo`{normal}, `t;`{normal},
+`Fd`{normal}, `,`{normal}:
+
+stream_valid <= stream_ready and (not fifo_full) and crc_ok;
+
+EXERCISE 1: The word "found" appears twice below. Land on the second
+one with `2ff`{normal} (second match of f — both hits are the f of
+"found"), then delete that copy with `daw`{normal}:
+
+The compiler found found an error in the design.
+
+EXERCISE 2: Delete the second argument INCLUDING the comma. Cursor to
+the comma with `f,`{normal}, then delete till the closing paren with
+`dt)`{normal}:
+
+update(sensor_id, calibration_data)
+
+EXERCISE 3: The line below ends with the wrong character. `$`{normal}
+jumps to end of line, `r`{normal} replaces one character. Fix it with
+`$r;`{normal} — three keys, no insert mode:
+
+signal counter : integer range 0 to 255]
+
+## 1.2 word VS WORD: w b e VS W B E
+
+Lowercase `w`{normal} `b`{normal} `e`{normal} treat punctuation as
+word boundaries. Uppercase `W`{normal} `B`{normal} `E`{normal} only
+break on whitespace — perfect for paths, URLs and code identifiers.
+`ge`{normal} / `gE`{normal} jump to end of the PREVIOUS word.
+
+Compare `w`{normal} vs `W`{normal} hops on this line:
+
+self.config["timeout"] = os.environ.get("TIMEOUT", 30)
+
+EXERCISE 4: Delete the entire first path below in ONE motion. A WORD
+includes the equals sign and slashes: `daW`{normal} from anywhere
+inside it:
+
+path=/usr/share/nvim/runtime backup_path=/tmp/old_config
+
+## 1.3 COUNTS MULTIPLY EVERYTHING
+
+Any motion takes a count: `3w`{normal}, `2f,`{normal}, `5j`{normal}.
+With `:set rnu`{vim} the line numbers ARE the counts for `j`{normal}
+and `k`{normal} — read, type, land.
+
+EXERCISE 5: With the cursor at the start of the line below, delete
+the first three words with one command: `d3w`{normal}:
+
+one two three four five six
+
+## 1.4 STRUCTURE JUMPS: { } % H M L gg G
+
+`{`{normal} / `}`{normal} jump by paragraph (blank-line blocks).
+`%`{normal} jumps between matching ( ) [ ] { } — and sits at the core
+of "how do I get to the other end of this thing".
+`H`{normal} `M`{normal} `L`{normal} jump to top/middle/bottom of the
+visible screen. `gg`{normal} / `G`{normal} take counts: `42G`{normal}
+goes to line 42.
+
+EXERCISE 6: Delete the inner parenthesised group below. Put the
+cursor on its opening paren with `2f(`{normal}, then `d%`{normal}
+deletes from there to its matching paren:
+
+if (mask and (flags or enable)) else fallback
+
+## 1.5 SCROLL WITHOUT MOVING, MOVE WITHOUT SCROLLING
+
+`zz`{normal} centers the view on the cursor — use it constantly.
+`zt`{normal} / `zb`{normal} push the cursor line to top/bottom.
+`<C-d>`{normal} / `<C-u>`{normal} scroll half pages (cursor follows).
+`<C-e>`{normal} / `<C-y>`{normal} scroll one line (cursor stays).
+
+Drill: `<C-d>`{normal} `<C-u>`{normal} `zz`{normal} until automatic.
+
+## 1.6 SEARCH IS A MOTION
+
+`/text`{normal} is not just for finding — it is the universal
+teleport, and it composes with operators: `d/end`{normal} deletes up
+to the next "end". `*`{normal} searches the word under the cursor
+forwards, `#`{normal} backwards; `n`{normal} / `N`{normal} repeat.
+This becomes lethal in chapter 4 with `gn`{normal}.
+
+TIP: `<Esc>`{normal} is mapped in your config to clear search
+highlighting (`:noh`{vim}) — hammer it freely after searching.
+
+## WORKOUT
+
+Redo exercises 1-6 top to bottom without reading the instructions.
+Goal: under 60 seconds, all six ✓.
+
+Key reading: [motion.txt](motion.txt), [word-motions](word-motions),
+[scroll-cursor](scroll-cursor)
+
+[▲ Overview](@tutor:power-00-overview) ·
+[Chapter 2 · Operators and text objects ▶](@tutor:power-02-operators)

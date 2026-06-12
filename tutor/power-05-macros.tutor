@@ -1,0 +1,78 @@
+# CHAPTER 5 · MACROS
+
+A macro is keystrokes recorded into a register and replayed. Anything
+repetitive with structure — reformat 200 lines, wrap every value,
+convert a list to code — is one good macro away from done.
+
+## 5.1 RECORD, PLAY, REPEAT
+
+`q{reg}`{normal} starts recording into a register, `q`{normal} stops.
+`@{reg}`{normal} plays it. `@@`{normal} replays the last one.
+`25@q`{normal} plays it 25 times.
+
+THE GOLDEN RULES of a robust macro:
+1. Start with an absolute position: `0`{normal} (line start) or a
+   search — never "three words in".
+2. Use motions that FAIL when the pattern is absent (`f`{normal},
+   `/`{normal}): a failed motion stops the macro, so running it 100
+   times on 80 valid lines is safe.
+3. End by moving to the next target line (`j`{normal} or
+   `n`{normal}) so replays chain.
+
+EXERCISE 1: Turn the three plain lines below into checklist items,
+so each reads like:  - [ ] Buy milk
+Record on the first line: `qq`{normal} `0`{normal} `i`{normal}- [ ]
+(with a trailing space) `<Esc>`{normal} `w`{normal} `~`{normal}
+`j`{normal} `q`{normal}. Then play `@q`{normal} for the second line
+and `@@`{normal} for the third:
+
+buy milk
+clean desk
+fix flaky test
+
+## 5.2 APPLY A MACRO WITH :g OR OVER A RANGE
+
+Replaying with counts is fine; replaying by PATTERN is better:
+
+    :g/^err_/normal @w     run macro w on every line starting err_
+    :'<,'>normal @w        run it on every line of the selection
+
+EXERCISE 2: Record `qw`{normal} `gUU`{normal} `q`{normal} on the
+first err line below, then run `:g/^err_/normal @w`{vim} to
+uppercase all three at once:
+
+err_timeout
+err_overflow
+err_crc_mismatch
+
+## 5.3 EDIT A MACRO LIKE TEXT
+
+A macro IS a register, so you can dump it, fix it, and load it back:
+
+    "qp        paste the macro's keystrokes as text
+    (edit the text like any other text)
+    "qyy       yank the fixed line back into the register
+
+No re-recording a 20-step macro because of one typo. Special keys
+show up as <80>kb-style codes — leave those alone, edit around them.
+
+## 5.4 RECURSIVE MACROS (KNOW IT EXISTS)
+
+A macro that ends with `@q`{normal} calling itself runs until a
+motion fails — `qqqqq`{normal}...record body...`@q`{normal}
+`q`{normal}. Powerful, but `:g/.../normal @q`{vim} covers the same
+ground with more control. Reach for recursion when line count is
+unknown and the stop condition is "motion fails".
+
+## WORKOUT
+
+Real-world rep: take any CSV-ish or list-ish text in a scratch
+buffer and convert it to code with ONE macro: anchor with
+`0`{normal}, edit, hop with `f`{normal}/`/`{normal}, end on
+`j`{normal}, then `@@`{normal} or `:g//normal @q`{vim} the rest. If
+the macro breaks halfway, dump it with "qp, repair, reload.
+
+Key reading: [recording](recording), [complex-repeat](complex-repeat)
+
+[◀ Chapter 4](@tutor:power-04-search) ·
+[Chapter 6 · Marks, jumps, buffers, windows ▶](@tutor:power-06-navigation)

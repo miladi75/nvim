@@ -1,0 +1,14 @@
+{
+  "expect": {
+    "27": "-- x_out <= a_in and b_in;",
+    "28": "-- y_out <= a_in or b_in;",
+    "29": "-- z_out <= a_in xor b_in;",
+    "37": "latency 12ms [ok]",
+    "38": "throughput 9000pps [ok]",
+    "39": "jitter 3ms [ok]",
+    "51": "retry_count = 12",
+    "64": "channel_1",
+    "65": "channel_2",
+    "66": "channel_3"
+  }
+}

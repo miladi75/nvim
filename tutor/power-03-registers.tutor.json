@@ -1,0 +1,6 @@
+{
+  "expect": {
+    "34": "local target = GOLDEN_VALUE",
+    "67": "total_bytes = 1024"
+  }
+}

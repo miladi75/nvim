@@ -1,0 +1,90 @@
+# CHAPTER 7 · VISUAL BLOCK + NUMBER TRICKS
+
+Column edits — the thing people install multiple-cursor plugins for —
+have been native since the 1990s. Plus: vim can do arithmetic on your
+text.
+
+## 7.1 VISUAL BLOCK BASICS
+
+`<C-v>`{normal} starts a rectangular selection. Extend it with any
+motion. Then:
+
+- `I`{normal} insert at the LEFT edge of every line of the block
+- `A`{normal} append at the RIGHT edge of every line
+- `d`{normal} / `c`{normal} / `r`{normal} delete/change/replace the
+  whole rectangle
+- `o`{normal} jumps the cursor to the opposite corner mid-selection
+- `gv`{normal} reselects the last selection afterwards
+
+Type the text after `I`{normal}/`A`{normal}, press `<Esc>`{normal},
+and it materialises on every line of the block at once.
+
+EXERCISE 1: Comment out all three lines below at once: cursor on the
+x of the first line, `<C-v>`{normal} `jj`{normal} to cover the
+column, `I`{normal}, type the comment prefix -- and a space, then
+`<Esc>`{normal}:
+
+x_out <= a_in and b_in;
+y_out <= a_in or b_in;
+z_out <= a_in xor b_in;
+
+EXERCISE 2: Lines of DIFFERENT length: `$`{normal} inside a block
+selection makes it ragged-right, and `A`{normal} appends at each
+line's own end. Select the three lines below with `<C-v>`{normal}
+`jj`{normal} `$`{normal}, then `A`{normal}, type a space and [ok],
+`<Esc>`{normal}:
+
+latency 12ms
+throughput 9000pps
+jitter 3ms
+
+## 7.2 INCREMENT AND DECREMENT: C-a C-x
+
+`<C-a>`{normal} increments the first number on or after the cursor;
+`<C-x>`{normal} decrements. Counts multiply: `5<C-a>`{normal} adds 5.
+Works on decimals, hex (0x1f), even binary — see
+[nrformats](nrformats).
+
+EXERCISE 3: Put the cursor anywhere before the 7 on the line below
+and press `5<C-a>`{normal}:
+
+retry_count = 7
+
+## 7.3 THE SEQUENCE TRICK: g C-a
+
+In a visual selection, `g<C-a>`{normal} increments each selected line
+by an INCREASING amount: first line +1, second +2, third +3...
+Select identical copies and it manufactures a numbered sequence.
+
+EXERCISE 4: Leave the first channel line alone. Select the lower
+three with `V`{normal} `2j`{normal} (linewise is fine), then press
+`g<C-a>`{normal} — they become channel_1, channel_2, channel_3:
+
+channel_0
+channel_0
+channel_0
+channel_0
+
+This is absurdly useful for VHDL port lists, test IDs, array
+initialisers — duplicate a line N times with `yy`{normal}
+`3p`{normal}, select, `g<C-a>`{normal}, done.
+
+## 7.4 WHEN BLOCK BEATS MACRO (AND VICE VERSA)
+
+Same column, same text on every line → visual block, instantly.
+Different positions per line, needs motions to find them → macro.
+Both replace 90% of what multiple-cursor plugins are used for, and
+they compose with everything else you know.
+
+## WORKOUT
+
+Build this from scratch in 30 seconds, starting from one line
+reading data(0) <= x"00";  — `yy`{normal} `7p`{normal}, block-select
+the indices, `g<C-a>`{normal}. Eight numbered assignment lines, two
+commands.
+
+Key reading: [visual-block](visual-block), [v_b_I](v_b_I),
+[v_b_A](v_b_A), [CTRL-A](CTRL-A), [v_g_CTRL-A](v_g_CTRL-A)
+
+[◀ Chapter 6](@tutor:power-06-navigation) ·
+[Chapter 8 · IDE moves on your setup ▶](@tutor:power-08-ide)

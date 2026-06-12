@@ -168,3 +168,29 @@ Notes:
 | `:Mason` | Open Mason |
 | `:Lazy` | Open Lazy plugin manager |
 | `:checkhealth` | Run Neovim health checks |
+
+## Nvim Power Course (built-in training)
+
+Custom advanced tutorial integrated with the native `:Tutor` command.
+Files live in `tutor/` (usage guide: `tutor/README.md`); exercises show
+✓/✗ signs live as you solve them. Buffers are unwritable — break
+anything, `:Tutor` again resets.
+
+Quick start: `:PowerTutor` opens the overview. Note that bare `:Tutor`
+without an argument opens Neovim's built-in beginner tutorial instead —
+that is stock behavior. `:PowerTutor 05-macros` jumps to a chapter.
+
+| Command | Chapter |
+|---------|---------|
+| `:Tutor power-00-overview` | Course overview and training rules |
+| `:Tutor power-01-motions` | Precision motions (f/t, word/WORD, counts, %) |
+| `:Tutor power-02-operators` | Operators + text objects, the dot command |
+| `:Tutor power-03-registers` | Registers, yank register, expression register |
+| `:Tutor power-04-search` | Search, cgn, :substitute, :global |
+| `:Tutor power-05-macros` | Macros: record, edit, apply via :g |
+| `:Tutor power-06-navigation` | Marks, jumplist, buffers, windows, quickfix |
+| `:Tutor power-07-visualblock` | Visual block, increment, g Ctrl-a sequences |
+| `:Tutor power-08-ide` | LSP, Telescope, gitsigns on this exact config |
+
+After editing a chapter's text, regenerate the check files:
+`python3 tutor/build_expects.py`

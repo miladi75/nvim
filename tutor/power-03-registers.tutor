@@ -1,0 +1,91 @@
+# CHAPTER 3 · REGISTERS
+
+"I yanked something, then deleted a word, and my yank is gone."
+No — it is not. Vim keeps far more than one clipboard, and knowing
+where things land turns paste accidents into precision tools.
+Inspect everything at any time with `:registers`{vim}.
+
+## 3.1 THE REGISTER MAP
+
+- `""`{normal} unnamed: every delete/yank/change lands here; plain
+  `p`{normal} pastes it.
+- `"0`{normal} yank register: only YANKS land here. Deletes never
+  touch it. This is the fix for the complaint above.
+- `"1`{normal}-`"9`{normal} delete history: big deletes shift down
+  this stack — `"1p`{normal} pastes the most recent.
+- `"a`{normal}-`"z`{normal} named: yours. `"ayy`{normal} yanks a line
+  into a. UPPERCASE APPENDS: `"Ayy`{normal} adds to it.
+- `"+`{normal} system clipboard (your `<C-c>`{normal} maps use it).
+- `"_`{normal} black hole: delete without touching any register.
+- `"=`{normal} expression register: paste the result of a calculation.
+
+## 3.2 THE "0 TRICK — NEVER LOSE A YANK
+
+Workflow: yank the good text once, then overwrite many bad spots.
+`ciw`{normal} (or any delete) clobbers `""`{normal} — but the yank is
+still safe in `"0`{normal}.
+
+EXERCISE 1: Yank GOLDEN_VALUE from inside the quotes on the first
+line with `yi"`{normal}. Then put the cursor ON the word SCRATCH and
+replace it from the yank register: `ciw`{normal} then
+`<C-r>`{normal}`0` (insert-mode paste of register 0), `<Esc>`{normal}:
+
+local source = "GOLDEN_VALUE"
+local target = SCRATCH
+
+Alternative in normal mode: `viw`{normal}`"0p`{normal} — select the
+word, paste register 0 over it.
+
+## 3.3 NAMED REGISTERS AND APPEND
+
+Collect scattered lines, then drop them somewhere together:
+`"ayy`{normal} on the first line, `"Ayy`{normal} (capital A!) on each
+further line, then `"ap`{normal} at the destination. Try it with the
+two collect-me lines below — paste them after the marker line
+(not checked, registers persist until you overwrite them):
+
+collect me first: rx_fifo
+collect me too: tx_fifo
+
+paste both below this marker line with "ap
+
+## 3.4 THE BLACK HOLE AND THE EXPRESSION REGISTER
+
+`"_diw`{normal} deletes a word while PRESERVING your unnamed register
+— use it when you are holding a paste you care about. (Honestly, the
+`"0`{normal} trick makes this rarely needed, but you should recognise
+it when you see it.)
+
+The expression register evaluates math while you type:
+in insert mode press `<C-r>`{normal}`=`, type the expression, press
+`<Enter>`{normal} — the result lands in your text.
+
+EXERCISE 2: Append the answer to the line below: press `A`{normal},
+type a space, then `<C-r>`{normal}`=` then 128*8 and `<Enter>`{normal},
+then `<Esc>`{normal}:
+
+total_bytes =
+
+## 3.5 REGISTERS EVERYWHERE
+
+`<C-r>`{normal}{reg} pastes a register in INSERT mode and in the
+COMMAND LINE — e.g. `:%s/`{normal}`<C-r>`{normal}`0/new/g` builds a
+substitute from your last yank. Macros (chapter 5) are just registers
+too: you can paste, edit and re-record them as plain text.
+
+Your clipboard bridges: `<C-c>`{normal} in visual mode copies the
+selection to the system clipboard; in normal mode it copies the whole
+file ("%y+ under the hood). Paste FROM the system anywhere with
+`"+p`{normal}.
+
+## WORKOUT
+
+Without reading back: yank a word, destroy three other words with it
+via `"0`{normal}, collect two lines into `"c`{normal} with append,
+compute 365*24 into the buffer with the expression register.
+
+Key reading: [registers](registers), [quote0](quote0),
+[expression register](quote=)
+
+[◀ Chapter 2](@tutor:power-02-operators) ·
+[Chapter 4 · Search, substitute, global ▶](@tutor:power-04-search)

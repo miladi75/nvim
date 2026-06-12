@@ -1,0 +1,10 @@
+{
+  "expect": {
+    "29": "- [ ] Buy milk",
+    "30": "- [ ] Clean desk",
+    "31": "- [ ] Fix flaky test",
+    "44": "ERR_TIMEOUT",
+    "45": "ERR_OVERFLOW",
+    "46": "ERR_CRC_MISMATCH"
+  }
+}
