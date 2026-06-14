@@ -1,4 +1,4 @@
-# CHAPTER 4 · SEARCH, SUBSTITUTE, GLOBAL
+# CHAPTER 5 · SEARCH, SUBSTITUTE, GLOBAL
 
 Bulk edits are where vim humiliates other editors. Three layers:
 refined search, `:s`{vim} with ranges and captures, and `:g`{vim} to
@@ -6,9 +6,9 @@ run ANY command on every matching line.
 
 ATTENTION: exercises here say `:s`{vim} (current line) on purpose.
 A stray `:%s`{vim} will also rewrite the lesson text around the
-exercises — harmless (reopen with :Tutor), but you were warned.
+exercises — harmless (reset with :Tutorial), but you were warned.
 
-## 4.1 SEARCH, REFINED
+## 5.1 SEARCH, REFINED
 
 `/\vpattern`{normal} — "very magic": +, (, ), | work like in normal
 regexes, no backslash forest. Use `\v`{normal} by default.
@@ -17,7 +17,7 @@ regexes, no backslash forest. Use `\v`{normal} by default.
 `:set ignorecase smartcase`{vim} — lowercase searches match any case,
 capitals search exactly (already worth putting in your options.lua).
 
-## 4.2 THE KILLER COMBO: * THEN cgn THEN .
+## 5.2 THE KILLER COMBO: * THEN cgn THEN .
 
 `gn`{normal} is a text object meaning "the next search match".
 `cgn`{normal} = change the next match. And it repeats with
@@ -35,7 +35,7 @@ count = foo_bar + 1
 print(foo_bar)
 return foo_bar + offset
 
-## 4.3 SUBSTITUTE: RANGES, FLAGS, CAPTURES
+## 5.3 SUBSTITUTE: RANGES, FLAGS, CAPTURES
 
 `:[range]s/pat/rep/flags`{vim}. Ranges: `%`{normal} whole file,
 `.,+4`{normal} this line plus four, `'<,'>`{normal} the visual
@@ -64,7 +64,7 @@ precedes it — the prefix itself is untouched):
 
 version-1.2.3
 
-## 4.4 GLOBAL: RUN A COMMAND ON EVERY MATCHING LINE
+## 5.4 GLOBAL: RUN A COMMAND ON EVERY MATCHING LINE
 
 `:g/pattern/cmd`{vim} runs cmd on every matching line, `:v`{vim} on
 every NON-matching line. Classics:
@@ -95,5 +95,5 @@ group.
 Key reading: [gn](gn), [:global](:global), [/\zs](/\zs),
 [s/\1](s/\1)
 
-[◀ Chapter 3](@tutor:power-03-registers) ·
-[Chapter 5 · Macros ▶](@tutor:power-05-macros)
+[◀ Chapter 4](@tutor:tutorial-04-registers) ·
+[Chapter 6 · Macros ▶](@tutor:tutorial-06-macros)

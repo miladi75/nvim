@@ -1,10 +1,10 @@
-# CHAPTER 6 · MARKS, JUMPS, BUFFERS, WINDOWS
+# CHAPTER 7 · MARKS, JUMPS, BUFFERS, WINDOWS
 
 Editing speed is half the game. The other half is never being lost:
 jumping between definition and call site, config and code, this file
 and the one you had open a minute ago — without thinking.
 
-## 6.1 MARKS: BOOKMARKS THAT FOLLOW THE TEXT
+## 7.1 MARKS: BOOKMARKS THAT FOLLOW THE TEXT
 
 `m{a-z}`{normal} drops a mark in this file. `m{A-Z}`{normal} drops a
 GLOBAL mark — it works across files (mA in your VHDL entity, mB in
@@ -36,7 +36,7 @@ and type a space and v2, then `<Esc>`{normal}:
 
 notes:
 
-## 6.2 THE JUMPLIST AND CHANGELIST
+## 7.2 THE JUMPLIST AND CHANGELIST
 
 Every "big" jump (`gg`{normal}, `G`{normal}, `/`{normal},
 `%`{normal}, `gd`{normal}...) is recorded. `<C-o>`{normal} walks back
@@ -48,7 +48,7 @@ home. `g;`{normal} / `g,`{normal} do the same for CHANGE locations.
 Drill here: `gg`{normal}, `G`{normal}, `50%`{normal}, then
 `<C-o>`{normal} back through all of it, `<C-i>`{normal} forward again.
 
-## 6.3 BUFFERS: THE REAL TABS
+## 7.3 BUFFERS: THE REAL TABS
 
 Every opened file stays loaded as a buffer. Your keys:
 `<Tab>`{normal} / `<S-Tab>`{normal} cycle buffers, `<leader>x`{normal}
@@ -60,7 +60,7 @@ closes one, `<leader>b`{normal} opens an empty one. Beyond cycling:
   (tab-completes). Faster than cycling once you have 10 files open.
 - `<leader>fb`{normal} — Telescope buffer picker, fuzzy.
 
-## 6.4 WINDOWS
+## 7.4 WINDOWS
 
 `<C-w>s`{normal} / `<C-w>v`{normal} split horizontal/vertical (or
 `:sp`{vim} / `:vsp`{vim}). NvChad gives you `<C-h>`{normal}
@@ -72,12 +72,12 @@ Workflow worth stealing: code left, its testbench right —
 `:vsp`{vim}, `<C-l>`{normal}, `:b tb_`{vim}<Tab>. Marks, jumplist and
 `<C-^>`{normal} all work per-window.
 
-## 6.5 QUICKFIX: A TODO LIST OF LOCATIONS
+## 7.5 QUICKFIX: A TODO LIST OF LOCATIONS
 
 The quickfix list is vim's "list of places": compile errors, grep
 hits, LSP references all land there. `:copen`{vim} shows it,
 `:cnext`{vim} / `:cprev`{vim} walk it, `<Enter>`{normal} on an entry
-jumps. In chapter 8 you will fill it from Telescope with one key.
+jumps. In chapter 9 you will fill it from Telescope with one key.
 
 ## WORKOUT
 
@@ -89,5 +89,5 @@ and bounce. Notice how rarely you actually need `<leader>e`{normal}.
 Key reading: [mark-motions](mark-motions), [jump-motions](jump-motions),
 [windows.txt](windows.txt), [quickfix](quickfix)
 
-[◀ Chapter 5](@tutor:power-05-macros) ·
-[Chapter 7 · Visual block and number tricks ▶](@tutor:power-07-visualblock)
+[◀ Chapter 6](@tutor:tutorial-06-macros) ·
+[Chapter 8 · Visual block and number tricks ▶](@tutor:tutorial-08-visualblock)

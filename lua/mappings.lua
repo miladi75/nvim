@@ -56,10 +56,66 @@ map("n", "<leader>oh", function()
   end
 end, { desc = "Open HTML in browser" })
 
--- Nvim Power Course (see tutor/README.md): :PowerTutor opens the overview
-vim.api.nvim_create_user_command("PowerTutor", function(opts)
-  vim.cmd("Tutor power-" .. (opts.args ~= "" and opts.args or "00-overview"))
-end, { nargs = "?", desc = "Open Nvim Power Course (tutor/)" })
+-- Nvim tutorial course (see tutor/README.md): :Tutorial opens the overview,
+-- :Tutorial 01-basics jumps to a chapter.
+-- Lesson buffers are throwaway: no swap files, so a killed session can
+-- never trigger the swap-recovery prompt (recovering resurrects a stale
+-- lesson whose text no longer matches the ✓/✗ check positions).
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "tutor",
+  callback = function()
+    vim.opt_local.swapfile = false
+  end,
+})
+vim.api.nvim_create_user_command("Tutorial", function(opts)
+  local name = "tutorial" .. (opts.args ~= "" and "-" .. opts.args or "")
+  -- :Tutor reuses an already-open (possibly edited) lesson buffer via
+  -- :drop, so it would NOT reset the exercises; wipe it first.
+  for _, b in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_get_name(b):match("/tutor/" .. vim.pesc(name) .. "%.tutor$") then
+      vim.api.nvim_buf_delete(b, { force = true })
+    end
+  end
+  vim.cmd("Tutor " .. name)
+end, { nargs = "?", desc = "Open the nvim tutorial course (tutor/)" })
+
+-- Diagnose and repair the tutorial ✓/✗ checks in the current lesson buffer
+vim.api.nvim_create_user_command("TutorialDoctor", function()
+  local out = {}
+  local function add(s)
+    table.insert(out, s)
+  end
+  add("filetype=" .. vim.bo.filetype .. "  buftype=" .. vim.bo.buftype)
+  local meta = vim.b.tutor_metadata
+  local n_checks = meta and meta.expect and vim.tbl_count(meta.expect) or 0
+  add("checks loaded: " .. (n_checks > 0 and ("yes (" .. n_checks .. ")") or "NO"))
+  local ok_au, aus = pcall(vim.api.nvim_get_autocmds, { group = "tutor_interactive", buffer = 0 })
+  add("live-update autocmds: " .. (ok_au and #aus or "MISSING GROUP"))
+  local ok_cmp, cmp = pcall(require, "cmp")
+  if ok_cmp then
+    local ok_en, en = pcall(function()
+      return cmp.get_config().enabled()
+    end)
+    add("completion here: " .. (ok_en and tostring(en) or ("ERROR " .. tostring(en))))
+  end
+  if n_checks > 0 then
+    local lnum = vim.fn.line "."
+    local exp = meta.expect[tostring(lnum)]
+    if exp then
+      add("cursor line " .. lnum .. ":")
+      add("  yours:    [" .. vim.fn.getline(lnum) .. "]")
+      add("  expected: [" .. (exp == -1 and "(anything)" or exp) .. "]")
+      add("  match: " .. tostring(exp == -1 or vim.fn.getline(lnum) == exp))
+    else
+      add("cursor line " .. lnum .. ": not a checked exercise line")
+    end
+    local ok_fix, err = pcall(function()
+      require("nvim.tutor").apply_marks()
+    end)
+    add(ok_fix and "checks RE-SYNCED — correct lines show ✓ now" or ("re-sync FAILED: " .. tostring(err)))
+  end
+  vim.notify(table.concat(out, "\n"))
+end, { desc = "Diagnose/repair tutorial checks" })
 
 map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 map("t", "<leader>qq", "<C-\\><C-n><cmd>qa!<CR>", { desc = "Quit Neovim without saving" })

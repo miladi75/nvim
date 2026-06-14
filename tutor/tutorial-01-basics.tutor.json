@@ -1,0 +1,13 @@
+{
+  "expect": {
+    "67": "2 + 2 = 4",
+    "73": "NB! important: always read the manual",
+    "88": "fix this typo by deleting one letter",
+    "93": "remove extra word here",
+    "99": "this sentence ends here.",
+    "119": "this line needs fixing",
+    "124": "fresh start",
+    "129": "press r9 on the zero: 9",
+    "177": "lessons lessons everywhere"
+  }
+}

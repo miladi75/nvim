@@ -1,10 +1,10 @@
-# CHAPTER 1 · PRECISION MOTIONS
+# CHAPTER 2 · PRECISION MOTIONS
 
 Fast vim is not fast typing. It is putting the cursor exactly where
 the edit happens in one or two keys. Every motion you learn here also
-becomes the target of an operator in chapter 2, so it pays off twice.
+becomes the target of an operator in chapter 3, so it pays off twice.
 
-## 1.1 IN-LINE SNIPING: f t F T ; ,
+## 2.1 IN-LINE SNIPING: f t F T ; ,
 
 `f{char}`{normal} jumps ON the next occurrence of {char} in the line.
 `t{char}`{normal} stops one column BEFORE it ("till").
@@ -39,7 +39,7 @@ jumps to end of line, `r`{normal} replaces one character. Fix it with
 
 signal counter : integer range 0 to 255]
 
-## 1.2 word VS WORD: w b e VS W B E
+## 2.2 word VS WORD: w b e VS W B E
 
 Lowercase `w`{normal} `b`{normal} `e`{normal} treat punctuation as
 word boundaries. Uppercase `W`{normal} `B`{normal} `E`{normal} only
@@ -56,7 +56,7 @@ inside it:
 
 path=/usr/share/nvim/runtime backup_path=/tmp/old_config
 
-## 1.3 COUNTS MULTIPLY EVERYTHING
+## 2.3 COUNTS MULTIPLY EVERYTHING
 
 Any motion takes a count: `3w`{normal}, `2f,`{normal}, `5j`{normal}.
 With `:set rnu`{vim} the line numbers ARE the counts for `j`{normal}
@@ -67,7 +67,7 @@ the first three words with one command: `d3w`{normal}:
 
 one two three four five six
 
-## 1.4 STRUCTURE JUMPS: { } % H M L gg G
+## 2.4 STRUCTURE JUMPS: { } % H M L gg G
 
 `{`{normal} / `}`{normal} jump by paragraph (blank-line blocks).
 `%`{normal} jumps between matching ( ) [ ] { } — and sits at the core
@@ -82,7 +82,7 @@ deletes from there to its matching paren:
 
 if (mask and (flags or enable)) else fallback
 
-## 1.5 SCROLL WITHOUT MOVING, MOVE WITHOUT SCROLLING
+## 2.5 SCROLL WITHOUT MOVING, MOVE WITHOUT SCROLLING
 
 `zz`{normal} centers the view on the cursor — use it constantly.
 `zt`{normal} / `zb`{normal} push the cursor line to top/bottom.
@@ -91,13 +91,13 @@ if (mask and (flags or enable)) else fallback
 
 Drill: `<C-d>`{normal} `<C-u>`{normal} `zz`{normal} until automatic.
 
-## 1.6 SEARCH IS A MOTION
+## 2.6 SEARCH IS A MOTION
 
 `/text`{normal} is not just for finding — it is the universal
 teleport, and it composes with operators: `d/end`{normal} deletes up
 to the next "end". `*`{normal} searches the word under the cursor
 forwards, `#`{normal} backwards; `n`{normal} / `N`{normal} repeat.
-This becomes lethal in chapter 4 with `gn`{normal}.
+This becomes lethal in chapter 5 with `gn`{normal}.
 
 TIP: `<Esc>`{normal} is mapped in your config to clear search
 highlighting (`:noh`{vim}) — hammer it freely after searching.
@@ -110,5 +110,5 @@ Goal: under 60 seconds, all six ✓.
 Key reading: [motion.txt](motion.txt), [word-motions](word-motions),
 [scroll-cursor](scroll-cursor)
 
-[▲ Overview](@tutor:power-00-overview) ·
-[Chapter 2 · Operators and text objects ▶](@tutor:power-02-operators)
+[▲ Overview](@tutor:tutorial) ·
+[Chapter 3 · Operators and text objects ▶](@tutor:tutorial-03-operators)

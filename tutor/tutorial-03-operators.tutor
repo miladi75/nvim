@@ -1,11 +1,11 @@
-# CHAPTER 2 · OPERATORS + TEXT OBJECTS
+# CHAPTER 3 · OPERATORS + TEXT OBJECTS
 
 This is the chapter that separates vim users from vim power users.
 Vim is a language: OPERATOR + COUNT + OBJECT. `d2aw`{normal} reads
 "delete two whole words". Once you think in this grammar you stop
 performing edits and start *saying* them.
 
-## 2.1 THE OPERATORS
+## 3.1 THE OPERATORS
 
 `d`{normal} delete · `c`{normal} change (delete + insert) ·
 `y`{normal} yank · `gu`{normal} lowercase · `gU`{normal} uppercase ·
@@ -15,7 +15,7 @@ performing edits and start *saying* them.
 Double any operator to act on the whole line: `dd`{normal}
 `yy`{normal} `cc`{normal} `>>`{normal} `==`{normal} `gUU`{normal}.
 
-## 2.2 TEXT OBJECTS: i = inner, a = around
+## 3.2 TEXT OBJECTS: i = inner, a = around
 
 Text objects describe WHAT, independent of where in it the cursor is:
 
@@ -52,7 +52,7 @@ EXERCISE 5: Uppercase the whole line below with `gUU`{normal}:
 
 keep calm and edit text
 
-## 2.3 JOIN AND MICRO-EDITS
+## 3.3 JOIN AND MICRO-EDITS
 
 `J`{normal} joins the next line up with one space. `gJ`{normal} joins
 with no space. `r{char}`{normal} replaces one character without
@@ -65,7 +65,7 @@ EXERCISE 6: Put the cursor on the first line below and press
 local widths = {
 8, 16, 32 }
 
-## 2.4 THE DOT COMMAND
+## 3.4 THE DOT COMMAND
 
 `.`{normal} repeats the last CHANGE — operator, object and typed text
 included. The professional loop is:
@@ -75,7 +75,7 @@ included. The professional loop is:
 `ciw`{normal}new_name`<Esc>`{normal}, then on every other occurrence
 just `.`{normal}. Design your edits so `.`{normal} can repeat them:
 prefer `ciw`{normal} over visual-select-then-change, prefer text
-objects over cursor-position-dependent edits. In chapter 4 the
+objects over cursor-position-dependent edits. In chapter 5 the
 `gn`{normal} object turns `.`{normal} into a guided missile.
 
 Practice the loop below — change the first occurrence with
@@ -93,5 +93,5 @@ code tomorrow: catch yourself once doing visual-select-delete where
 
 Key reading: [text-objects](text-objects), [single-repeat](single-repeat)
 
-[◀ Chapter 1](@tutor:power-01-motions) ·
-[Chapter 3 · Registers ▶](@tutor:power-03-registers)
+[◀ Chapter 2](@tutor:tutorial-02-motions) ·
+[Chapter 4 · Registers ▶](@tutor:tutorial-04-registers)

@@ -1,10 +1,10 @@
-# CHAPTER 7 · VISUAL BLOCK + NUMBER TRICKS
+# CHAPTER 8 · VISUAL BLOCK + NUMBER TRICKS
 
 Column edits — the thing people install multiple-cursor plugins for —
 have been native since the 1990s. Plus: vim can do arithmetic on your
 text.
 
-## 7.1 VISUAL BLOCK BASICS
+## 8.1 VISUAL BLOCK BASICS
 
 `<C-v>`{normal} starts a rectangular selection. Extend it with any
 motion. Then:
@@ -38,7 +38,7 @@ latency 12ms
 throughput 9000pps
 jitter 3ms
 
-## 7.2 INCREMENT AND DECREMENT: C-a C-x
+## 8.2 INCREMENT AND DECREMENT: C-a C-x
 
 `<C-a>`{normal} increments the first number on or after the cursor;
 `<C-x>`{normal} decrements. Counts multiply: `5<C-a>`{normal} adds 5.
@@ -50,7 +50,7 @@ and press `5<C-a>`{normal}:
 
 retry_count = 7
 
-## 7.3 THE SEQUENCE TRICK: g C-a
+## 8.3 THE SEQUENCE TRICK: g C-a
 
 In a visual selection, `g<C-a>`{normal} increments each selected line
 by an INCREASING amount: first line +1, second +2, third +3...
@@ -69,7 +69,7 @@ This is absurdly useful for VHDL port lists, test IDs, array
 initialisers — duplicate a line N times with `yy`{normal}
 `3p`{normal}, select, `g<C-a>`{normal}, done.
 
-## 7.4 WHEN BLOCK BEATS MACRO (AND VICE VERSA)
+## 8.4 WHEN BLOCK BEATS MACRO (AND VICE VERSA)
 
 Same column, same text on every line → visual block, instantly.
 Different positions per line, needs motions to find them → macro.
@@ -86,5 +86,5 @@ commands.
 Key reading: [visual-block](visual-block), [v_b_I](v_b_I),
 [v_b_A](v_b_A), [CTRL-A](CTRL-A), [v_g_CTRL-A](v_g_CTRL-A)
 
-[◀ Chapter 6](@tutor:power-06-navigation) ·
-[Chapter 8 · IDE moves on your setup ▶](@tutor:power-08-ide)
+[◀ Chapter 7](@tutor:tutorial-07-navigation) ·
+[Chapter 9 · IDE moves on your setup ▶](@tutor:tutorial-09-ide)

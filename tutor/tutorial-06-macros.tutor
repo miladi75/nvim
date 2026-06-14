@@ -1,10 +1,10 @@
-# CHAPTER 5 · MACROS
+# CHAPTER 6 · MACROS
 
 A macro is keystrokes recorded into a register and replayed. Anything
 repetitive with structure — reformat 200 lines, wrap every value,
 convert a list to code — is one good macro away from done.
 
-## 5.1 RECORD, PLAY, REPEAT
+## 6.1 RECORD, PLAY, REPEAT
 
 `q{reg}`{normal} starts recording into a register, `q`{normal} stops.
 `@{reg}`{normal} plays it. `@@`{normal} replays the last one.
@@ -30,7 +30,7 @@ buy milk
 clean desk
 fix flaky test
 
-## 5.2 APPLY A MACRO WITH :g OR OVER A RANGE
+## 6.2 APPLY A MACRO WITH :g OR OVER A RANGE
 
 Replaying with counts is fine; replaying by PATTERN is better:
 
@@ -45,7 +45,7 @@ err_timeout
 err_overflow
 err_crc_mismatch
 
-## 5.3 EDIT A MACRO LIKE TEXT
+## 6.3 EDIT A MACRO LIKE TEXT
 
 A macro IS a register, so you can dump it, fix it, and load it back:
 
@@ -56,7 +56,7 @@ A macro IS a register, so you can dump it, fix it, and load it back:
 No re-recording a 20-step macro because of one typo. Special keys
 show up as <80>kb-style codes — leave those alone, edit around them.
 
-## 5.4 RECURSIVE MACROS (KNOW IT EXISTS)
+## 6.4 RECURSIVE MACROS (KNOW IT EXISTS)
 
 A macro that ends with `@q`{normal} calling itself runs until a
 motion fails — `qqqqq`{normal}...record body...`@q`{normal}
@@ -74,5 +74,5 @@ the macro breaks halfway, dump it with "qp, repair, reload.
 
 Key reading: [recording](recording), [complex-repeat](complex-repeat)
 
-[◀ Chapter 4](@tutor:power-04-search) ·
-[Chapter 6 · Marks, jumps, buffers, windows ▶](@tutor:power-06-navigation)
+[◀ Chapter 5](@tutor:tutorial-05-search) ·
+[Chapter 7 · Marks, jumps, buffers, windows ▶](@tutor:tutorial-07-navigation)

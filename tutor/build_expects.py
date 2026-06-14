@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate .tutor.json expect files for the power course chapters.
+"""Generate .tutor.json expect files for the nvim tutorial chapters.
 
 Neovim's :Tutor checks exercise lines against `expect` entries keyed by
 line number. Authoring line numbers by hand breaks on every edit, so this
@@ -20,7 +20,27 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 
 SPECS = {
-    "power-01-motions.tutor": [
+    "tutorial-01-basics.tutor": [
+        ("2 + 2 =",
+         "2 + 2 = 4"),
+        ("important: always read the manual",
+         "NB! important: always read the manual"),
+        ("fix this typpo by deleting one letter",
+         "fix this typo by deleting one letter"),
+        ("remove extra extra word here",
+         "remove extra word here"),
+        ("this sentence ends here. ends here.",
+         "this sentence ends here."),
+        ("this lime needs fixing",
+         "this line needs fixing"),
+        ("replace this entire line with something better",
+         "fresh start"),
+        ("press r9 on the zero: 0",
+         "press r9 on the zero: 9"),
+        ("mistakes mistakes everywhere",
+         "lessons lessons everywhere"),
+    ],
+    "tutorial-02-motions.tutor": [
         ("The compiler found found an error in the design.",
          "The compiler found an error in the design."),
         ("update(sensor_id, calibration_data)",
@@ -34,7 +54,7 @@ SPECS = {
         ("if (mask and (flags or enable)) else fallback",
          "if (mask and ) else fallback"),
     ],
-    "power-02-operators.tutor": [
+    "tutorial-03-operators.tutor": [
         ('print("helo wrold")',
          'print("hello world")'),
         ("result = compute(temp_value, debug_mode) + offset",
@@ -48,13 +68,13 @@ SPECS = {
         ("local widths = {",
          "local widths = { 8, 16, 32 }"),
     ],
-    "power-03-registers.tutor": [
+    "tutorial-04-registers.tutor": [
         ("local target = SCRATCH",
          "local target = GOLDEN_VALUE"),
         ("total_bytes =",
          "total_bytes = 1024"),
     ],
-    "power-04-search.tutor": [
+    "tutorial-05-search.tutor": [
         ("count = foo_bar + 1",
          "count = baz_qux + 1"),
         ("print(foo_bar)",
@@ -72,7 +92,7 @@ SPECS = {
         ("irq_flag <= '1'; -- DEBUG",
          "irq_flag <= '1';"),
     ],
-    "power-05-macros.tutor": [
+    "tutorial-06-macros.tutor": [
         ("buy milk", "- [ ] Buy milk"),
         ("clean desk", "- [ ] Clean desk"),
         ("fix flaky test", "- [ ] Fix flaky test"),
@@ -80,13 +100,13 @@ SPECS = {
         ("err_overflow", "ERR_OVERFLOW"),
         ("err_crc_mismatch", "ERR_CRC_MISMATCH"),
     ],
-    "power-06-navigation.tutor": [
+    "tutorial-07-navigation.tutor": [
         ("waypoint alpha -- mark me with ma",
          "waypoint alpha -- mark me with ma (visited)"),
         ("notes:",
          "notes: draft v2"),
     ],
-    "power-07-visualblock.tutor": [
+    "tutorial-08-visualblock.tutor": [
         ("x_out <= a_in and b_in;", "-- x_out <= a_in and b_in;"),
         ("y_out <= a_in or b_in;", "-- y_out <= a_in or b_in;"),
         ("z_out <= a_in xor b_in;", "-- z_out <= a_in xor b_in;"),

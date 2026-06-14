@@ -1,0 +1,233 @@
+# CHAPTER 1 · THE BASICS
+
+Everything you need to survive — and then enjoy — daily editing:
+modes, movement, the core edits, search, files, and the NvChad keys
+of this config. Condensed from the classic vimtutor plus the NvChad
+lesson pack. Work top to bottom; every shaded line is an exercise.
+
+## 1.1 MODES
+
+Vim is modal: the same keys mean different things per mode.
+
+- NORMAL — commands. The home mode; you live here.
+- INSERT — typing text. `i`{normal} enters, `<Esc>`{normal} leaves.
+  In this config `jk`{normal} (typed fast, in insert mode) also
+  leaves — your fingers never travel to Esc.
+- VISUAL — selecting. `v`{normal} enters, `<Esc>`{normal} leaves.
+- COMMAND — `:`{normal} opens the command line at the bottom. Your
+  config also maps `;`{normal} to do the same.
+
+Try the loop now: `i`{normal}, type a few words, `jk`{normal},
+`u`{normal} to undo them. That undo key is your safety net for this
+whole course: `u`{normal} undoes, `<C-r>`{normal} redoes.
+
+## 1.2 MOVING
+
+`h`{normal} `j`{normal} `k`{normal} `l`{normal} — left, down, up,
+right. Use them for one or two steps only; for anything longer there
+is a better key:
+
+- `w`{normal} start of next word · `b`{normal} back a word ·
+  `e`{normal} end of word
+- `0`{normal} start of line · `^`{normal} first non-blank ·
+  `$`{normal} end of line
+- `gg`{normal} top of file · `G`{normal} bottom ·
+  `42G`{normal} line 42
+- Counts multiply ANY motion: `5j`{normal} `3w`{normal} `2b`{normal}
+
+Playground — bounce around this block until the keys disappear:
+
+alpha   bravo   charlie   delta   echo
+one     two     three     four    five
+left    right   up        down    stay
+
+Drill: `gg`{normal}, then `G`{normal}, then back here with
+`<C-o>`{normal} (jump back — more on that in chapter 7).
+
+## 1.3 ENTERING INSERT MODE, PRECISELY
+
+Six doors into insert mode — entering at the right spot saves all
+the cursor shuffling:
+
+`i`{normal} before cursor · `a`{normal} after cursor ·
+`I`{normal} start of line · `A`{normal} end of line ·
+`o`{normal} new line below · `O`{normal} new line above
+
+ATTENTION: the ✓/✗ checks are EXACT — every character and every
+space counts, and the sign updates the moment the line matches. If a
+sign stays ✗, your line differs somewhere: press `u`{normal} until
+the line is back to its original state and try again. (Autocomplete
+popups are disabled inside the tutorial, so what you type is what
+lands.)
+
+EXERCISE 1: Complete the equation: press `A`{normal} (append at end
+of line), type a space and then 4, press `<Esc>`{normal}. Target,
+exactly: "2 + 2 = 4" (one space on each side of the = sign):
+
+2 + 2 =
+
+EXERCISE 2: Prefix the line below using `I`{normal} (insert at line
+start), type NB! and a space, then `<Esc>`{normal}. Target: the line
+starts with "NB! important:":
+
+important: always read the manual
+
+Practice `o`{normal} and `O`{normal} here — open lines below and
+above, type something, undo with `u`{normal}.
+
+## 1.4 DELETING
+
+- `x`{normal} delete the character under the cursor
+- `dw`{normal} delete from cursor to the next word
+- `D`{normal} (or `d$`{normal}) delete to end of line
+- `dd`{normal} delete the whole line · `3dd`{normal} three lines
+
+EXERCISE 3: One letter too many. Get to the word with `02w`{normal},
+step onto the extra p with `ll`{normal}, then `x`{normal}:
+
+fix this typpo by deleting one letter
+
+EXERCISE 4: Delete the duplicated word: `0ww`{normal} puts you on
+the second "extra", then `dw`{normal}:
+
+remove extra extra word here
+
+EXERCISE 5: The sentence was typed twice in part. Navigate: `0`{normal}
+then `4e`{normal} (end of "here"), `ll`{normal} (onto the space after
+the period), then `D`{normal} wipes the rest:
+
+this sentence ends here. ends here.
+
+Line practice — put these two in the right order: `dd`{normal} on
+the first one, then `p`{normal} (paste below the cursor line):
+
+2) this line should come second
+1) this line should come first
+
+## 1.5 CHANGING
+
+`c`{normal} is delete + enter insert mode in one key:
+
+- `cw`{normal} change word · `cc`{normal} change whole line ·
+  `C`{normal} change to end of line
+- `r{char}`{normal} replace ONE character, no insert mode ·
+  `R`{normal} overwrite mode
+
+EXERCISE 6: `0w`{normal} onto the wrong word, `cw`{normal}, type
+line, `<Esc>`{normal}:
+
+this lime needs fixing
+
+EXERCISE 7: Replace the entire line: `cc`{normal}, type exactly
+fresh start, then `<Esc>`{normal}:
+
+replace this entire line with something better
+
+EXERCISE 8: One character is wrong. `$`{normal} to the end, then
+`r9`{normal}:
+
+press r9 on the zero: 0
+
+## 1.6 COPY AND PASTE
+
+- `yy`{normal} yank (copy) a line · `yw`{normal} yank a word
+- `p`{normal} paste after the cursor/line · `P`{normal} before
+- Deleted text is also "in the clipboard": `dd`{normal} +
+  `p`{normal} moves a line (you just did it above)
+- System clipboard: `<C-c>`{normal} in visual mode copies the
+  selection OUT of nvim; in normal mode it copies the whole file.
+  Paste FROM the system with `"+p`{normal}.
+
+Practice: duplicate the line below a few times with `yy`{normal}
+then `p`{normal} `p`{normal} `p`{normal}, undo it all with
+`u`{normal}:
+
+duplicate me
+
+## 1.7 SELECTING: VISUAL MODE
+
+- `v`{normal} select by character · `V`{normal} by line ·
+  `<C-v>`{normal} by rectangle (block)
+- Then act on it: `d`{normal} delete · `y`{normal} yank ·
+  `c`{normal} change · `>`{normal} / `<`{normal} indent
+- `gv`{normal} reselects the last selection
+
+Try: `V`{normal} on the playground block in 1.2, `j`{normal}
+`j`{normal} to extend, `>`{normal} to indent, `u`{normal} to undo.
+Block mode gets its own chapter (8) — it replaces multi-cursor
+plugins.
+
+## 1.8 SEARCH AND REPLACE
+
+- `/text`{normal} search forward · `?text`{normal} backward ·
+  `n`{normal} next hit · `N`{normal} previous
+- `<Esc>`{normal} clears the highlighting (your config maps it to
+  `:noh`{vim})
+- `:s/old/new/`{vim} replace first match in THIS line ·
+  `:s/old/new/g`{vim} all matches in the line ·
+  `:%s/old/new/g`{vim} whole file · add `c`{normal} to confirm each
+
+Hunt: search with `/needle`{normal} and hop through every hit with
+`n`{normal}: one is needle here, a needle there, and a last needle
+further along — notice it wraps back around.
+
+EXERCISE 9: With the cursor on the line below, run
+`:s/mistakes/lessons/g`{vim} — the g gets both:
+
+mistakes mistakes everywhere
+
+## 1.9 FILES, BUFFERS, WINDOWS — SURVIVAL SET
+
+- `:w`{vim} save · `:q`{vim} quit · `:wq`{vim} both ·
+  `:q!`{vim} quit discarding changes
+- Your shortcuts: `<leader>fs`{normal} save (leader = Space),
+  `<leader>qq`{normal} quit everything without saving
+- `:e path/to/file`{vim} open a file · every opened file stays
+  loaded as a "buffer"
+- `<Tab>`{normal} / `<S-Tab>`{normal} cycle buffers ·
+  `<leader>x`{normal} close one
+- Splits: `:vsp`{vim} / `:sp`{vim}, hop with `<C-h>`{normal}
+  `<C-j>`{normal} `<C-k>`{normal} `<C-l>`{normal}, close with
+  `<C-w>q`{normal}
+
+## 1.10 GETTING UNSTUCK + HELP
+
+- Stray into a weird state? `<Esc>`{normal} (maybe twice) returns to
+  normal mode. Recording message at the bottom? `q`{normal} stops it.
+- `:help anything`{vim} — e.g. `:help dd`{vim} · close with `:q`{vim}
+- `K`{normal} on a word in this tutorial opens its help
+- `<leader>fh`{normal} fuzzy-searches ALL help pages (Telescope)
+
+## 1.11 NVCHAD QUICK TOUR — YOUR ACTUAL KEYS
+
+Leader is `Space`. Press it and WAIT a moment: which-key pops up
+showing everything that can follow. The full searchable list:
+
+    :NvCheatsheet
+
+- `<leader>ff`{normal} find files · `<leader>fw`{normal} or
+  `<leader>fg`{normal} grep the project · `<leader>fb`{normal}
+  buffers · `<leader>fo`{normal} recent files
+- `<leader>e`{normal} file tree (you will need it less than you
+  think)
+- `<A-i>`{normal} floating terminal — `<Esc><Esc>`{normal} to get
+  back out
+- `<leader>th`{normal} themes · `<leader>n`{normal} line numbers ·
+  `<leader>rn`{normal} relative numbers
+- `<leader>/`{normal} toggle comment · `<leader>fm`{normal} format
+  file
+- In code files: `gd`{normal} go to definition, `K`{normal} docs —
+  the full IDE workflow is chapter 9
+
+## WORKOUT
+
+Top to bottom, clear all nine ✗ marks without reading the
+instructions, under 90 seconds. Then move on — the real fun starts
+in chapter 2, where single keystrokes start replacing whole mouse
+journeys.
+
+Key reading: [tutor](tutor), [vim-modes](vim-modes),
+[04.2](04.2), [usr_02.txt](usr_02.txt)
+
+[▲ Overview](@tutor:tutorial) ·
+[Chapter 2 · Precision motions ▶](@tutor:tutorial-02-motions)

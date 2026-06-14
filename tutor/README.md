@@ -1,4 +1,4 @@
-# Nvim Power Course — What It Is and How to Use It
+# The Nvim Tutorial — What It Is and How to Use It
 
 ## What this actually is (not a document — a gym)
 
@@ -13,53 +13,58 @@ A `.tutor` file is NOT something you read like markdown. It is an
   flips to `✓`. No reading comprehension — your fingers either did it
   or they didn't.
 - Mistakes cost nothing. The buffer **cannot be saved**. `u` undoes,
-  and reopening the chapter resets everything to factory state.
+  and rerunning `:Tutorial` resets the chapter to factory state.
 
 A markdown file can show you `d3w`. Only this can tell you whether your
 `d3w` actually worked. That is the entire point: vim skill lives in
 muscle memory, and muscle memory only forms by doing.
 
-This is the same machinery as Neovim's built-in `vimtutor` (what you
-get from bare `:Tutor`) — these 9 chapters are an advanced course built
-on top of it, using your config's real keymaps.
-
 ## 60-second test drive
 
-1. Open Neovim, type `:PowerTutor 01-motions`
-2. Scroll down (`j` or `<C-d>`) to **EXERCISE 3**. You'll see this line,
-   with a `✗` in the left margin:
+1. Open Neovim, type `:Tutorial 01-basics`
+2. Scroll to **EXERCISE 1**. You'll see this line, with `✗` in the
+   left margin:
 
    ```
-   signal counter : integer range 0 to 255]
+   2 + 2 =
    ```
 
-3. Put the cursor anywhere on that line. Type `$` (jump to end of
-   line), then `r;` (replace the character under the cursor with `;`).
-4. The `✗` flips to `✓`. That's the loop. Clear all the `✗` marks in a
-   chapter and you've earned it.
+3. Put the cursor on that line. Press `A` (append at end of line),
+   then type a **space** followed by **4**, press `Esc`. The line must
+   read exactly `2 + 2 = 4`.
+4. The `✗` flips to `✓` the moment the line matches. That's the loop.
+   Clear all the `✗` marks in a chapter and you've earned it.
+
+The checks are character-exact: a missing or extra space keeps the
+`✗`. If a sign won't flip, press `u` until the line is back to its
+original state and redo it carefully.
 
 ## Opening chapters
 
 | You type | You get |
 |----------|---------|
-| `:PowerTutor` | Chapter 0 — the course overview, start here |
-| `:PowerTutor 05-macros` | A specific chapter directly |
-| `:Tutor power` + `Tab` | Completion list of all 9 chapters |
-| `:Tutor` (no argument) | **NOT this course** — Neovim's built-in beginner tutorial (stock behavior) |
+| `:Tutorial` | The course overview — start here |
+| `:Tutorial 06-macros` | A specific chapter directly |
+| `:Tutor tutorial` + `Tab` | Completion list of all chapters |
+| `:Tutor` (no argument) | **NOT this course** — Neovim's stock beginner tutorial |
 
-The chapters:
+The course (one chapter per sitting, in order):
 
 ```
-power-00-overview      how the course works, training rules
-power-01-motions       f/t, word vs WORD, counts, %
-power-02-operators     ci" da( cit, the dot command
-power-03-registers     yank register "0, named regs, "=
-power-04-search        * cgn ., :s captures, :global
-power-05-macros        record, replay, edit, apply via :g
-power-06-navigation    marks, jumplist, buffers, windows
-power-07-visualblock   column edits, g Ctrl-a numbering
-power-08-ide           LSP, Telescope, gitsigns — your keys
+tutorial                  overview, training rules
+tutorial-01-basics        modes, movement, edits, search, NvChad keys
+tutorial-02-motions       f/t, word vs WORD, counts, %
+tutorial-03-operators     ci" da( cit, the dot command
+tutorial-04-registers     yank register "0, named regs, "=
+tutorial-05-search        * cgn ., :s captures, :global
+tutorial-06-macros        record, replay, edit, apply via :g
+tutorial-07-navigation    marks, jumplist, buffers, windows
+tutorial-08-visualblock   column edits, g Ctrl-a numbering
+tutorial-09-ide           LSP, Telescope, gitsigns — your keys
 ```
+
+Chapter 1 condenses the classic vimtutor plus NvChad basics into one
+file — total beginner friendly. Chapters 2-9 build to power-user level.
 
 ## The three interactive mechanics inside a chapter
 
@@ -69,7 +74,7 @@ power-08-ide           LSP, Telescope, gitsigns — your keys
    `Enter`. It opens the relevant `:help` page **inside Neovim** in a
    split (nothing goes to a web browser). Close the help window with
    `:q`. Chapter-to-chapter links open the next chapter the same way.
-   Bonus: `K` on almost any word in the tutor opens its help too.
+   Bonus: `K` on almost any word in the tutorial opens its help too.
 3. **Runnable command lines** — indented lines starting with `:`, like
    `:Telescope keymaps`. Put the cursor on the line and type `>>` to
    execute it without retyping.

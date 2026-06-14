@@ -1,11 +1,11 @@
-# CHAPTER 3 · REGISTERS
+# CHAPTER 4 · REGISTERS
 
 "I yanked something, then deleted a word, and my yank is gone."
 No — it is not. Vim keeps far more than one clipboard, and knowing
 where things land turns paste accidents into precision tools.
 Inspect everything at any time with `:registers`{vim}.
 
-## 3.1 THE REGISTER MAP
+## 4.1 THE REGISTER MAP
 
 - `""`{normal} unnamed: every delete/yank/change lands here; plain
   `p`{normal} pastes it.
@@ -19,7 +19,7 @@ Inspect everything at any time with `:registers`{vim}.
 - `"_`{normal} black hole: delete without touching any register.
 - `"=`{normal} expression register: paste the result of a calculation.
 
-## 3.2 THE "0 TRICK — NEVER LOSE A YANK
+## 4.2 THE "0 TRICK — NEVER LOSE A YANK
 
 Workflow: yank the good text once, then overwrite many bad spots.
 `ciw`{normal} (or any delete) clobbers `""`{normal} — but the yank is
@@ -36,7 +36,7 @@ local target = SCRATCH
 Alternative in normal mode: `viw`{normal}`"0p`{normal} — select the
 word, paste register 0 over it.
 
-## 3.3 NAMED REGISTERS AND APPEND
+## 4.3 NAMED REGISTERS AND APPEND
 
 Collect scattered lines, then drop them somewhere together:
 `"ayy`{normal} on the first line, `"Ayy`{normal} (capital A!) on each
@@ -49,7 +49,7 @@ collect me too: tx_fifo
 
 paste both below this marker line with "ap
 
-## 3.4 THE BLACK HOLE AND THE EXPRESSION REGISTER
+## 4.4 THE BLACK HOLE AND THE EXPRESSION REGISTER
 
 `"_diw`{normal} deletes a word while PRESERVING your unnamed register
 — use it when you are holding a paste you care about. (Honestly, the
@@ -66,11 +66,11 @@ then `<Esc>`{normal}:
 
 total_bytes =
 
-## 3.5 REGISTERS EVERYWHERE
+## 4.5 REGISTERS EVERYWHERE
 
 `<C-r>`{normal}{reg} pastes a register in INSERT mode and in the
 COMMAND LINE — e.g. `:%s/`{normal}`<C-r>`{normal}`0/new/g` builds a
-substitute from your last yank. Macros (chapter 5) are just registers
+substitute from your last yank. Macros (chapter 6) are just registers
 too: you can paste, edit and re-record them as plain text.
 
 Your clipboard bridges: `<C-c>`{normal} in visual mode copies the
@@ -87,5 +87,5 @@ compute 365*24 into the buffer with the expression register.
 Key reading: [registers](registers), [quote0](quote0),
 [expression register](quote=)
 
-[◀ Chapter 2](@tutor:power-02-operators) ·
-[Chapter 4 · Search, substitute, global ▶](@tutor:power-04-search)
+[◀ Chapter 3](@tutor:tutorial-03-operators) ·
+[Chapter 5 · Search, substitute, global ▶](@tutor:tutorial-05-search)

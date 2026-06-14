@@ -1,6 +1,21 @@
 return {
 
     {
+        -- No autocomplete popups inside :Tutor buffers — cmp completes
+        -- words scraped from the lesson text and hijacks exercise typing
+        -- (Enter accepts a suggestion instead of inserting a newline).
+        "hrsh7th/nvim-cmp",
+        opts = function(_, opts)
+            opts.enabled = function()
+                if vim.bo.filetype == "tutor" then
+                    return false
+                end
+                return require("cmp.config.default")().enabled()
+            end
+        end,
+    },
+
+    {
         "nvim-tree/nvim-tree.lua",
         opts = function()
             return require("configs.nvimtree")

@@ -1,11 +1,11 @@
-# CHAPTER 8 · IDE MOVES ON YOUR SETUP
+# CHAPTER 9 · IDE MOVES ON YOUR SETUP
 
 Everything VSCode gave you exists in this config — faster, and it
-composes with chapters 1-7. This chapter is pure workflow: no text
+composes with chapters 2-8. This chapter is pure workflow: no text
 exercises, instead run things in a real code file. Open one of your
 Python or VHDL files in another window and work through it.
 
-## 8.1 FINDING THINGS: TELESCOPE
+## 9.1 FINDING THINGS: TELESCOPE
 
 - `<leader>ff`{normal} find files · `<leader>fa`{normal} include
   hidden/ignored
@@ -27,7 +27,7 @@ Try them now — run this line with `>>`{normal}:
 That picker fuzzy-searches EVERY mapping in your setup. Forgot a key
 from this course? It is in there.
 
-## 8.2 CODE INTELLIGENCE: LSP
+## 9.2 CODE INTELLIGENCE: LSP
 
 Your servers (pyright, clangd, lua_ls...) attach automatically.
 
@@ -44,13 +44,13 @@ Your servers (pyright, clangd, lua_ls...) attach automatically.
 
 THE LOOP that replaces ctrl-clicking around VSCode: `gd`{normal} to
 dive in, `<C-o>`{normal} to surface, `K`{normal} instead of opening
-the file at all. Combine with chapter 6: definition three files deep,
+the file at all. Combine with chapter 7: definition three files deep,
 `<C-o>`{normal} `<C-o>`{normal} `<C-o>`{normal} home.
 
 Completion is nvim-cmp: `<Tab>`{normal}/`<S-Tab>`{normal} walk
 items, `<CR>`{normal} accepts.
 
-## 8.3 GIT WITHOUT LEAVING
+## 9.3 GIT WITHOUT LEAVING
 
 Your gitsigns + diffview keys:
 
@@ -67,7 +67,7 @@ Hunk-level staging from inside the buffer beats the VSCode source
 control panel: review with `<leader>gh`{normal}, stage with
 `<leader>gs`{normal}, move on. No context switch.
 
-## 8.4 TERMINALS, TREE, BUFFERS — YOUR KEYS
+## 9.4 TERMINALS, TREE, BUFFERS — YOUR KEYS
 
 - `<A-i>`{normal} floating terminal · `<A-h>`{normal} /
   `<A-v>`{normal} split terminals (toggle on/off)
@@ -83,7 +83,7 @@ control panel: review with `<leader>gh`{normal}, stage with
 - `<leader>ch`{normal} the NvChad cheatsheet of every mapping ·
   `<leader>wK`{normal} which-key with everything
 
-## 8.5 GRADUATION PROJECT
+## 9.5 GRADUATION PROJECT
 
 Do one real task end to end without the file tree and without the
 mouse:
@@ -104,5 +104,5 @@ When that loop feels boring, you have left VSCode for good.
 Key reading: [lsp](lsp), [telescope.nvim](telescope.nvim),
 [gitsigns-usage](gitsigns-usage), [terminal](terminal)
 
-[◀ Chapter 7](@tutor:power-07-visualblock) ·
-[▲ Back to overview](@tutor:power-00-overview)
+[◀ Chapter 8](@tutor:tutorial-08-visualblock) ·
+[▲ Back to overview](@tutor:tutorial)

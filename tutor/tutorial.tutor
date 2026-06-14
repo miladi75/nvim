@@ -1,0 +1,68 @@
+# THE NVIM TUTORIAL · OVERVIEW
+
+One course, zero to power user, built for YOUR exact setup — NvChad
+2.5, your plugins, your custom mappings. Everything shown here works
+on this machine. Start at chapter 1 even if you already know some
+vim — it is condensed, and known exercises only take minutes.
+
+## HOW THIS WORKS
+
+- Every chapter is a real buffer. Practice directly on its text.
+- Shaded lines are exercises. The sign column shows ✗ until your edit
+  produces the exact expected result, then it flips to ✓.
+- These buffers cannot be written. Break everything fearlessly;
+  running `:Tutorial`{vim} again gives you a clean copy.
+- Move the cursor onto a link and press `<Enter>`{normal} to follow
+  it. Help links open `:help`{vim} pages — read them, that is where
+  the real depth lives. Close a help window with `:q`{vim}.
+- On a line that contains a command, type `>>`{normal} to run it.
+  Try it on the line below:
+
+    :echo "yes, >> works — you ran this from the tutorial"
+
+## THE CHAPTERS
+
+Do them in order. One chapter per sitting is plenty. Repeat a chapter
+until every exercise is muscle memory, not a puzzle.
+
+1. [The basics](@tutor:tutorial-01-basics) — modes, movement,
+   editing, search, NvChad survival kit. Start here.
+2. [Precision motions](@tutor:tutorial-02-motions) — put the cursor
+   where the edit happens, in 1-2 keys
+3. [Operators and text objects](@tutor:tutorial-03-operators) — the
+   grammar that makes vim vim
+4. [Registers](@tutor:tutorial-04-registers) — never lose a yank
+5. [Search, substitute, global](@tutor:tutorial-05-search) —
+   surgical bulk edits
+6. [Macros](@tutor:tutorial-06-macros) — record once, apply
+   everywhere
+7. [Marks, jumps, buffers, windows](@tutor:tutorial-07-navigation) —
+   fly around projects
+8. [Visual block and number tricks](@tutor:tutorial-08-visualblock)
+   — column edits and auto-numbering
+9. [IDE moves on your setup](@tutor:tutorial-09-ide) — LSP,
+   Telescope, gitsigns: everything VSCode did, but faster
+
+## TRAINING RULES
+
+1. No arrow keys. No mouse. If you catch yourself, undo and redo the
+   move the vim way.
+2. If you pressed the same motion three times in a row (jjj, wwww),
+   stop — there was a better motion. Find it.
+3. Think in sentences: verb + count + noun (`d`{normal} `2`{normal}
+   `aw`{normal} = delete two words). Never "enter visual mode and
+   wiggle" when a text object can say it directly.
+4. After every change ask: could `.`{normal} repeat this? Edits that
+   repeat with `.`{normal} are the fastest edits there are.
+5. Turn on relative numbers while training: `:set rnu`{vim} (you
+   have a toggle on `<leader>rn`{normal}). Counted jumps like
+   `7j`{normal} become instant.
+
+## DAILY DRILL (10 MINUTES)
+
+- 2 min: reopen yesterday's chapter, redo its exercises at speed.
+- 6 min: today's chapter.
+- 2 min: in real code, consciously apply one new trick. One per day
+  sticks; ten per day evaporate.
+
+Ready: [Chapter 1 · The basics](@tutor:tutorial-01-basics)
