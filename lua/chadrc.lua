@@ -131,7 +131,10 @@ M.ui = {
 -- NOTE: header needs at least 12 lines to fully mask the default one
 -- (chadrc is deep-merged element-wise into nvconfig defaults).
 M.nvdash = {
-    load_on_startup = true,
+    -- Plain `nvim` opens a blank, writable buffer so you can type right
+    -- away. The dashboard (with the art below) is still available on
+    -- demand: run :Nvdash any time.
+    load_on_startup = false,
 
     -- Each line is centered individually by nvdash. A window must be at
     -- least 12 columns wider than the widest line or nvdash errors, so
