@@ -15,7 +15,7 @@ conventions using TreeSitter highlight queries:
     g_*        Generics         #FFFFFF  white
     t_*        User types       same color as native std_logic (@type.builtin)
     *_i, *_o   Port signals     #00C2B5  teal    (entity port signals, everywhere)
-    local sig  Local signals    #FF8400  orange  (architecture signals, non-_i/_o)
+    local sig  Local signals    #FFFFFF   orange  (architecture signals, non-_i/_o)
 
 What this script modifies (three files inside ~/.config/nvim/):
 
@@ -48,11 +48,11 @@ COLORS = {
     # captured directly as @type.builtin in highlights.scm so they inherit
     # the theme's native type color (same as std_logic / std_logic_vector).
     "port_signal": (
-        "#FF8400",
+        "#FFFFFF",
         "",
     ),  # port signals     clk_i, data_o (*_i/*_o everywhere)
     "local_signal": (
-        "#FF8400",
+        "#FFFFFF",
         "",
     ),  # local signals    signal sreset (non-_i/_o, everywhere)
 }

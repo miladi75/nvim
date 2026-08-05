@@ -5,16 +5,7 @@
 local M = {}
 
 M.base46 = {
-    hl_override = {
-        ["@state.vhdl"] = { fg = "#02FF41" },
-        ["@vprefix.vhdl"] = { fg = "#FF9100" },
-        ["@function.vhdl"] = { fg = "#00D9FA" },
-        ["@constant.vhdl"] = { fg = "#FFFFFF" },
-        ["@generic.vhdl"] = { fg = "#FFFFFF" },
-        ["@port_signal.vhdl"] = { fg = "#FF8400" },
-        ["@local_signal.vhdl"] = { fg = "#FF8400" },
-    },
-    theme = "carbonfox",
+    theme = "chadracula",
 }
 
 M.ui = {
@@ -165,16 +156,6 @@ M.nvimtree = {
         width = 100,
     },
 }
--- ADD THE M.mappings TABLE HERE
-M.mappings = {
-    -- Keymaps for Normal mode (n)
-    n = {
-        -- This line adds the <Leader>fg keymap to run Telescope Live Grep
-        ["<leader>fg"] = { "<cmd>Telescope live_grep<cr>", "Telescope Live Grep" },
-    },
-
-    -- You can add mappings for other modes if needed, e.g., Visual mode (v), Insert mode (i), etc.
-    -- v = {},
-    -- i = {},
-}
+-- NOTE: NvChad 2.5 does NOT read mappings from chadrc (M.mappings). All
+-- custom keymaps live in lua/mappings.lua — <leader>fg is defined there.
 return M

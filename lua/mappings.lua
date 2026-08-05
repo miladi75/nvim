@@ -16,6 +16,17 @@ map("n", "<leader>qq", "<cmd>qa!<CR>", { desc = "Quit Neovim without saving" })
 map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "Copy whole file to system clipboard" })
 map("v", "<C-c>", '"+y', { desc = "Copy selection to system clipboard" })
 
+-- telescope live grep (NvChad's M.mappings in chadrc is NOT read in 2.5,
+-- so these must live here). <leader>fg = normal grep (respects .gitignore,
+-- skips hidden/binary). <leader>fG = grep EVERYTHING incl. ignored + hidden.
+map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { desc = "Telescope live grep" })
+map("n", "<leader>fG", function()
+  require("telescope.builtin").live_grep {
+    additional_args = { "--hidden", "--no-ignore", "--glob", "!**/.git/*" },
+    prompt_title = "Live Grep (all files: hidden + ignored)",
+  }
+end, { desc = "Telescope live grep (all files)" })
+
 -- buffer navigation (works regardless of tabufline)
 map("n", "<Tab>", "<cmd>bnext<CR>", { desc = "buffer next" })
 map("n", "<S-Tab>", "<cmd>bprev<CR>", { desc = "buffer prev" })
@@ -36,6 +47,7 @@ map("n", "<leader>mc", function()
   require("lazy").load { plugins = { "peek.nvim" } }
   require("peek").close()
 end, { desc = "Markdown preview close" })
+map("n", "<leader>mv", "<cmd>Markview toggle<cr>", { desc = "Markview toggle (in-buffer render)" })
 
 -- git
 map("n", "<leader>gb", "<cmd>Gitsigns blame_line<cr>", { desc = "Git blame line" })
