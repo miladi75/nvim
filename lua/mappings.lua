@@ -47,7 +47,27 @@ map("n", "<leader>mc", function()
   require("lazy").load { plugins = { "peek.nvim" } }
   require("peek").close()
 end, { desc = "Markdown preview close" })
-map("n", "<leader>mv", "<cmd>Markview toggle<cr>", { desc = "Markview toggle (in-buffer render)" })
+-- Rich markdown preview: markview decorations + snacks image rendering
+-- (mermaid diagrams, latex math) toggled together. Off by default —
+-- markview preview.enable=false and snacks doc.enabled=false, so nothing
+-- renders until this fires.
+map("n", "<leader>mv", function()
+  local buf = vim.api.nvim_get_current_buf()
+  if vim.b[buf].md_rich_preview then
+    vim.b[buf].md_rich_preview = false
+    vim.cmd("Markview disable")
+    -- snacks has attach but no detach: close image placements, drop the
+    -- inline watcher, clear the attached flag so re-attach starts fresh.
+    require("snacks.image.placement").clean(buf)
+    pcall(vim.api.nvim_del_augroup_by_name, "snacks.image.inline." .. buf)
+    pcall(vim.api.nvim_del_augroup_by_name, "snacks.image.doc." .. buf)
+    vim.b[buf].snacks_image_attached = nil
+  else
+    vim.b[buf].md_rich_preview = true
+    vim.cmd("Markview enable")
+    require("snacks.image.doc").attach(buf)
+  end
+end, { desc = "Toggle rich markdown preview (markview + diagrams/math)" })
 
 -- git
 map("n", "<leader>gb", "<cmd>Gitsigns blame_line<cr>", { desc = "Git blame line" })

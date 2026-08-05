@@ -126,6 +126,17 @@ return {
         -- Plugin manages its own lazy-loading; lazy = false is required.
         "OXY2DEV/markview.nvim",
         lazy = false,
+        config = function()
+            require("markview").setup({
+                -- Rendering is opt-in per buffer via <leader>mv (see
+                -- mappings.lua) instead of auto-on for every markdown file.
+                preview = { enable = false },
+                -- snacks.nvim renders $...$ math as real images; markview's
+                -- text-based latex approximations drew a second copy of
+                -- every subscript next to them.
+                latex = { enable = false },
+            })
+        end,
     },
 
     {
@@ -139,17 +150,39 @@ return {
             image = {
                 enabled = true,
                 doc = {
+                    -- No auto-attach on markdown open; <leader>mv calls
+                    -- Snacks.image.doc.attach() explicitly.
+                    enabled = false,
                     inline = true,
                     float = true,
-                    max_width = 80,
-                    max_height = 40,
+                    max_width = 120,
+                    max_height = 60,
                     -- Hide the raw ```mermaid source once the diagram
                     -- image is rendered (default only conceals math).
                     conceal = function(lang, type)
                         return type == "math" or lang == "mermaid"
                     end,
                 },
+                -- Default "Large" + 192dpi renders equations comically
+                -- oversized next to 12pt terminal text.
+                math = {
+                    latex = { font_size = "normalsize" },
+                },
                 convert = {
+                    magick = {
+                        -- Transparent border after trim = vertical breathing
+                        -- room between stacked equations.
+                        math = {
+                            "-density",
+                            150,
+                            "{src}[{page}]",
+                            "-trim",
+                            "-bordercolor",
+                            "transparent",
+                            "-border",
+                            "0x12",
+                        },
+                    },
                     -- Ubuntu AppArmor blocks chromium's user-namespace
                     -- sandbox, so mmdc needs a puppeteer config passing
                     -- --no-sandbox or every render dies at launch.
@@ -167,9 +200,11 @@ return {
                             "-t",
                             theme,
                             -- terminal.size().scale is 1 here, which makes
-                            -- diagrams render tiny; 2 fills the cell cap.
+                            -- diagrams render tiny; 3 gives a comfortably
+                            -- large diagram (display capped by max_width/
+                            -- max_height cells).
                             "-s",
-                            "2",
+                            "3",
                         }
                     end,
                 },
