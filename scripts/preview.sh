@@ -11,14 +11,48 @@ set -euo pipefail
 PATH=$PATH:$HOME/.deno/bin
 
 src=$(realpath "${1:?no file given}")
+scripts=$(dirname "$(realpath "$0")")
 target=$src
 
 # Sweep previews from earlier sessions; an hour old means the window is long gone.
 find "${TMPDIR:-/tmp}" -maxdepth 1 -name 'nvim-preview-*.html' -mmin +60 -delete 2>/dev/null || true
 
 case ${src,,} in
+*.svg)
+    # Wrapped in a pan/zoom viewer rather than handed to the browser bare,
+    # where the wheel only scrolls. The SVG is inlined so it scales as vector
+    # geometry and reports a real intrinsic size to fit-to-window.
+    # An <?xml?> prolog or <!DOCTYPE> ahead of it is ignored by the HTML parser,
+    # so the file goes in as it is.
+    target=$(mktemp --tmpdir --suffix=.html nvim-preview-XXXXXX)
+
+    cat >"$target" <<HTML
+<!doctype html>
+<meta charset="utf-8">
+<title>$(basename "$src")</title>
+<base href="file://$(dirname "$src")/">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #1e2030; }
+  body { font: 12px/1.4 monospace; color: #a9b8e8; }
+  #nvp-stage { position: absolute; inset: 0; cursor: grab; }
+  #nvp-stage.panning { cursor: grabbing; }
+  #nvp-wrap { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+  #nvp-wrap > svg { display: block; }
+  #nvp-hud {
+    position: fixed; left: 12px; bottom: 12px; padding: 5px 9px;
+    background: #11131ccc; border: 1px solid #2f334d; border-radius: 5px;
+    pointer-events: none; opacity: 0; transition: opacity .25s;
+  }
+  #nvp-hud.show { opacity: 1; }
+</style>
+<div id="nvp-stage"><div id="nvp-wrap">
+$(cat "$src")
+</div></div>
+<div id="nvp-hud"></div>
+<script src="file://$scripts/svg-viewer.js"></script>
+HTML
+    ;;
 *.md | *.markdown)
-    scripts=$(dirname "$(realpath "$0")")
     css=$HOME/.local/share/nvim/lazy/peek.nvim/public
     target=$(mktemp --tmpdir --suffix=.html nvim-preview-XXXXXX)
 

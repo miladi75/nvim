@@ -83,6 +83,18 @@ the browser as they are. Unsaved changes are previewed too.
 No live reload: press `<leader>mp` again for a fresh window. For markdown
 rendered inside the editor — mermaid diagrams, math — use `<leader>mv`.
 
+SVG files open in a pan/zoom viewer (`scripts/svg-viewer.js`), navigated like
+yEd:
+
+| Input | Action |
+|-------|--------|
+| Wheel | Zoom around the pointer (trackpad pinch works too) |
+| Drag (any button) | Pan |
+| Double-click, `f`, `0` | Fit to window |
+| `1` | Zoom to 100% |
+| `+` / `-` | Zoom step |
+| `q`, `Esc` | Close the window |
+
 `:PeekOpen` / `:PeekClose` still exist (peek.nvim, live reload, opens a tab).
 
 ## Git
