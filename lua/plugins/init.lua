@@ -221,6 +221,8 @@ return {
                 auto_load = true,
                 syntax_theme = "dark",
                 theme = "dark",
+                -- Only reachable via :PeekOpen now; <leader>mp uses
+                -- scripts/preview.sh instead.
                 app = "browser",
                 filetype = { "markdown" },
             })

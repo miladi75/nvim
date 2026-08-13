@@ -68,17 +68,22 @@ Legend:
 | `n` | `<leader>pt` | Telescope terminal picker |
 | `n` | `<leader>th` | Theme picker |
 
-## Markdown Preview
+## Markdown / SVG Preview
 
 | Mode | Key | Action |
 |------|-----|--------|
-| `n` | `<leader>mp` | Open Markdown preview in browser |
-| `n` | `<leader>po` | Open Markdown preview in browser |
-| `n` | `<leader>mc` | Close Markdown preview |
+| `n` | `<leader>mp` | Open current file in its own Brave window |
+| `n` | `<leader>mv` | Toggle in-editor rich preview (markview + diagrams/math) |
 
-Commands:
-- `:PeekOpen`
-- `:PeekClose`
+`<leader>mp` opens a plain Brave window on the current workspace — not a tab in
+some window elsewhere. Close it with `Ctrl-w`. Markdown is converted to HTML
+first (`scripts/preview.sh`); `.svg`, `.html`, `.pdf` and images are handed to
+the browser as they are. Unsaved changes are previewed too.
+
+No live reload: press `<leader>mp` again for a fresh window. For markdown
+rendered inside the editor — mermaid diagrams, math — use `<leader>mv`.
+
+`:PeekOpen` / `:PeekClose` still exist (peek.nvim, live reload, opens a tab).
 
 ## Git
 
@@ -162,8 +167,8 @@ Notes:
 
 | Command | Action |
 |---------|--------|
-| `:PeekOpen` | Open Markdown preview |
-| `:PeekClose` | Close Markdown preview |
+| `:PeekOpen` | Markdown preview with live reload (browser tab) |
+| `:PeekClose` | Close that preview |
 | `:LspInfo` | Show attached LSP servers |
 | `:Mason` | Open Mason |
 | `:Lazy` | Open Lazy plugin manager |

@@ -34,19 +34,32 @@ map("n", "<S-Tab>", "<cmd>bprev<CR>", { desc = "buffer prev" })
 -- nvim-tree toggle
 map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer" })
 
--- markdown preview
+-- <leader>mp: open the current file in its own Brave window. Markdown is
+-- rendered to HTML on the way; svg/html/pdf/images go straight to the browser.
+-- Close the window with Ctrl-w. See scripts/preview.sh.
+-- For markdown rendered inside the editor (mermaid, math) use <leader>mv.
 map("n", "<leader>mp", function()
-  require("lazy").load { plugins = { "peek.nvim" } }
-  require("peek").open()
-end, { desc = "Markdown preview open" })
-map("n", "<leader>po", function()
-  require("lazy").load { plugins = { "peek.nvim" } }
-  require("peek").open()
-end, { desc = "Peek open" })
-map("n", "<leader>mc", function()
-  require("lazy").load { plugins = { "peek.nvim" } }
-  require("peek").close()
-end, { desc = "Markdown preview close" })
+  local path = vim.fn.expand "%:p"
+
+  if path == "" then
+    return vim.notify("No file in this buffer", vim.log.levels.WARN)
+  end
+
+  -- Preview what is on screen, not what was last written to disk.
+  if vim.bo.modified then
+    local tmp = vim.fn.tempname() .. "." .. vim.fn.expand "%:e"
+    vim.fn.writefile(vim.api.nvim_buf_get_lines(0, 0, -1, false), tmp)
+    path = tmp
+  end
+
+  vim.system({ vim.fn.stdpath "config" .. "/scripts/preview.sh", path }, { text = true }, function(res)
+    if res.code ~= 0 then
+      vim.schedule(function()
+        vim.notify("preview failed: " .. (res.stderr or res.stdout or ""), vim.log.levels.ERROR)
+      end)
+    end
+  end)
+end, { desc = "Open current file in a Brave window" })
 -- Rich markdown preview: markview decorations + snacks image rendering
 -- (mermaid diagrams, latex math) toggled together. Off by default —
 -- markview preview.enable=false and snacks doc.enabled=false, so nothing
