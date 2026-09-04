@@ -54,12 +54,14 @@ items, `<CR>`{normal} accepts.
 
 Your gitsigns + diffview keys:
 
-- `<leader>gh`{normal} preview hunk under cursor ·
+- `]h`{normal} / `[h`{normal} jump between hunks
+- `<leader>gh`{normal} preview hunk inline ·
   `<leader>gs`{normal} stage it · `<leader>gr`{normal} reset it
-- `<leader>gb`{normal} blame line · `<leader>gB`{normal} toggle
+- `<leader>gb`{normal} blame line · `<leader>gB`{normal} blame the
+  whole file in a side window · `<leader>gl`{normal} toggle
   inline blame
-- `<leader>gv`{normal} full diff view · `<leader>gV`{normal} history
-  of the current file
+- `<leader>gv`{normal} full diff view (toggle) · `<leader>gV`{normal}
+  history of the current file · `<leader>gc`{normal} commits picker
 - `<leader>cm`{normal} / `<leader>gt`{normal} Telescope commits /
   status
 

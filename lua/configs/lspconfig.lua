@@ -165,3 +165,34 @@ vim.lsp.config("vhdl_ls", {
     capabilities = capabilities,
 })
 vim.lsp.enable("vhdl_ls")
+
+-- Only start servers for buffers that are real files on disk.
+--
+-- diffview.nvim names its index-side buffers "diffview://<repo>/.git/:0:/<path>"
+-- with an empty 'buftype', so they get a filetype and vim.lsp.enable() tries to
+-- start a server for them. vim.fs.root() cannot make sense of that name and
+-- returns ".", which reaches the server as rootUri "file://." — vhdl_ls then
+-- fails with "initializeParams.rootUri is not a valid file path". Same goes for
+-- fugitive://, oil://, term:// and any other scheme-prefixed buffer name.
+--
+-- Wrap every server's root_markers in a root_dir function that bails out for
+-- such buffers (never calling on_dir means: no client for this buffer).
+local function real_file_root_dir(markers)
+    return function(bufnr, on_dir)
+        local name = vim.api.nvim_buf_get_name(bufnr)
+        if name == "" or name:match("^%a[%w+.-]*://") or vim.bo[bufnr].buftype ~= "" then
+            return
+        end
+        local root = vim.fs.root(bufnr, markers)
+        if root then
+            on_dir(root)
+        end
+    end
+end
+
+for _, name in ipairs(lspconfig.servers) do
+    local markers = vim.lsp.config[name].root_markers
+    if markers then
+        vim.lsp.config(name, { root_dir = real_file_root_dir(markers) })
+    end
+end

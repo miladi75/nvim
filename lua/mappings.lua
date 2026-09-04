@@ -82,14 +82,28 @@ map("n", "<leader>mv", function()
   end
 end, { desc = "Toggle rich markdown preview (markview + diagrams/math)" })
 
--- git
-map("n", "<leader>gb", "<cmd>Gitsigns blame_line<cr>", { desc = "Git blame line" })
-map("n", "<leader>gB", "<cmd>Gitsigns toggle_current_line_blame<cr>", { desc = "Git toggle line blame" })
-map("n", "<leader>gh", "<cmd>Gitsigns preview_hunk<cr>", { desc = "Git preview hunk" })
-map("n", "<leader>gs", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Git stage hunk" })
-map("n", "<leader>gr", "<cmd>Gitsigns reset_hunk<cr>", { desc = "Git reset hunk" })
-map("n", "<leader>gv", "<cmd>DiffviewOpen<cr>", { desc = "Git diff view" })
-map("n", "<leader>gV", "<cmd>DiffviewFileHistory %<cr>", { desc = "Git file history" })
+-- git. Hunk/blame keys (<leader>gh/gs/gr/gb/gB/gd/..., ]h/[h, ih) are
+-- buffer-local and defined in configs/gitsigns.lua; only what is not tied to
+-- a tracked buffer lives here.
+map("n", "<leader>gv", function()
+  -- Toggle: open the working-tree diff, or close the view in this tab.
+  local ok, lib = pcall(require, "diffview.lib")
+  if ok and lib.get_current_view() then
+    vim.cmd("DiffviewClose")
+  else
+    vim.cmd("DiffviewOpen")
+  end
+end, { desc = "Git diff view (toggle)" })
+map("n", "<leader>gV", "<cmd>DiffviewFileHistory %<cr>", { desc = "Git file history (diffview)" })
+map("n", "<leader>gc", function()
+  Snacks.picker.git_log()
+end, { desc = "Git commits (picker)" })
+map("n", "<leader>gC", function()
+  Snacks.picker.git_log_file()
+end, { desc = "Git commits for this file (picker)" })
+map("n", "<leader>gG", function()
+  Snacks.picker.git_status()
+end, { desc = "Git status (picker)" })
 
 -- open HTML file in browser
 map("n", "<leader>oh", function()

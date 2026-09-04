@@ -155,6 +155,13 @@ HIGHLIGHTS_SCM = r"""; extends
   (#match? @type.builtin "\\c\\v^(sl|slv|to_slv)$")
   (#set! priority 115))
 
+; ...and again as library_function: the parser heuristically reclassifies
+; to_* call names, so to_slv(x) is not an (identifier) node at all. Without
+; this it falls through to the parser's own @function.builtin.
+((library_function) @type.builtin
+  (#match? @type.builtin "\\c\\v^(sl|slv|to_slv)$")
+  (#set! priority 115))
+
 ; Library references: common_lib, work_lib, ...
 ((identifier) @type.builtin
   (#match? @type.builtin "\\c_lib$")

@@ -99,15 +99,32 @@ yEd:
 
 ## Git
 
+Hunk and blame keys come from gitsigns and exist only in buffers tracked by git.
+Diffview does repo-wide diffs, file history and merges; the snacks pickers give
+a fast commit/status browser with a diff preview.
+
 | Mode | Key | Action |
 |------|-----|--------|
-| `n` | `<leader>gb` | Git blame line |
-| `n` | `<leader>gB` | Toggle current line blame |
-| `n` | `<leader>gh` | Preview hunk |
-| `n` | `<leader>gs` | Stage hunk |
-| `n` | `<leader>gr` | Reset hunk |
-| `n` | `<leader>gv` | Open Diffview |
+| `n` | `]h` / `[h` | Next / previous hunk (also works inside a diff window) |
+| `n` | `<leader>gh` | Preview hunk inline (old text shown in the buffer) |
+| `n` | `<leader>gH` | Preview hunk in a popup |
+| `n`, `v` | `<leader>gs` | Stage hunk / selected lines (again on a staged hunk unstages) |
+| `n`, `v` | `<leader>gr` | Reset hunk / selected lines |
+| `n` | `<leader>gu` | Undo the last stage |
+| `n` | `<leader>gS` / `<leader>gR` | Stage / reset the whole buffer |
+| `n` | `<leader>gq` | All hunks in all buffers to the quickfix list |
+| `n` | `<leader>gb` | Blame current line with the full commit message |
+| `n` | `<leader>gB` | Blame the whole file in a scroll-bound side window (`<CR>` for actions) |
+| `n` | `<leader>gl` | Toggle the inline current-line blame |
+| `n` | `<leader>gd` / `<leader>gD` | Two-pane diff of this file against the index / `HEAD~` |
+| `n` | `<leader>gw` | Toggle word-level diff highlighting |
+| `n` | `<leader>gx` | Toggle showing deleted lines inline |
+| `o`, `x` | `ih` | Hunk text object (`dih`, `yih`, `vih`) |
+| `n` | `<leader>gv` | Toggle Diffview (working tree vs index; `q` also closes) |
 | `n` | `<leader>gV` | Diffview file history for current file |
+| `n` | `<leader>gc` / `<leader>gC` | Commits picker: repo / current file |
+| `n` | `<leader>gG` | Git status picker |
+| `n` | `<leader>cm` / `<leader>gt` | Telescope commits / status (NvChad defaults) |
 
 ## Terminal
 
