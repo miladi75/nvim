@@ -11,6 +11,15 @@ o.softtabstop = 4
 o.number = true
 o.relativenumber = true
 
+-- cargo-installed tools first: nvim-treesitter needs tree-sitter-cli >= 0.26
+-- and an older npm one shadows it in the shell PATH.
+vim.env.PATH = vim.fn.expand("~/.cargo/bin") .. ":" .. vim.env.PATH
+
+-- Folding comes from treesitter (configs/treesitter.lua); open everything
+-- when a file loads, fold on demand with zc / zM / zR.
+o.foldlevelstart = 99
+o.foldtext = ""
+
 -- o.cursorlineopt ='both' -- to enable cursorline!
 
 -- markview can't draw table borders in wrapped windows (falls back to raw

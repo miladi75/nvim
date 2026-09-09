@@ -170,13 +170,25 @@ These are explicit mappings from the active config. Most of them only exist afte
 | `n` | `<F7>` | VHDL run batch |
 | `n` | `<leader>vc` | Task: VHDL compile |
 | `n` | `<leader>vr` | Task: VHDL run (batch) |
-| `n` | `<leader>vs` | Task: VHDL simulate |
+| `n` | `<leader>vg` | Task: VHDL simulate (GUI) |
 | `n` | `<leader>vv` | Task: generate `vhdl_ls.toml` |
 | `n` | `<leader>vot` | Open associated testbench |
 | `n` | `<leader>vos` | Open associated syntest |
 | `n` | `<leader>vsc` | Run `vsg-check` |
 | `n` | `<leader>vsf` | Run `vsg-fix` |
+| `n` | `<leader>fm` | Format buffer with conform (VHDL: vsg `--fix` with the repo rule file; other filetypes also format on save) |
 | `n` | `<leader>vqo` | Open fwlibs Quartus project |
+
+## Jumps (flash.nvim)
+
+| Mode | Key | Action |
+|------|-----|--------|
+| `n`, `x`, `o` | `s` + chars | Type 1–2 characters, then the label shown at the match to jump there |
+| `n`, `x`, `o` | `S` | Select a treesitter node (function, block, …); repeat to grow |
+| `o` | `r` | Remote: run the operator at a jump target, e.g. `yr` + label + `iw` yanks a word elsewhere |
+| `o`, `x` | `R` | Treesitter search: operator on a node picked by search |
+| `n` | `f` `F` `t` `T` | As in Vim, with labels on further matches |
+| `n` | `zc` `zo` `zM` `zR` | Fold / unfold (folds come from treesitter, everything open on load) |
 
 ## Built-in Vim Motions
 

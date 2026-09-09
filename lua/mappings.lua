@@ -82,6 +82,12 @@ map("n", "<leader>mv", function()
   end
 end, { desc = "Toggle rich markdown preview (markview + diagrams/math)" })
 
+-- Format: NvChad's <leader>fm uses conform's 1 s default, too short for vsg
+-- on big VHDL files.
+map("n", "<leader>fm", function()
+  require("conform").format({ lsp_format = "fallback", timeout_ms = 10000 })
+end, { desc = "Format file (conform)" })
+
 -- git. Hunk/blame keys (<leader>gh/gs/gr/gb/gB/gd/..., ]h/[h, ih) are
 -- buffer-local and defined in configs/gitsigns.lua; only what is not tied to
 -- a tracked buffer lives here.

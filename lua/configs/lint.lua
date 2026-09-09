@@ -4,7 +4,23 @@ lint.linters_by_ft = {
     lua = { "luacheck" },
     -- haskell = { "hlint" },
     python = { "flake8" },
+    vhdl = { "vsg" },
 }
+
+-- vsg with the repo's rule file (configs/vsg.lua); the built-in linter only
+-- knows the standard vsg_config.* names.
+do
+    local builtin = require("lint.linters.vsg")()
+    builtin.args = {
+        "-of",
+        "syntastic",
+        "--stdin",
+        function()
+            return unpack(require("configs.vsg").config_args(vim.fn.expand("%:p:h")))
+        end,
+    }
+    lint.linters.vsg = builtin
+end
 
 lint.linters.flake8.args = {
     "--extend-ignore=E501",

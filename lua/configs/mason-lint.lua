@@ -1,7 +1,9 @@
 local lint = package.loaded["lint"]
 
--- List of linters to ignore during install
-local ignore_install = {}
+-- List of linters to ignore during install.
+-- vsg is installed with `uv tool install vsg`; letting Mason install it too
+-- races with mason-conform ("Package is already installing").
+local ignore_install = { "vsg" }
 
 -- Helper function to find if value is in table.
 local function table_contains(table, value)

@@ -6,9 +6,19 @@ local options = {
         -- go = { "gofumpt", "goimports-reviser", "golines" },
         -- haskell = { "fourmolu", "stylish-haskell" },
         python = { "isort", "black" },
+        vhdl = { "vsg" },
     },
 
     formatters = {
+        -- VHDL Style Guide. On demand only (<leader>fm): --fix rewrites whole
+        -- files and is too invasive for format-on-save in the firmware repo.
+        vsg = {
+            args = function(_, ctx)
+                local args = { "-of", "syntastic", "--fix", "-f", "$FILENAME" }
+                vim.list_extend(args, require("configs.vsg").config_args(ctx.dirname))
+                return args
+            end,
+        },
         ["clang-format"] = {
             prepend_args = {
                 "--fallback-style=LLVM", -- match clangd defaults if no .clang-format file
@@ -47,11 +57,13 @@ local options = {
         },
     },
 
-    format_on_save = {
+    format_on_save = function(bufnr)
+        if vim.bo[bufnr].filetype == "vhdl" then
+            return nil -- see formatters.vsg
+        end
         -- These options will be passed to conform.format()
-        timeout_ms = 500,
-        lsp_fallback = true,
-    },
+        return { timeout_ms = 500, lsp_format = "fallback" }
+    end,
 }
 
 require("conform").setup(options)

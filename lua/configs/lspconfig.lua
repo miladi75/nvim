@@ -2,6 +2,16 @@ local on_attach = require("nvchad.configs.lspconfig").on_attach
 local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
+-- blink.cmp does not register its capabilities on its own; merge them into
+-- NvChad's set so servers know about snippets, resolve support, etc.
+do
+    local ok, blink = pcall(require, "blink.cmp")
+    if ok then
+        capabilities = blink.get_lsp_capabilities(capabilities)
+        vim.lsp.config("*", { capabilities = capabilities })
+    end
+end
+
 -- local lspconfig = require("lspconfig") -- pre nvim 0.11
 local lspconfig = require("nvchad.configs.lspconfig") -- nvim 0.11
 
@@ -70,21 +80,20 @@ local clangd_base_cmd = {
 }
 
 vim.lsp.config("clangd", {
-    cmd = clangd_base_cmd,
+    -- cmd as a function: nvim 0.11+ has no on_new_config, so this is where
+    -- the per-root --compile-commands-dir gets added.
+    cmd = function(dispatchers, config)
+        local cmd = { unpack(clangd_base_cmd) }
+        local compile_commands_dir = find_compile_commands_dir(config.root_dir)
+        if compile_commands_dir then
+            table.insert(cmd, "--compile-commands-dir=" .. compile_commands_dir)
+        end
+        return vim.lsp.rpc.start(cmd, dispatchers, { cwd = config.cmd_cwd, env = config.cmd_env })
+    end,
     on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.documentRangeFormattingProvider = false
         on_attach(client, bufnr)
-    end,
-    on_new_config = function(new_config, root_dir)
-        local cmd = { unpack(clangd_base_cmd) }
-        local compile_commands_dir = find_compile_commands_dir(root_dir)
-
-        if compile_commands_dir then
-            table.insert(cmd, "--compile-commands-dir=" .. compile_commands_dir)
-        end
-
-        new_config.cmd = cmd
     end,
     on_init = on_init,
     capabilities = capabilities,

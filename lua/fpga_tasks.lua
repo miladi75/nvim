@@ -219,7 +219,7 @@ function M.vsg_check()
     local root = git_root()
     local rel = current_file_rel()
     local cmd = string.format(
-        "uv run vsg -f %s -c %s/buildscripts/gitlab_pipeline/compile/vsg_rules.yml",
+        "uv run vsg -f %s -c %s/buildscripts/gitlab_pipeline/lint/vsg_rules.yml",
         vim.fn.shellescape(rel),
         vim.fn.shellescape(root)
     )
@@ -231,7 +231,7 @@ function M.vsg_fix()
     local root = git_root()
     local rel = current_file_rel()
     local cmd = string.format(
-        "uv run vsg -f %s --fix -c %s/buildscripts/gitlab_pipeline/compile/vsg_rules.yml",
+        "uv run vsg -f %s --fix -c %s/buildscripts/gitlab_pipeline/lint/vsg_rules.yml",
         vim.fn.shellescape(rel),
         vim.fn.shellescape(root)
     )
@@ -260,7 +260,9 @@ function M.setup_keymaps()
     --map("<leader>mb", M.build_msbuild, "Task: build (msbuild)")
     map("<leader>vc", M.vhdl_compile, "Task: VHDL Compile")
     map("<leader>vr", M.vhdl_run_batch, "Task: VHDL Run (batch)")
-    map("<leader>vs", M.vhdl_simulate, "Task: VHDL Simulate")
+    -- <leader>vg, not <leader>vs: `vs` is a prefix of vsc/vsf and would wait
+    -- out timeoutlen on every press.
+    map("<leader>vg", M.vhdl_simulate, "Task: VHDL Simulate (GUI)")
     map("<leader>vv", M.generate_vhdl_ls_toml, "Task: Generate vhdl_ls.toml")
     map("<leader>vot", M.open_associated_testbench, "Task: Open associated testbench")
     map("<leader>vos", M.open_associated_syntest, "Task: Open associated syntest")

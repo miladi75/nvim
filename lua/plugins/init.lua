@@ -1,39 +1,40 @@
 return {
 
+    -- Completion: blink.cmp via NvChad's own integration (replaces nvim-cmp,
+    -- which it disables). Per-keystroke updates with a Rust fuzzy matcher
+    -- instead of nvim-cmp's 60 ms debounce.
+    { import = "nvchad.blink.lazyspec" },
     {
-        -- No autocomplete popups inside :Tutor buffers — cmp completes
-        -- words scraped from the lesson text and hijacks exercise typing
-        -- (Enter accepts a suggestion instead of inserting a newline).
-        "hrsh7th/nvim-cmp",
-        opts = function(_, opts)
-            local cmp = require("cmp")
-
-            opts.enabled = function()
-                if vim.bo.filetype == "tutor" then
-                    return false
-                end
-                return require("cmp.config.default")().enabled()
-            end
-
-            -- Popup is passive until explicitly engaged: nothing is
-            -- preselected or inserted just because the menu appeared.
-            opts.preselect = cmp.PreselectMode.None
-            opts.completion = { completeopt = "menu,menuone,noinsert,noselect" }
-
-            -- Enter only accepts an item the user actually navigated to
-            -- (Tab/C-n); otherwise it inserts a plain newline.
-            opts.mapping["<CR>"] = cmp.mapping.confirm({ select = false })
-
-            -- Esc with the menu open just dismisses it and stays in insert
-            -- mode. jk is noremap so it still exits insert unconditionally.
-            opts.mapping["<Esc>"] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.abort()
-                else
-                    fallback()
-                end
-            end, { "i" })
-        end,
+        "saghen/blink.cmp",
+        opts = {
+            -- No completion inside :Tutor buffers — it would complete words
+            -- scraped from the lesson text and hijack exercise typing.
+            enabled = function()
+                return vim.bo.filetype ~= "tutor" and vim.bo.buftype ~= "prompt"
+            end,
+            completion = {
+                -- Menu is passive until engaged: nothing preselected or
+                -- inserted just because it appeared.
+                list = { selection = { preselect = false, auto_insert = false } },
+                ghost_text = { enabled = false },
+            },
+            keymap = {
+                -- Enter only accepts an item the user navigated to (Tab/C-n);
+                -- with nothing selected it inserts a plain newline.
+                ["<CR>"] = { "accept", "fallback" },
+                -- Esc with the menu open just dismisses it and stays in insert
+                -- mode. `jk` is noremap so it still exits insert unconditionally.
+                ["<Esc>"] = {
+                    function(cmp)
+                        if cmp.is_visible() then
+                            cmp.hide()
+                            return true
+                        end
+                    end,
+                    "fallback",
+                },
+            },
+        },
     },
 
     {
@@ -44,11 +45,38 @@ return {
     },
 
     {
+        -- `main` branch: the old `master` (nvim-treesitter.configs) is archived.
+        -- Highlight/indent/folds are wired up natively in configs/treesitter.lua.
+        -- Not lazy: the plugin is tiny and the FileType autocmd must exist
+        -- before the first buffer loads.
         "nvim-treesitter/nvim-treesitter",
-        event = { "BufReadPre", "BufNewFile" },
+        branch = "main",
+        lazy = false,
+        build = ":TSUpdate",
         config = function()
             require("configs.treesitter")
         end,
+    },
+
+    {
+        -- Labelled jumps: `s` + 2 chars jumps anywhere on screen, `S` selects
+        -- treesitter nodes. f/F/t/T get labels too. `;` and `,` are left alone
+        -- because `;` is remapped to `:` in mappings.lua.
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        opts = {
+            modes = {
+                search = { enabled = false },
+                char = { keys = { "f", "F", "t", "T" } },
+            },
+        },
+        keys = {
+            { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash jump" },
+            { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash treesitter select" },
+            { "r", mode = "o", function() require("flash").remote() end, desc = "Flash remote (operator at a jump)" },
+            { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Flash treesitter search" },
+            { "<c-s>", mode = "c", function() require("flash").toggle() end, desc = "Toggle flash in search" },
+        },
     },
 
     {
@@ -147,6 +175,9 @@ return {
         priority = 1000,
         lazy = false,
         opts = {
+            -- Picker as vim.ui.select (code actions, etc.) — the git pickers in
+            -- mappings.lua work without this; it only swaps the select UI.
+            picker = { enabled = true },
             image = {
                 enabled = true,
                 doc = {
