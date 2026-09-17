@@ -1,5 +1,5 @@
 # Neovim Keybindings Reference
-
+# Just a test comment
 This file is the single source of truth for keybindings in this config.
 
 Legend:
