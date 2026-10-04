@@ -180,6 +180,12 @@ return {
             picker = { enabled = true },
             image = {
                 enabled = true,
+                -- Default list minus "pdf": snacks only draws page 1, so PDFs
+                -- go to the Brave viewer instead (BufReadCmd in mappings.lua).
+                formats = {
+                    "png", "jpg", "jpeg", "gif", "bmp", "webp", "tiff", "heic",
+                    "avif", "mp4", "mov", "avi", "mkv", "webm", "icns",
+                },
                 doc = {
                     -- No auto-attach on markdown open; <leader>mv calls
                     -- Snacks.image.doc.attach() explicitly.

@@ -38,7 +38,7 @@ map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer"
 -- rendered to HTML on the way; svg/html/pdf/images go straight to the browser.
 -- Close the window with Ctrl-w. See scripts/preview.sh.
 -- For markdown rendered inside the editor (mermaid, math) use <leader>mv.
-map("n", "<leader>mp", function()
+local function preview()
   local path = vim.fn.expand "%:p"
 
   if path == "" then
@@ -59,7 +59,65 @@ map("n", "<leader>mp", function()
       end)
     end
   end)
-end, { desc = "Open current file in a Brave window" })
+end
+map("n", "<leader>mp", preview, { desc = "Open current file in a Brave window" })
+
+-- HTML is read rendered, not as source: opening a .html file pops the Brave
+-- window straight away. The buffer stays open for editing; <leader>mp
+-- re-renders. Skipped without a UI (headless runs) and for non-file buffers
+-- (fugitive diffs, picker previews).
+local function preview_html(buf, file)
+  if #vim.api.nvim_list_uis() == 0 or vim.bo[buf].buftype ~= "" then
+    return
+  end
+  if vim.fn.filereadable(file) == 0 then
+    return
+  end
+  vim.schedule(function()
+    if vim.api.nvim_get_current_buf() == buf then
+      preview()
+    end
+  end)
+end
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = { "*.html", "*.htm" },
+  callback = function(ev)
+    preview_html(ev.buf, ev.match)
+  end,
+})
+-- This file loads via vim.schedule, after `nvim page.html` already read its
+-- buffer, so the autocmd above missed it. The TUI may not have attached yet
+-- either; wait for it.
+local startup_buf = vim.api.nvim_get_current_buf()
+local startup_file = vim.api.nvim_buf_get_name(startup_buf)
+if startup_file:match "%.html?$" then
+  if #vim.api.nvim_list_uis() > 0 then
+    preview_html(startup_buf, startup_file)
+  else
+    vim.api.nvim_create_autocmd("UIEnter", {
+      once = true,
+      callback = function()
+        preview_html(startup_buf, startup_file)
+      end,
+    })
+  end
+end
+
+-- A PDF is unreadable as a buffer, so opening one (:e, Telescope, nvim-tree,
+-- `nvim file.pdf`) shows it in the same Brave window as <leader>mp — all
+-- pages, zoom, search — and leaves the editor where it was.
+vim.api.nvim_create_autocmd("BufReadCmd", {
+  pattern = "*.pdf",
+  callback = function(ev)
+    vim.system({ vim.fn.stdpath "config" .. "/scripts/preview.sh", vim.fn.fnamemodify(ev.match, ":p") }, { detach = true })
+    vim.schedule(function()
+      if vim.api.nvim_get_current_buf() == ev.buf and vim.fn.buflisted(vim.fn.bufnr "#") == 1 then
+        vim.cmd "buffer #"
+      end
+      pcall(vim.api.nvim_buf_delete, ev.buf, { force = true })
+    end)
+  end,
+})
 -- Rich markdown preview: markview decorations + snacks image rendering
 -- (mermaid diagrams, latex math) toggled together. Off by default —
 -- markview preview.enable=false and snacks doc.enabled=false, so nothing
@@ -110,6 +168,18 @@ end, { desc = "Git commits for this file (picker)" })
 map("n", "<leader>gG", function()
   Snacks.picker.git_status()
 end, { desc = "Git status (picker)" })
+
+-- Worktrees: one tab per worktree, so reviewing another branch never needs a
+-- stash or a half-done commit. Keys inside the pickers: see lua/worktree.lua.
+map("n", "<leader>gW", function()
+  require("worktree").pick()
+end, { desc = "Git worktrees (switch/new/remove)" })
+map("n", "<leader>gn", function()
+  require("worktree").pick_branch_for_worktree()
+end, { desc = "Git new worktree from branch" })
+map("n", "<leader>go", function()
+  require("worktree").pick_branch()
+end, { desc = "Git checkout branch (worktree-aware)" })
 
 -- open HTML file in browser
 map("n", "<leader>oh", function()

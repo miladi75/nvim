@@ -1,0 +1,26 @@
+diff --git a/tree-sitter-markdown/src/scanner.c b/tree-sitter-markdown/src/scanner.c
+index fda19bd..864ecf4 100644
+--- a/tree-sitter-markdown/src/scanner.c
++++ b/tree-sitter-markdown/src/scanner.c
+@@ -1262,9 +1262,9 @@ static bool parse_pipe_table(Scanner *s, TSLexer *lexer,
+             advance(s, lexer);
+         }
+         if (lexer->lookahead == '|') {
+-            delimiter_cell_count++;
+-            advance(s, lexer);
+-            continue;
++            // a delimiter cell needs at least one '-'; an all-empty row like
++            // `|  |  |` is a table row, not a delimiter row
++            return false;
+         }
+         if (lexer->lookahead == ':') {
+             advance(s, lexer);
+@@ -1291,7 +1291,7 @@ static bool parse_pipe_table(Scanner *s, TSLexer *lexer,
+         }
+         if (lexer->lookahead == '|') {
+             if (!had_one_minus) {
+-                delimiter_cell_count++;
++                return false;
+             }
+             advance(s, lexer);
+             continue;

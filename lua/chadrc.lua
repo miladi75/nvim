@@ -7,15 +7,13 @@ local M = {}
 M.base46 = {
     -- VHDL_COLORS_BEGIN (managed by setup_vhdl_colors.py — do not edit)
     -- Only conventions with no native equivalent are listed.
-    -- g_*/c_*/enums use @number and t_*/sl/slv/*_lib use
+    -- s_*/v_*/g_*/c_*/enums use @number and t_*/sl/slv/to_*/*_lib use
     -- @type.builtin, so they follow the active theme.
     hl_add = {
-        ["@state.vhdl"] = { fg = "#02FF41" },
-        ["@vprefix.vhdl"] = { fg = "#FF9100" },
         ["@function.vhdl"] = { fg = "#00D9FA" },
     },
     -- VHDL_COLORS_END
-    theme = "oxocarbon",
+    theme = "chadracula",
 }
 
 M.ui = {

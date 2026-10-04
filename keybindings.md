@@ -80,6 +80,9 @@ some window elsewhere. Close it with `Ctrl-w`. Markdown is converted to HTML
 first (`scripts/preview.sh`); `.svg`, `.html`, `.pdf` and images are handed to
 the browser as they are. Unsaved changes are previewed too.
 
+Opening a `.html`/`.htm` file does this automatically — the Brave window pops
+up without pressing anything. The source buffer stays open for editing.
+
 No live reload: press `<leader>mp` again for a fresh window. For markdown
 rendered inside the editor — mermaid diagrams, math — use `<leader>mv`.
 
@@ -176,6 +179,7 @@ These are explicit mappings from the active config. Most of them only exist afte
 | `n` | `<leader>vos` | Open associated syntest |
 | `n` | `<leader>vsc` | Run `vsg-check` |
 | `n` | `<leader>vsf` | Run `vsg-fix` |
+| `n` | `<leader>vsg` | Toggle `vsg` lint warnings |
 | `n` | `<leader>fm` | Format buffer with conform (VHDL: vsg `--fix` with the repo rule file; other filetypes also format on save) |
 | `n` | `<leader>vqo` | Open fwlibs Quartus project |
 

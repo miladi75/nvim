@@ -6,20 +6,21 @@ Standalone script — run it from any directory. No external dependencies
 beyond the Python standard library (3.6+).
 
 This is the Neovim port of ~/.config/Code/User/setup_vhdl_colors.py and
-follows the same rule: hardcode as little as possible. Only three naming
-conventions get a literal color. Everything else is captured under a NATIVE
-TreeSitter group, so it inherits whatever colorscheme is active and keeps
-working after a theme switch.
+follows the same color convention: hardcode as little as possible. Only one
+naming convention gets a literal color. Everything else is captured under a
+NATIVE TreeSitter group, so it inherits whatever colorscheme is active and
+keeps working after a theme switch.
 
-    s_*                         state machines   custom color
-    v_*                         variables        custom color
     f_*, pd_*                   functions        custom color
 
+    s_*                         state machines   @number       (native)
+    v_*                         variables        @number       (native)
     g_*                         generics         @number       (native)
     c_*                         constants        @number       (native)
     enum literals               enum values      @number       (native)
     t_*                         user types       @type.builtin (native)
-    sl, slv, to_slv             type aliases     @type.builtin (native)
+    sl, slv                     type aliases     @type.builtin (native)
+    to_*                        conversions      @type.builtin (native)
     *_lib, *_lib.entity_name    library refs     @type.builtin (native)
 
     *_i, *_o                    port signals     not captured — theme default
@@ -27,14 +28,19 @@ working after a theme switch.
 
 @number is whatever the theme paints 1024 / '0' / true. @type.builtin is
 whatever it paints std_logic / std_logic_vector. Nothing to re-tune when you
-change colorscheme.
+change colorscheme. s_* and v_* share the number color on purpose, as in the
+VSCode script.
+
+vhdl_ls semantic tokens stay off (NvChad's on_init drops the capability), the
+same as "[vhdl]": {"editor.semanticHighlighting.enabled": false} on the VSCode
+side, so the server cannot recolor some occurrences of a name and not others.
 
 What this script modifies (two files inside ~/.config/nvim/):
 
     1. after/queries/vhdl/highlights.scm  — TreeSitter highlight queries
     2. lua/chadrc.lua                     — NvChad base46 hl_add table
 
-The three custom groups live in chadrc's hl_add rather than in options.lua:
+The custom group lives in chadrc's hl_add rather than in options.lua:
 base46 compiles hl_add into its highlight cache and regenerates it on every
 theme change, so no ColorScheme autocmd is needed. Older versions of this
 script wrote a block into lua/options.lua; it is removed on both apply and
@@ -59,23 +65,19 @@ from pathlib import Path
 # find yourself adding an entry, first check whether a native capture already
 # means the right thing — see NATIVE_CAPTURES below.
 COLORS = {
-    "s_prefix": ("#02FF41", ""),  # state machines   s_idle, s_running
-    "v_prefix": ("#FF9100", ""),  # variables        v_counter, v_temp
     "f_prefix": ("#00D9FA", ""),  # functions        f_decode, pd_enable
 }
 
 # Map from COLORS key -> TreeSitter capture name (used in highlights.scm)
 CAPTURE_NAMES = {
-    "s_prefix": "@state.vhdl",
-    "v_prefix": "@vprefix.vhdl",
     "f_prefix": "@function.vhdl",
 }
 
 # Documentation only — these need no color entry, that is the whole point.
 # Kept here so the mapping is visible in one place next to COLORS.
 NATIVE_CAPTURES = {
-    "@number": "g_*, c_*, enum literals",
-    "@type.builtin": "t_*, sl/slv/to_slv, *_lib",
+    "@number": "s_*, v_*, g_*, c_*, enum literals",
+    "@type.builtin": "t_*, sl/slv, to_*, *_lib",
     "(none)": "port *_i/*_o and local signals — theme default identifier color",
 }
 
@@ -98,10 +100,10 @@ LEGACY_CAPTURES = [
 # ---------------------------------------------------------------------------
 #
 # Priority ordering (higher wins where two patterns match the same node):
-#   120  custom-colored prefixes (s_, v_, f_, pd_)
-#   115  native captures driven by a prefix (t_, sl/slv/to_slv, *_lib, g_, c_)
-#   110  native capture driven by position (enum literals) — deliberately below
-#        120 so s_* enum values keep the state-machine color
+#   120  custom-colored prefixes (f_, pd_)
+#   115  native captures driven by a prefix (s_, v_, g_, c_, t_, sl/slv, to_*,
+#        *_lib)
+#   110  native capture driven by position (enum literals)
 #
 # Signals are matched by nothing at all, so they fall through to the parser's
 # own @variable and render in the theme's default identifier color.
@@ -112,35 +114,19 @@ HIGHLIGHTS_SCM = r"""; extends
 ;
 ; Managed by setup_vhdl_colors.py — do not edit by hand.
 ;
-; Only @state.vhdl, @vprefix.vhdl and @function.vhdl carry a hardcoded color
-; (defined in lua/chadrc.lua under base46.hl_add). Every other rule reuses a
-; native capture so it follows the active colorscheme:
+; Only @function.vhdl carries a hardcoded color (defined in lua/chadrc.lua
+; under base46.hl_add). Every other rule reuses a native capture so it follows
+; the active colorscheme:
 ;
-;   g_*, c_*, enum literals     -> @number       (theme's number color)
-;   t_*, sl/slv/to_slv, *_lib   -> @type.builtin (theme's std_logic color)
-;   port *_i/*_o, local signals -> not captured  (theme's identifier color)
+;   s_*, v_*, g_*, c_*, enums    -> @number       (theme's number color)
+;   t_*, sl/slv, to_*, *_lib     -> @type.builtin (theme's std_logic color)
+;   port *_i/*_o, local signals  -> not captured  (theme's identifier color)
 
 ; ── Custom-colored prefixes (priority 120) ──
 
-; Functions: f_*
+; Functions and procedures: f_*, pd_*
 ((identifier) @function.vhdl
-  (#match? @function.vhdl "\\c^f_")
-  (#set! priority 120))
-
-; Functions: pd_*
-((identifier) @function.vhdl
-  (#match? @function.vhdl "\\c^pd_")
-  (#set! priority 120))
-
-; Variables: v_*
-((identifier) @vprefix.vhdl
-  (#match? @vprefix.vhdl "\\c^v_")
-  (#set! priority 120))
-
-; State machines: s_*  — priority 120 also wins inside enum literal lists,
-; so s_idle keeps this color while UNDEF/SOF take the native number color.
-((identifier) @state.vhdl
-  (#match? @state.vhdl "\\c^s_")
+  (#match? @function.vhdl "\\c\\v^(f|pd)_")
   (#set! priority 120))
 
 ; ── Native type color: same as std_logic / std_logic_vector (priority 115) ──
@@ -150,16 +136,16 @@ HIGHLIGHTS_SCM = r"""; extends
   (#match? @type.builtin "\\c^t_")
   (#set! priority 115))
 
-; Type aliases: sl, slv, to_slv
+; Type aliases sl, slv and to_* conversions (to_slv, to_unsigned, to_int, ...)
 ((identifier) @type.builtin
-  (#match? @type.builtin "\\c\\v^(sl|slv|to_slv)$")
+  (#match? @type.builtin "\\c\\v^(sl|slv|to_\\w+)$")
   (#set! priority 115))
 
 ; ...and again as library_function: the parser heuristically reclassifies
 ; to_* call names, so to_slv(x) is not an (identifier) node at all. Without
 ; this it falls through to the parser's own @function.builtin.
 ((library_function) @type.builtin
-  (#match? @type.builtin "\\c\\v^(sl|slv|to_slv)$")
+  (#match? @type.builtin "\\c\\v^(sl|slv|to_\\w+)$")
   (#set! priority 115))
 
 ; Library references: common_lib, work_lib, ...
@@ -177,20 +163,21 @@ HIGHLIGHTS_SCM = r"""; extends
   (#match? @_lib "\\c_lib$")
   (#set! priority 115))
 
-; ── Native number color: same as 1024 / '0' / true (priority 115) ──
-
-; Generics: g_*
-((identifier) @number
-  (#match? @number "\\c^g_")
+; ...and the package in a use clause: use common_lib.common_pkg.all
+((selected_name
+   library: (identifier) @_lib
+   package: (identifier) @type.builtin)
+  (#match? @_lib "\\c_lib$")
   (#set! priority 115))
 
-; Constants: c_*
+; ── Native number color: same as 1024 / '0' / true (priority 115) ──
+
+; State machines s_*, variables v_*, generics g_*, constants c_*
 ((identifier) @number
-  (#match? @number "\\c^c_")
+  (#match? @number "\\c\\v^(s|v|g|c)_")
   (#set! priority 115))
 
 ; Enum literals: type t_state is (UNDEF, SOF, ...)
-; Priority 110 keeps this below the s_* rule above.
 ((enumeration_type_definition
    (enumeration_literal
      (identifier) @number))
@@ -345,7 +332,7 @@ def build_chadrc_block():
     """Build the managed hl_add block for chadrc.lua."""
     lines = [CHADRC_BEGIN]
     lines.append("    -- Only conventions with no native equivalent are listed.")
-    lines.append("    -- g_*/c_*/enums use @number and t_*/sl/slv/*_lib use")
+    lines.append("    -- s_*/v_*/g_*/c_*/enums use @number and t_*/sl/slv/to_*/*_lib use")
     lines.append("    -- @type.builtin, so they follow the active theme.")
     lines.append("    hl_add = {")
     for key, capture in CAPTURE_NAMES.items():

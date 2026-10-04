@@ -19,8 +19,8 @@ find "${TMPDIR:-/tmp}" -maxdepth 1 -name 'nvim-preview-*.html' -mmin +60 -delete
 
 case ${src,,} in
 *.svg)
-    # Wrapped in a pan/zoom viewer rather than handed to the browser bare,
-    # where the wheel only scrolls. The SVG is inlined so it scales as vector
+    # Wrapped in a pan/zoom viewer with text search (ctrl+f or /) rather than
+    # handed to the browser bare, where the wheel only scrolls. The SVG is inlined so it scales as vector
     # geometry and reports a real intrinsic size to fit-to-window.
     # An <?xml?> prolog or <!DOCTYPE> ahead of it is ignored by the HTML parser,
     # so the file goes in as it is.
@@ -44,10 +44,32 @@ case ${src,,} in
     pointer-events: none; opacity: 0; transition: opacity .25s;
   }
   #nvp-hud.show { opacity: 1; }
+  #nvp-marks { position: fixed; inset: 0; pointer-events: none; }
+  #nvp-marks > div {
+    position: absolute; background: #ffc66d44; outline: 1px solid #ffc66daa;
+    border-radius: 2px;
+  }
+  #nvp-marks > div.cur { background: #ff910066; outline: 2px solid #ff9100; }
+  #nvp-find {
+    position: fixed; top: 10px; right: 14px; display: none; gap: 6px;
+    align-items: center; padding: 5px 7px; background: #11131cee;
+    border: 1px solid #2f334d; border-radius: 5px;
+  }
+  #nvp-find.show { display: flex; }
+  #nvp-find input {
+    width: 220px; padding: 3px 6px; font: inherit; color: #c8d3f5;
+    background: #1e2030; border: 1px solid #3b4261; border-radius: 3px;
+    outline: none;
+  }
+  #nvp-find input:focus { border-color: #82aaff; }
+  #nvp-find.miss input { border-color: #ff757f; }
+  #nvp-count { min-width: 56px; text-align: right; }
 </style>
 <div id="nvp-stage"><div id="nvp-wrap">
-$(cat "$src")
+$(<"$src")
 </div></div>
+<div id="nvp-marks"></div>
+<div id="nvp-find"><input id="nvp-find-input" placeholder="Find in SVG" spellcheck="false" autocomplete="off"><span id="nvp-count"></span></div>
 <div id="nvp-hud"></div>
 <script src="file://$scripts/svg-viewer.js"></script>
 HTML

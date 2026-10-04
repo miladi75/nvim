@@ -111,19 +111,14 @@ end
 --  term_run("msbuild /property:GenerateFullPaths=true /t:build /consoleloggerparameters:NoSummary")
 --end
 
--- tree config per simulator (ModelSim default, Riviera-PRO on Shift+F-keys)
-local function tree_ini(sim)
-    return os.getenv("HOME") .. "/git/fw_output/tree_user_config_" .. (sim or "modelsim") .. ".ini"
-end
-
 -- 2) VHDL Compile
-function M.vhdl_compile(sim)
+function M.vhdl_compile()
     local root = git_root()
     local file = current_file_abs()
     local cmd = string.format(
-        "uv run %s/buildscripts/tree/treecom.py --user_cfg_ini %s --file %s",
+        "uv run %s/buildscripts/tree/treecom.py --user_cfg_ini %s/git/fw_output/tree_user_config_modelsim.ini --file %s",
         vim.fn.shellescape(root),
-        vim.fn.shellescape(tree_ini(sim)),
+        os.getenv("HOME"),
         vim.fn.shellescape(file)
     )
     term_run(cmd, root)
@@ -147,14 +142,14 @@ local function associated_testbench_file()
 end
 
 -- 3) VHDL Run (batch)
-function M.vhdl_run_batch(sim)
+function M.vhdl_run_batch()
     local root = git_root()
     local tb = associated_testbench_file()
     if not tb then
         echo("No testbench for file " .. file_basename_no_ext())
         return
     end
-    local ini = tree_ini(sim)
+    local ini = os.getenv("HOME") .. "/git/fw_output/tree_user_config_modelsim.ini"
 
     local cmd = string.format(
         "uv run %s/buildscripts/tree/treesim.py --user_cfg_ini %s --batch --file %s",
@@ -166,14 +161,14 @@ function M.vhdl_run_batch(sim)
 end
 
 -- 4) VHDL Simulate (non-batch)
-function M.vhdl_simulate(sim)
+function M.vhdl_simulate()
     local root = git_root()
     local tb = associated_testbench_file()
     if not tb then
         echo("No testbench for file " .. file_basename_no_ext())
         return
     end
-    local ini = tree_ini(sim)
+    local ini = os.getenv("HOME") .. "/git/fw_output/tree_user_config_modelsim.ini"
 
     local cmd = string.format(
         "uv run %s/buildscripts/tree/treesim.py --user_cfg_ini %s --file %s",
@@ -294,19 +289,6 @@ function M.setup_keymaps()
     map("<F5>", M.vhdl_compile, "VHDL Compile (treecom)")
     map("<F6>", M.vhdl_simulate, "VHDL Simulate GUI (treesim)")
     map("<F7>", M.vhdl_run_batch, "VHDL Run batch (treesim --batch)")
-
-    -- Riviera-PRO variants (VSCode: shift+f5/f6/f7). Many terminals send
-    -- Shift+F5..F7 as <F17>..<F19>, so map both forms.
-    local riv = {
-        { "5", M.vhdl_compile, "VHDL Compile Riviera (treecom)" },
-        { "6", M.vhdl_simulate, "VHDL Simulate GUI Riviera (treesim)" },
-        { "7", M.vhdl_run_batch, "VHDL Run batch Riviera (treesim --batch)" },
-    }
-    for _, r in ipairs(riv) do
-        local fn = function() r[2]("riviera") end
-        map("<S-F" .. r[1] .. ">", fn, r[3])
-        map("<F" .. (12 + tonumber(r[1])) .. ">", fn, r[3])
-    end
 end
 
 -- Auto-setup if you want:
