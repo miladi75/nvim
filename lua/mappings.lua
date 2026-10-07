@@ -11,6 +11,25 @@ map("i", "jk", "<ESC>")
 pcall(vim.keymap.del, "n", "<C-s>")
 pcall(vim.keymap.del, "t", "<C-x>")
 
+-- NvChad defaults that duplicate other keys:
+--   <C-n>       = <leader>e (NvimTreeToggle)
+--   <leader>fw  = <leader>fg (Telescope live_grep)
+--   <leader>cm  = <leader>gc (commits picker)
+--   <leader>gt  = <leader>gG (git status picker)
+--   <leader>v   = <A-v>; also a prefix of the <leader>v* VHDL keys, so it
+--                 waited timeoutlen before firing
+pcall(vim.keymap.del, "n", "<C-n>")
+pcall(vim.keymap.del, "n", "<leader>fw")
+pcall(vim.keymap.del, "n", "<leader>cm")
+pcall(vim.keymap.del, "n", "<leader>gt")
+pcall(vim.keymap.del, "n", "<leader>v")
+
+-- <leader>h reopens the same shell as <A-h> instead of starting a new one per
+-- press; NvChad's version left hidden shells piling up after <leader>x.
+map("n", "<leader>h", function()
+  require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm" }
+end, { desc = "Toggle horizontal terminal" })
+
 map("n", "<leader>fs", "<cmd>w<CR>", { desc = "Save file" })
 map("n", "<leader>qq", "<cmd>qa!<CR>", { desc = "Quit Neovim without saving" })
 map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "Copy whole file to system clipboard" })
@@ -192,7 +211,8 @@ map("n", "<leader>oh", function()
 end, { desc = "Open HTML in browser" })
 
 -- Nvim tutorial course (see tutor/README.md): :Tutorial opens the overview,
--- :Tutorial 01-basics jumps to a chapter.
+-- :Tutorial 3 or :Tutorial operators jumps to a chapter (01-basics style
+-- still works).
 -- Lesson buffers are throwaway: no swap files, so a killed session can
 -- never trigger the swap-recovery prompt (recovering resurrects a stale
 -- lesson whose text no longer matches the ✓/✗ check positions).
@@ -202,8 +222,37 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.swapfile = false
   end,
 })
+-- Chapters as { "01", "basics" }, read from tutor/tutorial-NN-name.tutor.
+local function tutorial_chapters()
+  local list = {}
+  for _, f in ipairs(vim.api.nvim_get_runtime_file("tutor/tutorial-*.tutor", true)) do
+    local num, short = vim.fs.basename(f):match("^tutorial%-(%d+)%-(.+)%.tutor$")
+    if num then
+      table.insert(list, { num, short })
+    end
+  end
+  table.sort(list, function(a, b)
+    return a[1] < b[1]
+  end)
+  return list
+end
+
 vim.api.nvim_create_user_command("Tutorial", function(opts)
-  local name = "tutorial" .. (opts.args ~= "" and "-" .. opts.args or "")
+  local arg = opts.args
+  local name = "tutorial"
+  if arg ~= "" then
+    local found
+    for _, c in ipairs(tutorial_chapters()) do
+      if arg == c[2] or arg == c[1] .. "-" .. c[2] or tonumber(arg) == tonumber(c[1]) then
+        found = c
+      end
+    end
+    if not found then
+      vim.notify("No tutorial chapter '" .. arg .. "'", vim.log.levels.ERROR)
+      return
+    end
+    name = "tutorial-" .. found[1] .. "-" .. found[2]
+  end
   -- :Tutor reuses an already-open (possibly edited) lesson buffer via
   -- :drop, so it would NOT reset the exercises; wipe it first.
   for _, b in ipairs(vim.api.nvim_list_bufs()) do
@@ -212,7 +261,17 @@ vim.api.nvim_create_user_command("Tutorial", function(opts)
     end
   end
   vim.cmd("Tutor " .. name)
-end, { nargs = "?", desc = "Open the nvim tutorial course (tutor/)" })
+end, {
+  nargs = "?",
+  desc = "Open the nvim tutorial course (tutor/)",
+  complete = function(lead)
+    return vim.tbl_filter(function(s)
+      return vim.startswith(s, lead)
+    end, vim.tbl_map(function(c)
+      return c[2]
+    end, tutorial_chapters()))
+  end,
+})
 
 -- Diagnose and repair the tutorial ✓/✗ checks in the current lesson buffer
 vim.api.nvim_create_user_command("TutorialDoctor", function()
@@ -253,8 +312,8 @@ vim.api.nvim_create_user_command("TutorialDoctor", function()
 end, { desc = "Diagnose/repair tutorial checks" })
 
 map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-map("t", "<leader>qq", "<C-\\><C-n><cmd>qa!<CR>", { desc = "Quit Neovim without saving" })
-map("t", "<leader>tq", "<C-\\><C-n><cmd>bd!<CR>", { desc = "Close terminal buffer" })
+-- No <leader> maps in terminal mode: leader is <Space>, so every space typed
+-- in a shell would be held for timeoutlen waiting for the rest of the chord.
 map("n", "<leader>tq", function()
   if vim.bo.buftype == "terminal" then
     vim.cmd "bd!"

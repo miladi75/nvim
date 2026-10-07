@@ -9,7 +9,7 @@ Python or VHDL files in another window and work through it.
 
 - `<leader>ff`{normal} find files · `<leader>fa`{normal} include
   hidden/ignored
-- `<leader>fw`{normal} live grep the whole project (your Ctrl+Shift+F)
+- `<leader>fg`{normal} live grep the whole project (your Ctrl+Shift+F)
 - `<leader>fb`{normal} open buffers · `<leader>fo`{normal} recent files
 - `<leader>fz`{normal} fuzzy find IN the current buffer
 - `<leader>fh`{normal} search all of vim's help — use this constantly
@@ -62,8 +62,7 @@ Your gitsigns + diffview keys:
   inline blame
 - `<leader>gv`{normal} full diff view (toggle) · `<leader>gV`{normal}
   history of the current file · `<leader>gc`{normal} commits picker
-- `<leader>cm`{normal} / `<leader>gt`{normal} Telescope commits /
-  status
+- `<leader>gG`{normal} git status picker
 
 Hunk-level staging from inside the buffer beats the VSCode source
 control panel: review with `<leader>gh`{normal}, stage with
@@ -90,7 +89,7 @@ control panel: review with `<leader>gh`{normal}, stage with
 Do one real task end to end without the file tree and without the
 mouse:
 
-1. `<leader>fw`{normal} to find the code, `<C-q>`{normal} it into
+1. `<leader>fg`{normal} to find the code, `<C-q>`{normal} it into
    quickfix.
 2. Fix the first site, `cgn`{normal}-style or with `.`{normal}, then
    `:cnext`{vim} through the rest.

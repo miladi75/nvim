@@ -1,5 +1,5 @@
 # Neovim Keybindings Reference
-# Just a test comment
+
 This file is the single source of truth for keybindings in this config.
 
 Legend:
@@ -18,7 +18,7 @@ Legend:
 | `n` | `<C-c>` | Copy whole file to system clipboard |
 | `v` | `<C-c>` | Copy selection to system clipboard |
 | `n` | `<leader>fs` | Save file |
-| `n,t` | `<leader>qq` | Quit Neovim without saving |
+| `n` | `<leader>qq` | Quit Neovim without saving |
 | `n` | `<leader>n` | Toggle line numbers |
 | `n` | `<leader>rn` | Toggle relative line numbers |
 | `n` | `<leader>ch` | Open NvChad cheatsheet |
@@ -30,7 +30,7 @@ Legend:
 | Mode | Key | Action |
 |------|-----|--------|
 | `n` | `<leader>b` | New buffer |
-| `n` | `<leader>x` | Close current buffer |
+| `n` | `<leader>x` | Close current buffer (on a terminal: hides it, the shell keeps running) |
 | `n` | `<Tab>` | Next buffer |
 | `n` | `<S-Tab>` | Previous buffer |
 | `n` | `<C-h>` | Move to left window |
@@ -54,18 +54,15 @@ Legend:
 | Mode | Key | Action |
 |------|-----|--------|
 | `n` | `<leader>e` | Toggle NvimTree |
-| `n` | `<C-n>` | Toggle NvimTree |
 | `n` | `<leader>ff` | Telescope find files |
 | `n` | `<leader>fa` | Telescope find all files |
-| `n` | `<leader>fw` | Telescope live grep |
+| `n` | `<leader>fg` | Telescope live grep (respects `.gitignore`) |
+| `n` | `<leader>fG` | Telescope live grep in all files (hidden + ignored) |
 | `n` | `<leader>fb` | Telescope buffers |
 | `n` | `<leader>fo` | Telescope old files |
 | `n` | `<leader>fz` | Telescope fuzzy find in current buffer |
 | `n` | `<leader>fh` | Telescope help tags |
 | `n` | `<leader>ma` | Telescope marks |
-| `n` | `<leader>cm` | Telescope git commits |
-| `n` | `<leader>gt` | Telescope git status |
-| `n` | `<leader>pt` | Telescope terminal picker |
 | `n` | `<leader>th` | Theme picker |
 
 ## Markdown / SVG Preview
@@ -74,6 +71,7 @@ Legend:
 |------|-----|--------|
 | `n` | `<leader>mp` | Open current file in its own Brave window |
 | `n` | `<leader>mv` | Toggle in-editor rich preview (markview + diagrams/math) |
+| `n` | `<leader>oh` | Open current HTML file in the default browser |
 
 `<leader>mp` opens a plain Brave window on the current workspace — not a tab in
 some window elsewhere. Close it with `Ctrl-w`. Markdown is converted to HTML
@@ -127,25 +125,28 @@ a fast commit/status browser with a diff preview.
 | `n` | `<leader>gV` | Diffview file history for current file |
 | `n` | `<leader>gc` / `<leader>gC` | Commits picker: repo / current file |
 | `n` | `<leader>gG` | Git status picker |
-| `n` | `<leader>cm` / `<leader>gt` | Telescope commits / status (NvChad defaults) |
+| `n` | `<leader>gW` | Worktrees picker (switch / new / remove) |
+| `n` | `<leader>gn` | New worktree from a branch |
+| `n` | `<leader>go` | Checkout branch (worktree-aware) |
 
 ## Terminal
 
 | Mode | Key | Action |
 |------|-----|--------|
-| `n` | `<leader>h` | New horizontal terminal |
-| `n` | `<leader>v` | New vertical terminal |
+| `n` | `<leader>h` | Toggle horizontal terminal (same shell as `<A-h>`) |
 | `n,t` | `<A-h>` | Toggle horizontal terminal |
 | `n,t` | `<A-v>` | Toggle vertical terminal |
 | `n,t` | `<A-i>` | Toggle floating terminal |
 | `t` | `<Esc><Esc>` | Exit terminal mode |
-| `n,t` | `<leader>tq` | Close terminal buffer |
+| `n` | `<leader>tq` | Close terminal buffer (kills the shell) |
+| `n` | `<leader>pt` | Pick a hidden terminal |
 
 ## Formatting and Comments
 
 | Mode | Key | Action |
 |------|-----|--------|
-| `n,x` | `<leader>fm` | Format file or selection |
+| `n` | `<leader>fm` | Format buffer with conform (VHDL: vsg `--fix` with the repo rule file; other filetypes also format on save) |
+| `x` | `<leader>fm` | Format selection |
 | `n` | `<leader>/` | Toggle comment |
 | `v` | `<leader>/` | Toggle comment |
 
@@ -171,6 +172,7 @@ These are explicit mappings from the active config. Most of them only exist afte
 | `n` | `<F5>` | VHDL compile |
 | `n` | `<F6>` | VHDL simulate (GUI) |
 | `n` | `<F7>` | VHDL run batch |
+| `n` | `<S-F5>` / `<S-F6>` / `<S-F7>` | Same three with Riviera-PRO (some terminals send these as `<F17>`–`<F19>`; both are mapped) |
 | `n` | `<leader>vc` | Task: VHDL compile |
 | `n` | `<leader>vr` | Task: VHDL run (batch) |
 | `n` | `<leader>vg` | Task: VHDL simulate (GUI) |
@@ -180,7 +182,6 @@ These are explicit mappings from the active config. Most of them only exist afte
 | `n` | `<leader>vsc` | Run `vsg-check` |
 | `n` | `<leader>vsf` | Run `vsg-fix` |
 | `n` | `<leader>vsg` | Toggle `vsg` lint warnings |
-| `n` | `<leader>fm` | Format buffer with conform (VHDL: vsg `--fix` with the repo rule file; other filetypes also format on save) |
 | `n` | `<leader>vqo` | Open fwlibs Quartus project |
 
 ## Jumps (flash.nvim)
@@ -221,27 +222,37 @@ Notes:
 
 ## The Nvim Tutorial (built-in training course)
 
-Interactive course from total basics to power user, integrated with
-the native `:Tutor` command. Files live in `tutor/` (usage guide:
-`tutor/README.md`); exercises show ✓/✗ signs live as you solve them.
-Buffers are unwritable — break anything, `:Tutorial` resets.
+Interactive course from total basics to power user, built on the native
+`:Tutor` command. Files live in `tutor/` (usage guide: `tutor/README.md`).
+Exercise lines show ✓/✗ signs live as you solve them. Buffers cannot be
+saved — break anything, `:Tutorial` again resets the chapter.
 
-Quick start: `:Tutorial` opens the overview, `:Tutorial 01-basics`
-jumps to a chapter. Note that bare `:Tutor` without an argument opens
-Neovim's stock beginner tutorial instead — that is stock behavior.
+Open a chapter by number or by short name: `:Tutorial 3` and
+`:Tutorial operators` are the same. `Tab` after `:Tutorial ` completes the
+names. Bare `:Tutor` without an argument opens Neovim's stock beginner
+tutorial, not this course.
 
 | Command | Chapter |
 |---------|---------|
-| `:Tutorial` | Course overview and training rules |
-| `:Tutorial 01-basics` | Modes, movement, edits, search, NvChad keys |
-| `:Tutorial 02-motions` | Precision motions (f/t, word/WORD, counts, %) |
-| `:Tutorial 03-operators` | Operators + text objects, the dot command |
-| `:Tutorial 04-registers` | Registers, yank register, expression register |
-| `:Tutorial 05-search` | Search, cgn, :substitute, :global |
-| `:Tutorial 06-macros` | Macros: record, edit, apply via :g |
-| `:Tutorial 07-navigation` | Marks, jumplist, buffers, windows, quickfix |
-| `:Tutorial 08-visualblock` | Visual block, increment, g Ctrl-a sequences |
-| `:Tutorial 09-ide` | LSP, Telescope, gitsigns on this exact config |
+| `:Tutorial` | Overview and training rules — start here |
+| `:Tutorial 1` / `basics` | The basics: modes, movement, editing, search, NvChad keys |
+| `:Tutorial 2` / `motions` | Precision motions: f/t, word vs WORD, counts, `%` |
+| `:Tutorial 3` / `operators` | Operators and text objects, the dot command |
+| `:Tutorial 4` / `registers` | Registers: yank register, named registers, expression register |
+| `:Tutorial 5` / `search` | Search, substitute, global: `cgn`, `:s` captures, `:g` |
+| `:Tutorial 6` / `macros` | Macros: record, replay, edit, apply via `:g` |
+| `:Tutorial 7` / `navigation` | Marks, jumps, buffers, windows, quickfix |
+| `:Tutorial 8` / `visualblock` | Visual block and number tricks: column edits, `g Ctrl-a` |
+| `:Tutorial 9` / `ide` | IDE moves on this setup: LSP, Telescope, gitsigns |
+
+Keys and commands inside a tutorial buffer:
+
+| Mode | Key | Action |
+|------|-----|--------|
+| `n` | `<CR>` | Follow the link under the cursor (`:help` page or next chapter) |
+| `n` | `>>` | Run the `:command` on the current line |
+| `n` | `K` | Open `:help` for the word under the cursor |
+| — | `:TutorialDoctor` | Diagnose and re-sync the ✓/✗ checks in the current chapter |
 
 After editing a chapter's text, regenerate the check files:
 `python3 tutor/build_expects.py`

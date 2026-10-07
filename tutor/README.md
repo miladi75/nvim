@@ -21,7 +21,7 @@ muscle memory, and muscle memory only forms by doing.
 
 ## 60-second test drive
 
-1. Open Neovim, type `:Tutorial 01-basics`
+1. Open Neovim, type `:Tutorial 1`
 2. Scroll to **EXERCISE 1**. You'll see this line, with `✗` in the
    left margin:
 
@@ -44,23 +44,23 @@ original state and redo it carefully.
 | You type | You get |
 |----------|---------|
 | `:Tutorial` | The course overview — start here |
-| `:Tutorial 06-macros` | A specific chapter directly |
-| `:Tutor tutorial` + `Tab` | Completion list of all chapters |
+| `:Tutorial 6` or `:Tutorial macros` | A specific chapter directly |
+| `:Tutorial ` + `Tab` | Completion list of all chapter names |
 | `:Tutor` (no argument) | **NOT this course** — Neovim's stock beginner tutorial |
 
 The course (one chapter per sitting, in order):
 
 ```
-tutorial                  overview, training rules
-tutorial-01-basics        modes, movement, edits, search, NvChad keys
-tutorial-02-motions       f/t, word vs WORD, counts, %
-tutorial-03-operators     ci" da( cit, the dot command
-tutorial-04-registers     yank register "0, named regs, "=
-tutorial-05-search        * cgn ., :s captures, :global
-tutorial-06-macros        record, replay, edit, apply via :g
-tutorial-07-navigation    marks, jumplist, buffers, windows
-tutorial-08-visualblock   column edits, g Ctrl-a numbering
-tutorial-09-ide           LSP, Telescope, gitsigns — your keys
+:Tutorial                 overview, training rules
+:Tutorial 1  basics       modes, movement, edits, search, NvChad keys
+:Tutorial 2  motions      f/t, word vs WORD, counts, %
+:Tutorial 3  operators    ci" da( cit, the dot command
+:Tutorial 4  registers    yank register "0, named regs, "=
+:Tutorial 5  search       * cgn ., :s captures, :global
+:Tutorial 6  macros       record, replay, edit, apply via :g
+:Tutorial 7  navigation   marks, jumplist, buffers, windows
+:Tutorial 8  visualblock  column edits, g Ctrl-a numbering
+:Tutorial 9  ide          LSP, Telescope, gitsigns — your keys
 ```
 
 Chapter 1 condenses the classic vimtutor plus NvChad basics into one

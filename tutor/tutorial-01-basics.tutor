@@ -205,8 +205,8 @@ showing everything that can follow. The full searchable list:
 
     :NvCheatsheet
 
-- `<leader>ff`{normal} find files · `<leader>fw`{normal} or
-  `<leader>fg`{normal} grep the project · `<leader>fb`{normal}
+- `<leader>ff`{normal} find files · `<leader>fg`{normal} grep
+  the project · `<leader>fb`{normal}
   buffers · `<leader>fo`{normal} recent files
 - `<leader>e`{normal} file tree (you will need it less than you
   think)

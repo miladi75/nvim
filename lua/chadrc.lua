@@ -13,7 +13,7 @@ M.base46 = {
         ["@function.vhdl"] = { fg = "#00D9FA" },
     },
     -- VHDL_COLORS_END
-    theme = "chadracula",
+    theme = "horizon",
 }
 
 M.ui = {

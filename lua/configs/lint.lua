@@ -44,8 +44,23 @@ lint.linters.luacheck.args = {
     "-",
 }
 
+-- Linters read the buffer over stdin, so re-running on unchanged text only
+-- reproduces the same diagnostics. vsg costs ~3 s of CPU on a 2600-line file,
+-- and BufEnter fires on every window/buffer switch, so skip runs unless the
+-- buffer changed since its last lint. :lua require("lint").try_lint() and the
+-- <leader>vsg toggle bypass this check.
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-    callback = function()
+    callback = function(args)
+        -- try_lint() lints the current buffer; :wa fires BufWritePost for
+        -- others, which must not be marked as linted.
+        if args.buf ~= vim.api.nvim_get_current_buf() then
+            return
+        end
+        local tick = vim.b[args.buf].changedtick
+        if vim.b[args.buf].lint_tick == tick then
+            return
+        end
+        vim.b[args.buf].lint_tick = tick
         lint.try_lint()
     end,
 })
