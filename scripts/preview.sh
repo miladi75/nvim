@@ -75,7 +75,8 @@ $(<"$src")
 HTML
     ;;
 *.md | *.markdown)
-    css=$HOME/.local/share/nvim/lazy/peek.nvim/public
+    # github-markdown + KaTeX CSS and fonts, copied from peek.nvim's build.
+    css=$scripts/markdown-assets
     target=$(mktemp --tmpdir --suffix=.html nvim-preview-XXXXXX)
 
     body=$(deno run --quiet --allow-read --allow-net --allow-env --allow-import \

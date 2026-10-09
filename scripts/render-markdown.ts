@@ -1,6 +1,6 @@
 // Markdown -> HTML, one shot, no server. Called by preview.sh.
-// Versions are pinned to the same URLs peek.nvim uses, so the deps are already
-// in deno's cache and this keeps working offline.
+// Versions are pinned to the URLs peek.nvim (since removed) used, so the deps
+// are already in deno's cache and this keeps working offline.
 import MarkdownIt from 'https://esm.sh/markdown-it@14.0.0';
 import { default as MarkdownItTexmath } from 'https://esm.sh/markdown-it-texmath@1.0.0';
 import Katex from 'https://esm.sh/katex@0.16.9';

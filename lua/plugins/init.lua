@@ -4,9 +4,13 @@ return {
     -- which it disables). Per-keystroke updates with a Rust fuzzy matcher
     -- instead of nvim-cmp's 60 ms debounce.
     { import = "nvchad.blink.lazyspec" },
+    -- blink's built-in vim.snippet engine expands friendly-snippets on its
+    -- own; LuaSnip only added load time and a TextChangedI hook.
+    { "L3MON4D3/LuaSnip", enabled = false },
     {
         "saghen/blink.cmp",
         opts = {
+            snippets = { preset = "default" },
             -- No completion inside :Tutor buffers — it would complete words
             -- scraped from the lesson text and hijack exercise typing.
             enabled = function()
@@ -167,7 +171,7 @@ return {
 
     {
         -- In-buffer markdown rendering (headings, tables, checkboxes, code
-        -- blocks) — complements peek.nvim, which previews in the browser.
+        -- blocks) — complements <leader>mp, which previews in the browser.
         -- Plugin manages its own lazy-loading; lazy = false is required.
         "OXY2DEV/markview.nvim",
         lazy = false,
@@ -264,25 +268,6 @@ return {
                 },
             },
         },
-    },
-
-    {
-        "toppair/peek.nvim",
-        event = { "VeryLazy" },
-        build = "deno task --quiet build:fast",
-        config = function()
-            require("peek").setup({
-                auto_load = true,
-                syntax_theme = "dark",
-                theme = "dark",
-                -- Only reachable via :PeekOpen now; <leader>mp uses
-                -- scripts/preview.sh instead.
-                app = "browser",
-                filetype = { "markdown" },
-            })
-            vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-            vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
-        end,
     },
 
     {
