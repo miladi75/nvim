@@ -1,1 +1,3 @@
-diags=1 after-switch=1
+timeoutlen=400 ttimeoutlen=50 updatetime=250
+n: [g] waits, shadowed by [gO]
+n: [gc] waits, shadowed by [gcc]

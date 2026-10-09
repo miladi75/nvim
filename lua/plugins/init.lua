@@ -38,6 +38,23 @@ return {
     },
 
     {
+        -- fzf-native sorter: space-separated terms match independently and in
+        -- any order ("ecx210 encoder 2110 fpga" finds
+        -- ecx210_ip_encoder_2110_fpga.*), plus fzf syntax: 'exact ^prefix
+        -- suffix$ !negate. Stock sorter treats the prompt as one string.
+        -- NvChad 2.5 never reads opts.extensions_list, so load it here.
+        "nvim-telescope/telescope.nvim",
+        dependencies = {
+            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+        },
+        config = function(_, opts)
+            local telescope = require("telescope")
+            telescope.setup(opts)
+            pcall(telescope.load_extension, "fzf")
+        end,
+    },
+
+    {
         "nvim-tree/nvim-tree.lua",
         opts = function()
             return require("configs.nvimtree")

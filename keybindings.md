@@ -54,7 +54,7 @@ Legend:
 | Mode | Key | Action |
 |------|-----|--------|
 | `n` | `<leader>e` | Toggle NvimTree |
-| `n` | `<leader>ff` | Telescope find files |
+| `n` | `<leader>ff` | Telescope find files (fzf syntax: space-separated words in any order, `'exact`, `^prefix`, `suffix$`, `!exclude`) |
 | `n` | `<leader>fa` | Telescope find all files |
 | `n` | `<leader>fg` | Telescope live grep (respects `.gitignore`) |
 | `n` | `<leader>fG` | Telescope live grep in all files (hidden + ignored) |
