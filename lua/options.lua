@@ -20,6 +20,10 @@ vim.env.PATH = vim.fn.expand("~/.cargo/bin") .. ":" .. vim.env.PATH
 o.foldlevelstart = 99
 o.foldtext = ""
 
+-- Diff filler lines as diagonal hatching instead of `-----` (colour in
+-- chadrc.lua: DiffviewDiffDeleteDim / DiffDelete).
+vim.opt.fillchars:append({ diff = "╱" })
+
 -- o.cursorlineopt ='both' -- to enable cursorline!
 
 -- markview can't draw table borders in wrapped windows (falls back to raw

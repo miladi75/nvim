@@ -52,6 +52,16 @@ require("diffview").setup({
     },
 })
 
+-- Removed lines (left side): diffview copies DiffDelete, red fg included,
+-- which hides the syntax colours. Keep only the red background. Re-applied on
+-- ColorScheme after diffview's own handler (registered earlier, in setup).
+local function diff_delete_bg_only()
+    local bg = vim.api.nvim_get_hl(0, { name = "DiffDelete", link = false }).bg
+    vim.api.nvim_set_hl(0, "DiffviewDiffAddAsDelete", { bg = bg })
+end
+diff_delete_bg_only()
+vim.api.nvim_create_autocmd("ColorScheme", { callback = diff_delete_bg_only })
+
 -- `:q` in a panel closes the whole view instead of leaving a broken layout.
 -- Only panels: diff buffers may be real files (--imply-local) and a cabbrev
 -- there would outlive the view.
