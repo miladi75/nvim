@@ -123,7 +123,7 @@ a fast commit/status browser with a diff preview.
 | `o`, `x` | `ih` | Hunk text object (`dih`, `yih`, `vih`) |
 | `n` | `<leader>gv` | Toggle Diffview (working tree vs index; `q` also closes) |
 | `n` | `<leader>gV` | Diffview file history for current file |
-| `n`, mouse | `<leader>gp` or `󰁍` (tabufline, top right) | Open changes with previous revision, like VSCode/GitLens: HEAD vs working file if it has changes, else the last commit that touched it; click again in that diff to step one commit further back (follows renames); `q` closes |
+| `n` | `<leader>gp` or `󰁍`  | Open changes with previous revision, the last commit that touched it; `q` closes |
 | `n` | `<leader>gc` / `<leader>gC` | Commits picker: repo / current file |
 | `n` | `<leader>gG` | Git status picker |
 | `n` | `<leader>gW` | Worktrees picker (switch / new / remove) |
