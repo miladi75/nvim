@@ -96,8 +96,6 @@ yEd:
 | `+` / `-` | Zoom step |
 | `q`, `Esc` | Close the window |
 
-`:PeekOpen` / `:PeekClose` still exist (peek.nvim, live reload, opens a tab).
-
 ## Git
 
 Hunk and blame keys come from gitsigns and exist only in buffers tracked by git.
@@ -214,8 +212,6 @@ Notes:
 
 | Command | Action |
 |---------|--------|
-| `:PeekOpen` | Markdown preview with live reload (browser tab) |
-| `:PeekClose` | Close that preview |
 | `:LspInfo` | Show attached LSP servers |
 | `:Mason` | Open Mason |
 | `:Lazy` | Open Lazy plugin manager |
