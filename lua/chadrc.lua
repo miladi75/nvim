@@ -13,7 +13,7 @@ M.base46 = {
         ["@function.vhdl"] = { fg = "#00D9FA" },
     },
     -- VHDL_COLORS_END
-    theme = "horizon",
+    theme = "chadracula",
 }
 
 -- Diff filler lines (the side that has no lines, e.g. the left side of an

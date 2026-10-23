@@ -6,10 +6,14 @@
 //   + / -          zoom step              q / Esc  close the window
 //   ctrl+f  or  /  search text: Enter / F3 next, shift+Enter / shift+F3
 //                  previous, Esc closes the search box
+//   click a link   opens it in a new tab of your default browser, where you
+//                  are already logged in (FWCOM tags open their block doc on
+//                  GitLab). Needs nvim running; otherwise a popup opens.
 //
 // Loaded by the generated preview page, which provides #nvp-stage (viewport),
 // #nvp-wrap (transformed container holding the SVG), #nvp-marks, #nvp-find
-// and #nvp-hud. Kept in step with VIEWER_JS in
+// and #nvp-hud, and sets window.NVP_LINK_BRIDGE (see link_bridge() in
+// lua/mappings.lua). Kept in step with VIEWER_JS in
 // ~/.config/Code/User/vscode_svg_preview.py.
 (() => {
   const stage = document.getElementById('nvp-stage');
@@ -87,11 +91,54 @@
     zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * 0.002));
   }, { passive: false });
 
+  // Links (FWCOM tags point at their block docs on GitLab) open in a popup window.
+  // Panning captures the pointer, so the browser never delivers the click to
+  // the <a> itself; a left press that barely moved counts as a click instead.
+  const XLINK = 'http://www.w3.org/1999/xlink';
+  const FWCOM_DOCS = 'https://gitlab.appear.net/products/fpga/firmware/-/blob/master/fwlibs/fwcom_lib/doc/blocks';
+  let press = null;
+
+  function linkAt(x, y) {
+    const a = document.elementFromPoint(x, y)?.closest('a');
+    if (!a || !wrap.contains(a)) return null;
+    const href = a.getAttribute('href') || a.getAttributeNS(XLINK, 'href');
+    if (!href || href.startsWith('#')) return null;
+    // Older diagrams link tags to the retired trac wiki; send those to the
+    // block doc on GitLab, where the newer diagrams already point.
+    const tag = href.match(/\/wiki\/FWCOM\/(\d+)\/?$/i);
+    if (tag) return `${FWCOM_DOCS}/${tag[1]}.md`;
+    return new URL(href, document.baseURI).href;
+  }
+
+  // The viewer runs in a browser profile of its own (that is what lets it
+  // open maximised), so it has none of your logins. Links therefore go to the
+  // editor that opened the preview, which hands them to your default browser:
+  // window.NVP_LINK_BRIDGE is that editor's 127.0.0.1 listener. Without one
+  // (editor closed since, or run from a shell) the link opens in a popup here.
+  async function openLink(url) {
+    const bridge = window.NVP_LINK_BRIDGE;
+    if (bridge && /^https?:/i.test(url)) {
+      try {
+        const res = await fetch(`${bridge}&u=${encodeURIComponent(url)}`);
+        if (res.ok) {
+          say('opened in your browser');
+          return;
+        }
+      } catch {
+        // listener gone: fall through to the popup
+      }
+    }
+    const w = Math.round(screen.availWidth * 0.6);
+    const h = Math.round(screen.availHeight * 0.85);
+    window.open(url, '_blank', `popup,width=${w},height=${h}`);
+  }
+
   // Pan with any button held. Right-drag needs the context menu suppressed.
   let panning = null;
   stage.addEventListener('contextmenu', (e) => e.preventDefault());
 
   stage.addEventListener('pointerdown', (e) => {
+    press = e.button === 0 ? { x: e.clientX, y: e.clientY } : null;
     panning = { x: e.clientX, y: e.clientY };
     stage.classList.add('panning');
     stage.setPointerCapture?.(e.pointerId);
@@ -110,8 +157,17 @@
     panning = null;
     stage.classList.remove('panning');
   };
-  stage.addEventListener('pointerup', endPan);
-  stage.addEventListener('pointercancel', endPan);
+  stage.addEventListener('pointerup', (e) => {
+    endPan();
+    if (!press || Math.hypot(e.clientX - press.x, e.clientY - press.y) > 4) return;
+    press = null;
+    const url = linkAt(e.clientX, e.clientY);
+    if (url) openLink(url);
+  });
+  stage.addEventListener('pointercancel', () => {
+    press = null;
+    endPan();
+  });
 
   stage.addEventListener('dblclick', () => fit());
 

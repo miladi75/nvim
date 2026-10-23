@@ -26,6 +26,11 @@ case ${src,,} in
     # so the file goes in as it is.
     target=$(mktemp --tmpdir --suffix=.html nvim-preview-XXXXXX)
 
+    # nvim's listener that opens clicked links in the default browser (see
+    # link_bridge() in lua/mappings.lua). Checked, since it goes into a <script>.
+    bridge=${NVIM_PREVIEW_LINK_BRIDGE:-}
+    [[ $bridge =~ ^http://127\.0\.0\.1:[0-9]+/open\?t=[0-9a-f]+$ ]] || bridge=
+
     cat >"$target" <<HTML
 <!doctype html>
 <meta charset="utf-8">
@@ -38,6 +43,7 @@ case ${src,,} in
   #nvp-stage.panning { cursor: grabbing; }
   #nvp-wrap { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
   #nvp-wrap > svg { display: block; }
+  #nvp-wrap a, #nvp-wrap a * { cursor: pointer; }
   #nvp-hud {
     position: fixed; left: 12px; bottom: 12px; padding: 5px 9px;
     background: #11131ccc; border: 1px solid #2f334d; border-radius: 5px;
@@ -71,6 +77,7 @@ $(<"$src")
 <div id="nvp-marks"></div>
 <div id="nvp-find"><input id="nvp-find-input" placeholder="Find in SVG" spellcheck="false" autocomplete="off"><span id="nvp-count"></span></div>
 <div id="nvp-hud"></div>
+<script>window.NVP_LINK_BRIDGE = "$bridge";</script>
 <script src="file://$scripts/svg-viewer.js"></script>
 HTML
     ;;

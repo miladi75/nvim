@@ -57,6 +57,60 @@ map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { desc = "Toggle file explorer"
 -- rendered to HTML on the way; svg/html/pdf/images go straight to the browser.
 -- Close the window with Ctrl-w. See scripts/preview.sh.
 -- For markdown rendered inside the editor (mermaid, math) use <leader>mv.
+-- The SVG viewer window runs in a Brave profile of its own (that is what makes
+-- it open maximized), so it has none of your logins. A clicked link (FWCOM tag
+-- -> GitLab block doc) is sent here instead and opened with vim.ui.open, i.e.
+-- as a tab in your default browser. Started on first use, lives as long as
+-- nvim; bound to 127.0.0.1 with a random token, and only http(s) URLs are
+-- opened. Returns the URL the viewer calls (see openLink in svg-viewer.js).
+local link_bridge_url
+local function link_bridge()
+  if link_bridge_url then
+    return link_bridge_url
+  end
+  local token = vim.fn.sha256(tostring(vim.uv.hrtime()) .. tostring(math.random()) .. vim.fn.getpid())
+  token = token:sub(1, 32)
+  local server = vim.uv.new_tcp()
+  if not server or not server:bind("127.0.0.1", 0) then
+    return ""
+  end
+  server:listen(16, function(err)
+    if err then
+      return
+    end
+    local client = vim.uv.new_tcp()
+    server:accept(client)
+    local request = ""
+    client:read_start(function(read_err, chunk)
+      if read_err or not chunk then
+        return client:close()
+      end
+      request = request .. chunk
+      if not request:find("\r\n\r\n", 1, true) then
+        return
+      end
+      client:read_stop()
+      local target = request:match("^GET /open%?t=" .. token .. "&u=([^%s&]+) HTTP/")
+      target = target and vim.uri_decode(target)
+      local ok = target and target:match "^https?://" ~= nil
+      local status = ok and "204 No Content" or "403 Forbidden"
+      client:write(
+        "HTTP/1.1 " .. status .. "\r\nAccess-Control-Allow-Origin: *\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+        function()
+          client:close()
+        end
+      )
+      if ok then
+        vim.schedule(function()
+          vim.ui.open(target)
+        end)
+      end
+    end)
+  end)
+  link_bridge_url = ("http://127.0.0.1:%d/open?t=%s"):format(server:getsockname().port, token)
+  return link_bridge_url
+end
+
 local function preview()
   local path = vim.fn.expand "%:p"
 
@@ -71,7 +125,8 @@ local function preview()
     path = tmp
   end
 
-  vim.system({ vim.fn.stdpath "config" .. "/scripts/preview.sh", path }, { text = true }, function(res)
+  local opts = { text = true, env = { NVIM_PREVIEW_LINK_BRIDGE = link_bridge() } }
+  vim.system({ vim.fn.stdpath "config" .. "/scripts/preview.sh", path }, opts, function(res)
     if res.code ~= 0 then
       vim.schedule(function()
         vim.notify("preview failed: " .. (res.stderr or res.stdout or ""), vim.log.levels.ERROR)
